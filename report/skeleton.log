@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.29)  24 JAN 2018 17:05
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.29)  25 JAN 2018 15:46
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -216,7 +216,14 @@ LaTeX Font Info:    Redeclaring font encoding OMS on input line 713.
 LaTeX Info: Redefining \[ on input line 2817.
 LaTeX Info: Redefining \] on input line 2818.
 )
-(./skeleton.aux)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count106
+\float@exts=\toks22
+\float@box=\box29
+\@float@everytoks=\toks23
+\@floatcapt=\box30
+) (./skeleton.aux)
 \openout1 = `skeleton.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 13.
@@ -228,7 +235,6 @@ LaTeX Font Info:    ... okay on input line 13.
 LaTeX Font Info:    Checking defaults for OMS/pzccm/m/n on input line 13.
 LaTeX Font Info:    Try loading font information for OMS+pzccm on input line 13
 .
-
 (/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/omspzccm.fd
 File: omspzccm.fd 2000/01/03 Fontinst v1.801 font definitions for OMS/pzccm.
 )
@@ -274,17 +280,17 @@ LaTeX Font Info:    ... okay on input line 13.
 
 (/usr/local/texlive/2017/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count106
+\scratchcounter=\count107
 \scratchdimen=\dimen131
-\scratchbox=\box29
-\nofMPsegments=\count107
-\nofMParguments=\count108
-\everyMPshowfont=\toks22
-\MPscratchCnt=\count109
+\scratchbox=\box31
+\nofMPsegments=\count108
+\nofMParguments=\count109
+\everyMPshowfont=\toks24
+\MPscratchCnt=\count110
 \MPscratchDim=\dimen132
-\MPnumerator=\count110
-\makeMPintoPDFobject=\count111
-\everyMPtoPDFconversion=\toks23
+\MPnumerator=\count111
+\makeMPintoPDFobject=\count112
+\everyMPtoPDFconversion=\toks25
 ) (/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2017/03/19 v0.25 Utility functions of pdfTeX for LuaTeX (HO
 )
@@ -332,6 +338,7 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: float package is loaded.
 Package caption Info: wrapfig package is loaded.
 Package caption Info: End \AtBeginDocument code.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <20.74> not available
@@ -422,103 +429,136 @@ LaTeX Warning: Reference `' on page 7 undefined on input line 72.
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <12> not available
 (Font)              Font shape `OMS/pzccm/m/n' tried instead on input line 107.
 
-
-Overfull \hbox (3.82866pt too wide) in paragraph at lines 111--113
-[]\OT1/ptm/m/n/12 Research on Open-SH-MEM and POSIX threads and their suit-abil
--ity for the project
- []
-
-[8]
-Chapter 2.
-[9
+ [8] [9] [10
 
 ]
-Overfull \hbox (6.18234pt too wide) in paragraph at lines 155--156
+Chapter 2.
+[11]
+Overfull \hbox (6.18234pt too wide) in paragraph at lines 169--170
 \OT1/ptm/m/n/12 (Atom-ic-ity, Con-sis-tency, Iso-la-tion, Dura-bil-ity) prop-er
 -ties for atomic trans-ac-tions. More-
  []
 
 
-LaTeX Warning: Reference `' on page 10 undefined on input line 161.
+LaTeX Warning: Reference `' on page 12 undefined on input line 175.
 
 
-LaTeX Warning: Reference `' on page 10 undefined on input line 169.
+LaTeX Warning: Reference `' on page 12 undefined on input line 183.
 
-[10]
+[12]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 175.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 189.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 175.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 189.
 LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
-(Font)              scaled to size 12.9599pt on input line 175.
+(Font)              scaled to size 12.9599pt on input line 189.
 
 
-LaTeX Warning: Reference `' on page 11 undefined on input line 177.
+LaTeX Warning: Reference `' on page 13 undefined on input line 191.
 
-
-LaTeX Warning: Reference `' on page 11 undefined on input line 177.
-
-
-LaTeX Warning: Reference `' on page 11 undefined on input line 177.
-
-<images/load-latency.png, id=42, 602.25pt x 372.39125pt>
+<images/load-latency.png, id=48, 602.25pt x 372.39125pt>
 File: images/load-latency.png Graphic file (type png)
 
 <use images/load-latency.png>
-Package pdftex.def Info: images/load-latency.png used on input line 183.
-(pdftex.def)             Requested size: 256.0748pt x 158.34657pt.
+Package pdftex.def Info: images/load-latency.png used on input line 197.
+(pdftex.def)             Requested size: 284.52756pt x 175.93874pt.
 
-<images/load-throughput.png, id=43, 602.25pt x 372.39125pt>
+<images/load-throughput.png, id=49, 602.25pt x 372.39125pt>
 File: images/load-throughput.png Graphic file (type png)
 
 <use images/load-throughput.png>
-Package pdftex.def Info: images/load-throughput.png used on input line 188.
+Package pdftex.def Info: images/load-throughput.png used on input line 203.
 (pdftex.def)             Requested size: 284.52756pt x 175.93874pt.
+ [13 <./images/load-latency.png (PNG copy)> <./images/load-throughput.png (PNG 
+copy)>]
+<images/write-latency.png, id=54, 599.841pt x 291.0072pt>
+File: images/write-latency.png Graphic file (type png)
+
+<use images/write-latency.png>
+Package pdftex.def Info: images/write-latency.png used on input line 214.
+(pdftex.def)             Requested size: 199.16928pt x 96.62325pt.
+
+Underfull \hbox (badness 1048) in paragraph at lines 220--221
+\OT1/ptm/m/n/12 than Span-ner and more than 4 times
+ []
+
+<images/read-latency.png, id=56, 618.1494pt x 356.0502pt>
+File: images/read-latency.png Graphic file (type png)
+
+<use images/read-latency.png>
+Package pdftex.def Info: images/read-latency.png used on input line 227.
+(pdftex.def)             Requested size: 341.43306pt x 196.6703pt.
+
+<images/read-modify-write-latency.png, id=57, 633.36626pt x 372.39125pt>
+File: images/read-modify-write-latency.png Graphic file (type png)
+
+<use images/read-modify-write-latency.png>
+Package pdftex.def Info: images/read-modify-write-latency.png used on input lin
+e 234.
+(pdftex.def)             Requested size: 369.88582pt x 217.48149pt.
 
 
-LaTeX Warning: Reference `' on page 11 undefined on input line 194.
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<images/throughput.png, id=58, 549.7338pt x 294.8616pt>
+File: images/throughput.png Graphic file (type png)
+
+<use images/throughput.png>
+Package pdftex.def Info: images/throughput.png used on input line 241.
+(pdftex.def)             Requested size: 341.43306pt x 183.13623pt.
 
 
-LaTeX Warning: Reference `' on page 11 undefined on input line 194.
+LaTeX Warning: `h' float specifier changed to `ht'.
 
-
-LaTeX Warning: Reference `' on page 11 undefined on input line 194.
-
-
-LaTeX Warning: Reference `' on page 11 undefined on input line 194.
-
-[11 <./images/load-latency.png (PNG copy)>] [12 <./images/load-throughput.png (
-PNG copy)>]
-Chapter 3.
-[13
-
-] [14
+[14 <./images/write-latency.png> <./images/read-latency.png>] [15 <./images/rea
+d-modify-write-latency.png (PNG copy)> <./images/throughput.png>] [16
 
 ]
+Chapter 3.
+
+LaTeX Warning: Reference `' on page 17 undefined on input line 275.
+
+
+Overfull \hbox (7.84927pt too wide) in paragraph at lines 275--276
+[]\OT1/ptm/m/n/12 Create an API which would let im-i-tate the producer-consumer
+ re-la-tion-ship through
+ []
+
+[17] [18]
 Chapter 4.
-[15] [16
+[19
+
+] [20
 
 ]
 Chapter 5.
-[17] [18
+[21] [22
 
 ]
 Chapter 6.
-(./skeleton.bbl [19] [20
+[23] [24
 
-]) [21] (./skeleton.aux)
+]
+Chapter 7.
+[25] [26
+
+]
+Chapter 8.
+(./skeleton.bbl [27] [28
+
+]) [29] (./skeleton.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 4361 strings out of 492995
- 64995 string characters out of 6132703
- 135940 words of memory out of 5000000
- 7822 multiletter control sequences out of 15000+600000
+ 4435 strings out of 492995
+ 66330 string characters out of 6132703
+ 137383 words of memory out of 5000000
+ 7888 multiletter control sequences out of 15000+600000
  37278 words of font info for 69 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 43i,6n,40p,973b,275s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 43i,6n,40p,743b,279s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2017/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/te
 xlive/2017/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/20
@@ -528,10 +568,10 @@ fonts/type1/urw/helvetic/uhvro8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/
 type1/urw/times/utmb8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/
 times/utmr8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmr
 i8a.pfb>
-Output written on skeleton.pdf (21 pages, 116857 bytes).
+Output written on skeleton.pdf (29 pages, 228735 bytes).
 PDF statistics:
- 107 PDF objects out of 1000 (max. 8388607)
- 73 compressed objects within 1 object stream
+ 140 PDF objects out of 1000 (max. 8388607)
+ 91 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 31 words of extra memory for PDF output out of 10000 (max. 10000000)
 

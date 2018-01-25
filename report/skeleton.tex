@@ -1,4 +1,3 @@
-
 % to choose your degree
 % please un-comment just one of the following
 \documentclass[bsc,frontabs,twoside,singlespacing,parskip,deptreport]{infthesis}     % for BSc, BEng etc.
@@ -7,6 +6,7 @@
 \usepackage{graphicx}
 \usepackage{wrapfig}
 \usepackage{amsmath}
+\usepackage{float}
 
 \graphicspath{ {images/} }
 
@@ -107,8 +107,8 @@ The contributions of this paper are as follows:
 Research was done on how Google data stores, namely Bigtable, Datastore and Spanner, work and what consistency models they provide.
 \item
 Benchmarking the above data stores based on their throughput and latency using YCSB tool.
-\item
-Research on OpenSHMEM and POSIX threads and their suitability for the project (hardware/software required).
+% \item
+% Research on OpenSHMEM and POSIX threads and their suitability for the project (hardware/software required).
 \item
 Research on possible ways to translate load and store instructions (Intel PIN, LLVM).
 \item
@@ -117,9 +117,23 @@ Implementing an LLVM pass to do the translation and linking it with gRPC, protob
 Implementing a malloc() function to preserve the user program from allocating heap memory for objects.
 \end{itemize}
 
-%TODO: synopsis
+%TODO: update synopsis
 
-\chapter{Choosing data store}
+\section{Synopsis}
+
+Chapter 2 presents the main requirements for the data stores to be used as distributed shared memory systems. The chapter continues with the background information on the selected Google Cloud data stores, namely Bigtable, Datastore and Spanner. Finally, the chapter introduces and discusses the results of the benchmark ran on these data stores.
+
+Chapter 3 starts with the architecture of the tool, also briefly introducing gRPC and protobuf libraries. Then, the chapter briefly talks about the unsuccessful attempt to create the instrumentation to translate store and load instructions to get and put operations on data store using Intel PIN tool. The chapter continues with an LLVM pass implementation.
+
+Chapter 4 introduces with memory wasting problem, introduced by storing heap variables on Bigtable, and describes the solution - the implementation of custom heap memory allocation functions. 
+
+Chapter 5 discuss the correctness and efficiency of the system. 
+
+Chapter 6 introduces the API which lets computers on two different locations in the world use the key-value store as distributed shared memory in scenarios like producer/consumer.
+
+Chapter 7 summarizes the work done and possible ways of improving the system.
+
+\chapter{Data store for DSM}
 
 \section{Overview}
 
@@ -174,38 +188,125 @@ For the best results the benchmarking was run on Google Compute Engine (GCE) vir
 
 \subsection{Loading the data}
 
-Before running the benchmark on workloads 1000 rows were inserted into each data store. The figures \ref{} - \ref{} shows the latency and throughput achieved by each cloud storage. The results clearly show that both Bigtable and Spanner has approximately 16 times lower latency and approximately 12 times higher throughput. This can be explained by research results on Datastore using synchronous replication, which makes the host wait until all replications are created, as described in \ref{}.
+Before running the benchmark on workloads 1000 rows were inserted into each data store. Figures \ref{load-latency} and \ref{load-throughput} show the latency and throughput achieved by each cloud storage. The results clearly show that both Bigtable and Spanner has approximately 16 times lower latency and approximately 12 times higher throughput. This can be explained by research results on Datastore using synchronous replication, which makes the host wait until all replications are created, as described in \ref{}.
 
 %	http://searchdisasterrecovery.techtarget.com/definition/synchronous-replication
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=9cm]{load-latency}
+	\includegraphics[width=10cm]{load-latency}
 	\caption{Latency (\( \mu s\)) for 1000 insert (write) operations}
+	\label{load-latency}
 \end{figure}
-\begin{figure}[t]
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=10cm]{load-throughput}
 	\caption{Throughput (ops/sec) for 1000 insert (write) operations}
+	\label{load-throughput}
 \end{figure}
 
 \subsection{Workloads}
 
-Workload A consists of 1000 operations, 500 reads and 500 writes, while workload F consists of 2000 operations, 1000 reads, 500 atomic read-modify-write operations and 500 writes. The results of the benchmark in terms of latency on write operation were consistent with the previous loading benchmark results, with Bigtable and Spanner performing significantly better \ref{}. The latency on write operations showed a clear dominance by Bigtable \ref{}, having two times lower latency. Even though, the difference on read operations latency between Datastore and two other data storages were smaller than with write operations, Datastore still was more than two times slower than Spanner and more than 4 times slower than Bigtable. The latency results on read-modify-write operations showed a similar trend as read and write operations \ref{}. The overall throughput, again, showed a significant superiority by Bigtable, as indicated in \ref{}. 
+Workload A consists of 1000 operations, 500 reads and 500 writes, while workload F consists of 2000 operations, 1000 reads, 500 atomic read-modify-write operations and 500 writes. The results of the benchmark in terms of latency on write operation were consistent with the previous loading benchmark results, with Bigtable and Spanner performing significantly better (Figure \ref{write-latency}). The latency on write operations showed a clear dominance by Bigtable, having two times lower latency. 
 
-% TODO: add graph
+\begin{wrapfigure}{r}{0.5\textwidth}
+	\centering
+	\includegraphics[width=7cm]{write-latency}
+	\caption{}
+% 	\caption{Write operations latency (ops/sec) for Workload A (500 writes) and Workload B (1000 writes)}
+	\label{write-latency}
+\end{wrapfigure}
+
+Even though, the difference on read operations latency between Datastore and two other data storages were smaller than with write operations (Figure \ref{read-latency}), Datastore still was more than two times slower than Spanner and more than 4 times slower than Bigtable. The latency results on read-modify-write operations showed a similar trend as read and write operations (Figure \ref{read-modify-write-latency}). 
+
+The overall throughput, again, showed a significant superiority by Bigtable, as indicated in Figure \ref{throughput}. 
+
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=12cm]{read-latency}
+	\caption{Read operations latency (ops/sec) for Workload A (500 reads) and Workload B (1000 reads)}
+	\label{read-latency}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=13cm]{read-modify-write-latency}
+	\caption{Read-modify-operations latency (ops/sec)}
+	\label{read-modify-write-latency}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=12cm]{throughput}
+	\caption{Throughput (ops/sec) for Workloads A (1000 operations) and Workload B (2000 operations)}
+	\label{throughput}
+\end{figure}
 
 \subsection{Conclusions}
 
 As Bigtable showed the best results in loading of data and on both of the workloads the benchmarks were run on, and since it provided a strong consistency model, it was selected to be used as a distributed shared memory system for the translation tool.
 
-\chapter{OpenSHMEM vs POSIX threads}
+% FOR INTERIM REPORT  - - - - - - - - - TO BE REMOVED 
 
-\section{Overview}
+\chapter{Interim report}
 
-\section{OpenSHMEM API}
+\section{Accomplishments so far}
 
-\section{POSIX threads}
+\begin{itemize}
+\item
+Research was done on how Google data stores. Benchmarked the above data stores based on their throughput and latency using YCSB tool.
+\item
+Research was done on OpenSHMEM and POSIX threads and their suitability for the project (hardware/software required).
+\item
+Research was done on possible ways to translate load and store instructions (Intel PIN, LLVM).
+\item
+Implemented an LLVM pass to call an external function (not get/put). Found out how to link gRPC, protobuf and googleapis libraries to create external get/put functions. Implemented the get/put functions for simple static and stack variables storage on Bigtable.
+\end{itemize}
+
+\section{Remains to be done}
+
+\begin{itemize}
+\item
+Create get/put functions to store heap variables, pointers, pointers-to-pointers, etc. Test it!
+\item
+Malloc() implementation and LLVM pass modification to change the default malloc() call to an implemented one. Test it!
+\item
+Create an API which would let imitate the producer-consumer relationship through DSM, with producer and consumer situated in geographically different locations. Bigtable multi regional locations could be used \ref{}.
+\end{itemize}
+
+%	https://cloud.google.com/storage/docs/bucket-locations#location-mr 
+
+Other possible work is to be determined with project supervisor.
+
+\section{Timeline for final semester}
+
+\begin{tabular} { | c | c | }
+	\hline
+ 		Task & Deadline \\ [0.5ex] 
+	\hline
+	\hline
+	Create get/put functions to store heap variables, pointers, etc. & 1 Feb \\
+	\hline
+	Implementation of malloc() and related subtasks & 10 Feb \\
+	\hline
+	Create API & 18 Feb \\
+	\hline
+	Other tasks (TBD) & 4 Mar \\
+	\hline
+	Report writing & 5 April \\
+	\hline
+\end{tabular}
+
+% FOR INTERIM REPORT  - - - - - - - - - TO BE REMOVED 
+
+% \chapter{OpenSHMEM vs POSIX threads}
+
+% \section{Overview}
+
+% \section{OpenSHMEM API}
+
+% \section{POSIX threads}
 
 \chapter{Load and store instructions translation}
 
@@ -227,11 +328,16 @@ As Bigtable showed the best results in loading of data and on both of the worklo
 
 \subsection{Translation}
 
-\subsection{Malloc() function}
+\chapter{Problems with heap allocation}
 
-\subsection{Results}
+\section{Overview}
 
-\chapter{API?}
+\section{Implementation of malloc()}
+
+
+\chapter{Results}
+
+\chapter{API}
 
 \chapter{Conclusions}
 
