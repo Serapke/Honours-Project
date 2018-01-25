@@ -36,6 +36,8 @@ using grpc::Status;
 using google::bigtable::v2::Bigtable;
 using google::bigtable::v2::MutateRowRequest;
 using google::bigtable::v2::MutateRowResponse;
+using google::bigtable::v2::ReadRowsRequest;
+using google::bigtable::v2::ReadRowsResponse;
 
 using namespace std;
 
@@ -56,25 +58,79 @@ void put(int32_t* address, int32_t value) {
   printf("  value = %i\n", value);
 
   MutateRowRequest req;
-    req.set_table_name(tableName);
-    req.set_row_key(to_string(*address));
-    auto setCell = req.add_mutations()->mutable_set_cell();
-    setCell->set_family_name("values");
-    setCell->set_column_qualifier("value");
-    string value_to_string = to_string(value);
-    setCell->mutable_value()->swap(value_to_string);
+  req.set_table_name(tableName);
+  req.set_row_key(to_string(*address));
+  auto setCell = req.add_mutations()->mutable_set_cell();
+  setCell->set_family_name("values");
+  setCell->set_column_qualifier("value");
+  string value_to_string = to_string(value);
+  setCell->mutable_value()->swap(value_to_string);
 
-    unique_ptr<Bigtable::Stub> bigtableStub = getBigtableStub();
+  unique_ptr<Bigtable::Stub> bigtableStub = getBigtableStub();
 
-    MutateRowResponse resp;
-    grpc::ClientContext clientContext;
+  MutateRowResponse resp;
+  grpc::ClientContext clientContext;
 
-    auto status = bigtableStub->MutateRow(&clientContext, req, &resp);
-    if (!status.ok()) {
-        cerr << "Error in MutateRow() request: " << status.error_message()
-             << " [" << status.error_code() << "] " << status.error_details()
-             << endl;
+  auto status = bigtableStub->MutateRow(&clientContext, req, &resp);
+  if (!status.ok()) {
+      cerr << "Error in MutateRow() request: " << status.error_message()
+           << " [" << status.error_code() << "] " << status.error_details()
+           << endl;
+  }
+}
+
+void get(int* address) {
+  printf("Load instruction:\n");
+  printf("  address = %#010x", address);
+
+  ReadRowsRequest req;
+  req.set_table_name(tableName);
+  req.mutable_rows()->add_row_keys(to_string(*address));
+
+  unique_ptr<Bigtable::Stub> bigtableStub = getBigtableStub();
+
+  ReadRowsResponse resp;
+  grpc::ClientContext clientContext;
+
+  string currentRowKey;
+  string currentColumnFamily;
+  string currentColumn;
+  string currentValue;
+
+  auto stream = bigtableStub->ReadRows(&context, request);
+  while (stream->Read(&resp)) {
+    for (auto& cellChunk : *resp.mutable_chunks()) {
+      if (!cellChunk.row_key().empty()) {
+        currentRowKey = cellChunk.row_key();
+      }
+      if (!cellChunk.has_family_name()) {
+        currentColumnFamily = cellChunk.family_name().value();
+        if (currentColumnFamily != "values") {
+          throw std::runtime_error("strange, only 'values' family name expected in the query");
+        }
+      }
+      if (!cellChunk.has_qualifier()) {
+        currentColumn = cellChunk.qualifier().value();
+        if (currentColumn != "value") {
+          throw std::runtime_error("strange, only 'value' column expected in the query");
+        }
+      }
+      if (cellChunk.value_size() > 0) {
+        currentValue.reserve(cellChunk.value_size());
+      }
+      currentValue.append(cellChunk.value());
+      if (cellChunk.commit_row()) {
+        printf("Loaded with key '%s', column family name '%s', column '%s': %s",
+          currentRowKey,
+          currentColumnFamily,
+          currentColumn,
+          currentValue);
+      }
+      if (cellChunk.reset_row()) {
+        currentValue.clear();
+      }
     }
+  }
 }
 
 void setup() {
