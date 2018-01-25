@@ -40,7 +40,7 @@ using google::bigtable::v2::MutateRowResponse;
 using namespace std;
 
 static auto creds = grpc::GoogleDefaultCredentials();
-string tableName = "projects/P/instances/I/tables/T";
+string tableName = "projects/infra-inkwell-192811/instances/instance/tables/table";
 
 unique_ptr<Bigtable::Stub> getBigtableStub() {
   auto channel = grpc::CreateChannel("bigtable.googleapis.com", creds);
