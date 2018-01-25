@@ -97,7 +97,7 @@ void get(int* address) {
   string currentColumn;
   string currentValue;
 
-  auto stream = bigtableStub->ReadRows(&context, request);
+  auto stream = bigtableStub->ReadRows(&clientContext, req);
   while (stream->Read(&resp)) {
     for (auto& cellChunk : *resp.mutable_chunks()) {
       if (!cellChunk.row_key().empty()) {
@@ -121,10 +121,10 @@ void get(int* address) {
       currentValue.append(cellChunk.value());
       if (cellChunk.commit_row()) {
         printf("Loaded with key '%s', column family name '%s', column '%s': %s",
-          currentRowKey,
-          currentColumnFamily,
-          currentColumn,
-          currentValue);
+          currentRowKey.c_str(),
+          currentColumnFamily.c_str(),
+          currentColumn.c_str(),
+          currentValue.c_str());
       }
       if (cellChunk.reset_row()) {
         currentValue.clear();
