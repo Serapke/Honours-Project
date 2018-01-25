@@ -81,7 +81,7 @@ void put(int32_t* address, int32_t value) {
 
 void get(int* address) {
   printf("Load instruction:\n");
-  printf("  address = %#010x", address);
+  printf("  address = %#010x\n", address);
 
   ReadRowsRequest req;
   req.set_table_name(tableName);
@@ -120,7 +120,7 @@ void get(int* address) {
       }
       currentValue.append(cellChunk.value());
       if (cellChunk.commit_row()) {
-        printf("Loaded with key '%s', column family name '%s', column '%s': %s",
+        printf("Loaded with key '%s', column family name '%s', column '%s': %s\n",
           currentRowKey.c_str(),
           currentColumnFamily.c_str(),
           currentColumn.c_str(),
