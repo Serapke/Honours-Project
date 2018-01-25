@@ -142,5 +142,6 @@ int main() {
   int32_t i = 3, j = 4;
   p = &i;
   put(p, j);
+  get(p);
 }
 
