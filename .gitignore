@@ -1,2 +1,4 @@
 build
 *.ll
+Honours-Project/*
+.idea/*

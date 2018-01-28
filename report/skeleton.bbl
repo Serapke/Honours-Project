@@ -1,14 +1,49 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{7}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
 
-\bibitem{P1}
-Hiroki Arimura.
-\newblock Learning acyclic first-order horn sentences from entailment.
-\newblock In {\em Proc. of the 8th Intl. Conf. on Algorithmic Learning Theory,
-  ALT '97}, pages 432--445, 1997.
+\bibitem[Cooper et~al.(2010)Cooper, Silberstein, Tam, Ramakrishnan, and
+  Sears]{ycsb}
+Brian~F. Cooper, Adam Silberstein, Erwin Tam, Raghu Ramakrishnan, and Russell
+  Sears.
+\newblock Benchmarking cloud serving systems with ycsb.
+\newblock In \emph{Proceedings of the 1st ACM Symposium on Cloud Computing},
+  SoCC '10, pages 143--154, New York, NY, USA, 2010. ACM.
+\newblock URL
+  \url{https://www2.cs.duke.edu/courses/fall13/cps296.4/838-CloudPapers/ycsb.pdf}.
 
-\bibitem{P2}
-Chen-Chung Chang and H.~Jerome Keisler.
-\newblock {\em Model Theory}.
-\newblock North-Holland, third edition, 1990.
+\bibitem[Google(2018{\natexlab{a}})]{google-bigtable}
+Google, 2018{\natexlab{a}}.
+\newblock URL \url{https://cloud.google.com/bigtable/}.
+
+\bibitem[Google(2018{\natexlab{b}})]{google-datastore}
+Google, 2018{\natexlab{b}}.
+\newblock URL \url{https://cloud.google.com/datastore/}.
+
+\bibitem[Google(2018{\natexlab{c}})]{google-spanner}
+Google, 2018{\natexlab{c}}.
+\newblock URL \url{https://cloud.google.com/spanner/}.
+
+\bibitem[Grolinger et~al.(2013)Grolinger, Higashino, Tiwari, and
+  Capretz]{nosql-data-stores}
+Katarina Grolinger, Wilson~A Higashino, Abhinav Tiwari, and Miriam~AM Capretz.
+\newblock Data management in cloud environments: Nosql and newsql data stores.
+\newblock \emph{Journal of Cloud Computing: Advances, Systems and
+  Applications}, December 2013.
+
+\bibitem[Rouse(2016)]{synchronous-replication}
+Margaret Rouse.
+\newblock Synchronous replication.
+\newblock \emph{WhatIs.com}, 2016.
+
+\bibitem[Z.Huang et~al.(2006)Z.Huang, W.Chen, M.Purvis, and W.Zheng]{vodca}
+Z.Huang, W.Chen, M.Purvis, and W.Zheng.
+\newblock Vodca: View-oriented, distributed, cluster-based approach to parallel
+  computing.
+\newblock In \emph{Cluster Computing and the Grid, 2006. CCGRID 06. Sixth IEEE
+  International Symposium on}, volume~2, pages 15--15, May 2006.
 
 \end{thebibliography}

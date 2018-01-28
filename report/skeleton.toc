@@ -11,8 +11,8 @@
 \contentsline {section}{\numberline {2.4}Spanner}{12}
 \contentsline {section}{\numberline {2.5}Benchmarking results}{12}
 \contentsline {subsection}{\numberline {2.5.1}Loading the data}{13}
-\contentsline {subsection}{\numberline {2.5.2}Workloads}{14}
-\contentsline {subsection}{\numberline {2.5.3}Conclusions}{14}
+\contentsline {subsection}{\numberline {2.5.2}Workloads}{13}
+\contentsline {subsection}{\numberline {2.5.3}Conclusions}{15}
 \contentsline {chapter}{\numberline {3}Interim report}{17}
 \contentsline {section}{\numberline {3.1}Accomplishments so far}{17}
 \contentsline {section}{\numberline {3.2}Remains to be done}{17}

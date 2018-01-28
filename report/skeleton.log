@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.29)  25 JAN 2018 15:46
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.29)  26 JAN 2018 13:44
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -223,26 +223,35 @@ Package: float 2001/11/08 v1.3d Float enhancements (AL)
 \float@box=\box29
 \@float@everytoks=\toks23
 \@floatcapt=\box30
-) (./skeleton.aux)
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/natbib/natbib.sty
+Package: natbib 2010/09/13 8.31b (PWD, AO)
+\bibhang=\skip46
+\bibsep=\skip47
+LaTeX Info: Redefining \cite on input line 694.
+\c@NAT@ctr=\count107
+)
+(./skeleton.aux)
 \openout1 = `skeleton.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 13.
-LaTeX Font Info:    ... okay on input line 13.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 13.
-LaTeX Font Info:    ... okay on input line 13.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 13.
-LaTeX Font Info:    ... okay on input line 13.
-LaTeX Font Info:    Checking defaults for OMS/pzccm/m/n on input line 13.
-LaTeX Font Info:    Try loading font information for OMS+pzccm on input line 13
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for OMS/pzccm/m/n on input line 14.
+LaTeX Font Info:    Try loading font information for OMS+pzccm on input line 14
 .
+
 (/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/omspzccm.fd
 File: omspzccm.fd 2000/01/03 Fontinst v1.801 font definitions for OMS/pzccm.
 )
-LaTeX Font Info:    ... okay on input line 13.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 13.
-LaTeX Font Info:    ... okay on input line 13.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 13.
-LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 14.
+LaTeX Font Info:    ... okay on input line 14.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -280,16 +289,16 @@ LaTeX Font Info:    ... okay on input line 13.
 
 (/usr/local/texlive/2017/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count107
+\scratchcounter=\count108
 \scratchdimen=\dimen131
 \scratchbox=\box31
-\nofMPsegments=\count108
-\nofMParguments=\count109
+\nofMPsegments=\count109
+\nofMParguments=\count110
 \everyMPshowfont=\toks24
-\MPscratchCnt=\count110
+\MPscratchCnt=\count111
 \MPscratchDim=\dimen132
-\MPnumerator=\count111
-\makeMPintoPDFobject=\count112
+\MPnumerator=\count112
+\makeMPintoPDFobject=\count113
 \everyMPtoPDFconversion=\toks25
 ) (/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2017/03/19 v0.25 Utility functions of pdfTeX for LuaTeX (HO
@@ -342,11 +351,11 @@ Package caption Info: float package is loaded.
 Package caption Info: wrapfig package is loaded.
 Package caption Info: End \AtBeginDocument code.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <20.74> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 56.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 51.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <20.74> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 56.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 51.
 LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
-(Font)              scaled to size 18.66588pt on input line 56.
+(Font)              scaled to size 18.66588pt on input line 51.
 
 [1
 
@@ -355,29 +364,29 @@ LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
 
 ]
 LaTeX Font Info:    Font shape `OT1/phv/m/n' will be
-(Font)              scaled to size 10.79993pt on input line 56.
+(Font)              scaled to size 10.79993pt on input line 51.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <12> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 56.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 51.
 LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
-(Font)              scaled to size 10.79993pt on input line 56.
+(Font)              scaled to size 10.79993pt on input line 51.
 LaTeX Font Info:    Font shape `OT1/phv/m/it' in size <12> not available
-(Font)              Font shape `OT1/phv/m/sl' tried instead on input line 56.
+(Font)              Font shape `OT1/phv/m/sl' tried instead on input line 51.
 LaTeX Font Info:    Font shape `OT1/phv/m/sl' will be
-(Font)              scaled to size 10.79993pt on input line 56.
+(Font)              scaled to size 10.79993pt on input line 51.
  [3]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <17.28> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 58.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 55.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <17.28> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 58.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 55.
 LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
-(Font)              scaled to size 15.55188pt on input line 58.
+(Font)              scaled to size 15.55188pt on input line 55.
  [4]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <24.88> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 61.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 58.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <24.88> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 61.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 58.
 LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
-(Font)              scaled to size 22.39185pt on input line 61.
+(Font)              scaled to size 22.39185pt on input line 58.
  (./skeleton.toc
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1.
@@ -412,116 +421,112 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
  [6]
 Chapter 1.
 
-LaTeX Warning: Reference `' on page 7 undefined on input line 68.
-
-
-Overfull \hbox (1.34593pt too wide) in paragraph at lines 68--69
+Overfull \hbox (1.34593pt too wide) in paragraph at lines 67--68
 \OT1/ptm/m/n/12 Distributed shared mem-ory (DSM) is mem-ory ar-chi-tec-ture whe
 re phys-i-cally dis-tributed
  []
 
 
-LaTeX Warning: Reference `' on page 7 undefined on input line 72.
+Overfull \hbox (2.17491pt too wide) in paragraph at lines 69--70
+\OT1/ptm/m/n/12 pletely schema-free, most pop-u-lar data mod-els be-ing key-val
+ue stores, doc-u-ment stores,
+ []
 
 [7
 
 ]
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <12> not available
-(Font)              Font shape `OMS/pzccm/m/n' tried instead on input line 107.
-
+(Font)              Font shape `OMS/pzccm/m/n' tried instead on input line 92.
  [8] [9] [10
 
 ]
 Chapter 2.
 [11]
-Overfull \hbox (6.18234pt too wide) in paragraph at lines 169--170
-\OT1/ptm/m/n/12 (Atom-ic-ity, Con-sis-tency, Iso-la-tion, Dura-bil-ity) prop-er
--ties for atomic trans-ac-tions. More-
+Overfull \hbox (12.30247pt too wide) in paragraph at lines 158--159
+\OT1/ptm/m/n/12 Spanner (Google, 2018c) is a hor-i-zon-tally scal-able, glob-al
+ly con-sis-tent re-la-tional database
  []
-
-
-LaTeX Warning: Reference `' on page 12 undefined on input line 175.
-
-
-LaTeX Warning: Reference `' on page 12 undefined on input line 183.
 
 [12]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 189.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 171.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 189.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 171.
 LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
-(Font)              scaled to size 12.9599pt on input line 189.
-
-
-LaTeX Warning: Reference `' on page 13 undefined on input line 191.
-
-<images/load-latency.png, id=48, 602.25pt x 372.39125pt>
+(Font)              scaled to size 12.9599pt on input line 171.
+ <images/load-latency.png, id=47, 602.25pt x 372.39125pt>
 File: images/load-latency.png Graphic file (type png)
 
 <use images/load-latency.png>
-Package pdftex.def Info: images/load-latency.png used on input line 197.
+Package pdftex.def Info: images/load-latency.png used on input line 177.
 (pdftex.def)             Requested size: 284.52756pt x 175.93874pt.
 
-<images/load-throughput.png, id=49, 602.25pt x 372.39125pt>
+<images/load-throughput.png, id=48, 602.25pt x 372.39125pt>
 File: images/load-throughput.png Graphic file (type png)
 
 <use images/load-throughput.png>
-Package pdftex.def Info: images/load-throughput.png used on input line 203.
+Package pdftex.def Info: images/load-throughput.png used on input line 183.
 (pdftex.def)             Requested size: 284.52756pt x 175.93874pt.
- [13 <./images/load-latency.png (PNG copy)> <./images/load-throughput.png (PNG 
-copy)>]
-<images/write-latency.png, id=54, 599.841pt x 291.0072pt>
+
+<images/write-latency.png, id=49, 599.841pt x 291.0072pt>
 File: images/write-latency.png Graphic file (type png)
 
 <use images/write-latency.png>
-Package pdftex.def Info: images/write-latency.png used on input line 214.
+Package pdftex.def Info: images/write-latency.png used on input line 194.
 (pdftex.def)             Requested size: 199.16928pt x 96.62325pt.
-
-Underfull \hbox (badness 1048) in paragraph at lines 220--221
+ [13 <./images/load-latency.png (PNG copy)>]
+Underfull \hbox (badness 1048) in paragraph at lines 200--201
 \OT1/ptm/m/n/12 than Span-ner and more than 4 times
  []
 
-<images/read-latency.png, id=56, 618.1494pt x 356.0502pt>
+<images/read-latency.png, id=55, 618.1494pt x 356.0502pt>
 File: images/read-latency.png Graphic file (type png)
 
 <use images/read-latency.png>
-Package pdftex.def Info: images/read-latency.png used on input line 227.
+Package pdftex.def Info: images/read-latency.png used on input line 207.
 (pdftex.def)             Requested size: 341.43306pt x 196.6703pt.
 
-<images/read-modify-write-latency.png, id=57, 633.36626pt x 372.39125pt>
+<images/read-modify-write-latency.png, id=56, 633.36626pt x 372.39125pt>
 File: images/read-modify-write-latency.png Graphic file (type png)
 
 <use images/read-modify-write-latency.png>
 Package pdftex.def Info: images/read-modify-write-latency.png used on input lin
-e 234.
+e 214.
 (pdftex.def)             Requested size: 369.88582pt x 217.48149pt.
 
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<images/throughput.png, id=58, 549.7338pt x 294.8616pt>
+<images/throughput.png, id=57, 549.7338pt x 294.8616pt>
 File: images/throughput.png Graphic file (type png)
 
 <use images/throughput.png>
-Package pdftex.def Info: images/throughput.png used on input line 241.
+Package pdftex.def Info: images/throughput.png used on input line 221.
 (pdftex.def)             Requested size: 341.43306pt x 183.13623pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[14 <./images/write-latency.png> <./images/read-latency.png>] [15 <./images/rea
-d-modify-write-latency.png (PNG copy)> <./images/throughput.png>] [16
+ [14 <./images/load-throughput.png (PNG copy)> <./images/write-latency.png> <./
+images/read-latency.png>] [15 <./images/read-modify-write-latency.png (PNG copy
+)> <./images/throughput.png>] [16
 
 ]
 Chapter 3.
 
-LaTeX Warning: Reference `' on page 17 undefined on input line 275.
+Overfull \hbox (4.75313pt too wide) in paragraph at lines 253--255
+[]\OT1/ptm/m/n/12 Heap al-lo-ca-tion func-tions im-ple-men-ta-tion and LLVM pas
+s mod-i-fi-ca-tion to change
+ []
 
 
-Overfull \hbox (7.84927pt too wide) in paragraph at lines 275--276
+Overfull \hbox (7.84927pt too wide) in paragraph at lines 255--256
 []\OT1/ptm/m/n/12 Create an API which would let im-i-tate the producer-consumer
  re-la-tion-ship through
+ []
+
+
+Overfull \hbox (66.86478pt too wide) in paragraph at lines 255--256
+\OT1/ptm/m/n/12 Bigtable multi re-gional lo-ca-tions could be used (https://clo
+ud.google.com/storage/docs/bucket-
+ []
+
+
+Overfull \hbox (4.70653pt too wide) in paragraph at lines 262--278
+[] 
  []
 
 [17] [18]
@@ -546,32 +551,53 @@ Chapter 7.
 Chapter 8.
 (./skeleton.bbl [27] [28
 
-]) [29] (./skeleton.aux)
+]
+Underfull \hbox (badness 10000) in paragraph at lines 10--17
+[]\OT1/ptm/m/n/12 Brian F. Cooper, Adam Sil-ber-stein, Er-win Tam, Raghu Ra-mak
+r-ish-
+ []
 
-LaTeX Warning: There were undefined references.
 
- ) 
+Underfull \hbox (badness 8056) in paragraph at lines 10--17
+\OT1/ptm/m/n/12 nan, and Rus-sell Sears.  Bench-mark-ing cloud serv-ing sys-tem
+s with
+ []
+
+
+Underfull \hbox (badness 3872) in paragraph at lines 10--17
+\OT1/ptm/m/n/12 ycsb.  In \OT1/ptm/m/it/12 Pro-ceed-ings of the 1st ACM Sym-po-
+sium on Cloud Com-put-
+ []
+
+
+Overfull \hbox (49.19356pt too wide) in paragraph at lines 10--17
+\OT1/pcr/m/n/12 https://www2.cs.duke.edu/courses/fall13/cps296.4/838-CloudPaper
+s/ycsb.pdf\OT1/ptm/m/n/12 . 
+ []
+
+) [29] (./skeleton.aux) ) 
 Here is how much of TeX's memory you used:
- 4435 strings out of 492995
- 66330 string characters out of 6132703
- 137383 words of memory out of 5000000
- 7888 multiletter control sequences out of 15000+600000
+ 4787 strings out of 492995
+ 70714 string characters out of 6132703
+ 143493 words of memory out of 5000000
+ 8236 multiletter control sequences out of 15000+600000
  37278 words of font info for 69 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 43i,6n,40p,743b,279s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2017/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
-exlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/te
-xlive/2017/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/20
-17/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2017/texm
-f-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2017/texmf-dist/
-fonts/type1/urw/helvetic/uhvro8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/
-type1/urw/times/utmb8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/
-times/utmr8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmr
-i8a.pfb>
-Output written on skeleton.pdf (29 pages, 228735 bytes).
+ 43i,6n,40p,745b,279s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2017/texmf-dist/fonts/enc/dvips/ba
+se/8r.enc}</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cm
+mi10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cms
+y10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb>
+</usr/local/texlive/2017/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/l
+ocal/texlive/2017/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/local/te
+xlive/2017/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb></usr/local/texlive/
+2017/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2017/texmf
+-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2017/texmf-dist/font
+s/type1/urw/times/utmri8a.pfb>
+Output written on skeleton.pdf (29 pages, 241544 bytes).
 PDF statistics:
- 140 PDF objects out of 1000 (max. 8388607)
- 91 compressed objects within 1 object stream
+ 144 PDF objects out of 1000 (max. 8388607)
+ 94 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  31 words of extra memory for PDF output out of 10000 (max. 10000000)
 
