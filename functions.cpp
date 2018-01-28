@@ -52,7 +52,7 @@ unique_ptr<Bigtable::Stub> getBigtableStub() {
   return bigtable_stub;
 }
 
-void put(int32_t* address, int32_t value) {
+void put(int* address, int value) {
   printf("Store instruction:\n");
   printf("  address = %#010x", address);
   printf("  value = %i\n", value);
