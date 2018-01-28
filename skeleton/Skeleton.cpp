@@ -31,36 +31,6 @@ namespace {
 
     SimpleDCE() : ModulePass(ID) {}
 
-    void getGlobalVariablesUsedByFunction(Function *F, set<GlobalValue*> *Globals) {
-      for(Function::iterator BB = F->begin(), E = F->end(); BB != E; ++BB) {
-        for (BasicBlock::iterator I = BB->begin(), E = BB->end(); I != E; ++I) {
-          if (isa<CallInst>(&*I)) continue;
-          for (User::op_iterator O = I->op_begin(), E = I->op_end(); O != E; ++O) {
-            if (isa<GlobalValue>(&*O)) {
-              GlobalValue *G = cast<GlobalValue>(&*O);
-              Globals->insert(G);
-            }
-          }
-        }
-      }
-    }
-
-    void getHeapVariablesUsedByFunction(Function *F, set<Instruction*> *heap) {
-      for(Function::iterator BB = F->begin(), E = F->end(); BB != E; ++BB) {
-        for (BasicBlock::iterator I = BB->begin(), E = BB->end(); I != E; ++I) {
-          if (isa<CallInst>(&*I)) {
-            errs() << &*I << "\n";
-          };
-//          for (User::op_iterator O = I->op_begin(), E = I->op_end(); O != E; ++O) {
-//            if (isa<GlobalValue>(&*O)) {
-//              GlobalValue *G = cast<GlobalValue>(&*O);
-//              heap->insert(G);
-//            }
-//          }
-        }
-      }
-    }
-
     virtual bool runOnModule(Module &M) {
       Type* pointerType = Type::getInt32PtrTy(M.getContext());
 
@@ -74,21 +44,15 @@ namespace {
       hookStore = cast<Function>(hookStoreFunc);
       hookStoreAddress = cast<Function>(hookStoreAddressFunc);
 
-      set<GlobalValue*> globalVariables;
-      set<Instruction*> heapVariables;
-
       for(Module::iterator F = M.begin(), E = M.end(); F!= E; ++F) {
-        getGlobalVariablesUsedByFunction(&*F, &globalVariables);
-        getHeapVariablesUsedByFunction(&*F, &heapVariables);
-        errs() << "GLOBAL:\n";
-        printSet(globalVariables);
+        errs() << *F << "\n";
         for(Function::iterator BB = F->begin(), E = F->end(); BB != E; ++BB) {
           SimpleDCE::runOnBasicBlock(BB);
 //          for(BasicBlock::iterator BI = BB->begin(), BE = BB->end(); BI != BE; ++BI) {
 //            errs() << *BI << "\n";
 //          }
         }
-        errs() << *F << "\n";
+//        errs() << *F << "\n";
       }
 
       return false;
@@ -104,22 +68,22 @@ namespace {
           Value* address_of_load = ld->getOperand(0);
           Value *print_load_arguments[] = { address_of_load, ld };
           bool pointerToPointer = ld->getType()->getTypeID() == 15;
-          if (pointerToPointer) {
-            CallInst::Create(hookLoadAddress, print_load_arguments, "")->insertAfter(ld);
-          } else {
-            CallInst::Create(hookLoad, print_load_arguments, "")->insertAfter(ld);
-          }
+//          if (pointerToPointer) {
+//            CallInst::Create(hookLoadAddress, print_load_arguments, "")->insertAfter(ld);
+//          } else {
+//            CallInst::Create(hookLoad, print_load_arguments, "")->insertAfter(ld);
+//          }
         } else if (isa<StoreInst>(&*BI)) {
           StoreInst *st = cast<StoreInst>(&*BI);
           Value* value_to_store = st->getOperand(0);
           Value* address_of_store = st->getOperand(1);
           Value *print_store_arguments[] = { address_of_store, value_to_store };
           bool pointerToPointer = value_to_store->getType()->getTypeID() == 15;
-          if (pointerToPointer) {
-            CallInst::Create(hookStoreAddress, print_store_arguments, "")->insertAfter(st);
-          } else {
-            CallInst::Create(hookStore, print_store_arguments, "")->insertAfter(st);
-          }
+//          if (pointerToPointer) {
+//            CallInst::Create(hookStoreAddress, print_store_arguments, "")->insertAfter(st);
+//          } else {
+//            CallInst::Create(hookStore, print_store_arguments, "")->insertAfter(st);
+//          }
         }
 
       }
