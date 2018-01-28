@@ -1,14 +1,12 @@
-#include <stdio.h>
 #include <stdlib.h>
 
 int c = 3;
-
 int main() {
   c = 2;
 //  int i = 5;
 //  int j = 2;
   int* r;
-  int* p = malloc(2*sizeof(int));
+  int* p = (int*) malloc(2*sizeof(int));
 //  printf("\n%i\n\n", *p);
 //  *p = c;
   int i = 4;
