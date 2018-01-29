@@ -54,7 +54,7 @@ unique_ptr<Bigtable::Stub> getBigtableStub() {
 
 void put(int* address, int value) {
   printf("Store instruction:\n");
-  printf("  address = %#010x", address);
+  printf("  address = %p", address);
   printf("  value = %i\n", value);
 
   MutateRowRequest req;
@@ -83,7 +83,7 @@ void put(int* address, int value) {
 
 int get(int* address) {
   printf("Load instruction:\n");
-  printf("  address = %#010x\n", address);
+  printf("  address = %p\n", address);
 
   ReadRowsRequest req;
   req.set_table_name(tableName);
@@ -94,41 +94,25 @@ int get(int* address) {
   ReadRowsResponse resp;
   grpc::ClientContext clientContext;
 
-  string currentRowKey;
-  string currentColumnFamily;
-  string currentColumn;
+  int currentRowKey;
   string currentValue;
-  string value;
+  int value;
 
   auto stream = bigtableStub->ReadRows(&clientContext, req);
   while (stream->Read(&resp)) {
     for (auto& cellChunk : *resp.mutable_chunks()) {
       if (!cellChunk.row_key().empty()) {
-        currentRowKey = cellChunk.row_key();
-      }
-      if (!cellChunk.has_family_name()) {
-        currentColumnFamily = cellChunk.family_name().value();
-        if (currentColumnFamily != "values") {
-          throw std::runtime_error("strange, only 'values' family name expected in the query");
-        }
-      }
-      if (!cellChunk.has_qualifier()) {
-        currentColumn = cellChunk.qualifier().value();
-        if (currentColumn != "value") {
-          throw std::runtime_error("strange, only 'value' column expected in the query");
-        }
+        currentRowKey = stoi(cellChunk.row_key());
       }
       if (cellChunk.value_size() > 0) {
         currentValue.reserve(cellChunk.value_size());
       }
       currentValue.append(cellChunk.value());
       if (cellChunk.commit_row()) {
-        value = currentValue;
-        printf("Loaded with key '%s', column family name '%s', column '%s': %s\n",
-          currentRowKey.c_str(),
-          currentColumnFamily.c_str(),
-          currentColumn.c_str(),
-          currentValue.c_str());
+        value = stoi(currentValue);
+        printf("Loaded with key '%#X': %i\n",
+          currentRowKey,
+          value);
       }
       if (cellChunk.reset_row()) {
         currentValue.clear();

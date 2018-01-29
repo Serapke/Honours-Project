@@ -13,14 +13,79 @@ using namespace llvm;
 using namespace std;
 
 namespace {
+
   struct SimpleDCE : public ModulePass {
+
+    const int POINTER_TYPE_ID = 15;
+
     static char ID;
     Function *hookLoad;
     Function *hookLoadAddress;
     Function *hookStore;
     Function *hookStoreAddress;
 
+    vector<Instruction*> deleteList;
+    vector<Instruction*> addList;
+
     SimpleDCE() : ModulePass(ID) {}
+
+    // checks if the load return value is pointer
+    bool isPointerLoad(LoadInst* value) {
+      return value->getType()->getTypeID() == POINTER_TYPE_ID;
+    }
+
+    // checks if the value stored is pointer
+    bool isPointerStore(Value* value) {
+      return value->getType()->getTypeID() == POINTER_TYPE_ID;
+    }
+
+    // TODO: improve the detection of gRPC code
+    // gRPC code starts with a function, which name includes 'functions.cpp' substring
+    bool isgRPCCode(Function* func) {
+      return strstr(func->getName().data(), "functions.cpp");
+    }
+
+    // replaces all of the instructions from oldInstructions list to the ones in newInstructions
+    void replaceInstructions(vector<Instruction*> oldInstructions, vector<Instruction*> newInstructions) {
+      if (oldInstructions.size() != newInstructions.size()) {
+        errs() << "Error! Old and new instruction lists differ in size!\n";
+        return;
+      }
+      for (int i = 0; i < newInstructions.size(); i++) {
+        Instruction* newInst = newInstructions[i];
+        Instruction* oldInst = oldInstructions[i];
+        ReplaceInstWithInst(oldInst, newInst);
+      }
+    }
+
+    void prepareForTranslation(Function* hook, ArrayRef<Value*> args, Instruction* instructionToChange) {
+      Instruction* functionCallInst = CallInst::Create(hook, args, "");
+      addList.push_back(functionCallInst);
+      deleteList.push_back(instructionToChange);
+    }
+
+    void changeLoadToGet(Instruction* instruction) {
+      LoadInst* ld = cast<LoadInst>(instruction);
+      Value* address_of_load = ld->getOperand(0);
+      Value* print_load_arguments[] = { address_of_load };
+      if (isPointerLoad(ld)) {
+        //CallInst::Create(hookLoadAddress, print_load_arguments, "")->insertAfter(ld);
+      } else {
+        prepareForTranslation(hookLoad, print_load_arguments, instruction);
+      }
+    }
+
+    void changeStoreToPut(Instruction* instruction) {
+      StoreInst* st = cast<StoreInst>(instruction);
+      Value* value_to_store = st->getOperand(0);
+      Value* address_of_store = st->getOperand(1);
+      Value* print_store_arguments[] = { address_of_store, value_to_store };
+      if (isPointerStore(value_to_store)) {
+        //CallInst::Create(hookStoreAddress, print_store_arguments, "")->insertAfter(st);
+      } else {
+        prepareForTranslation(hookStore, print_store_arguments, instruction);
+      }
+    }
 
     virtual bool runOnModule(Module &M) {
       Type* pointerType = Type::getInt32PtrTy(M.getContext());
@@ -35,68 +100,27 @@ namespace {
       hookStore = cast<Function>(hookStoreFunc);
 //      hookStoreAddress = cast<Function>(hookStoreAddressFunc);
 
-      bool endOfUser = false;
-      bool changed = true;
-
       for(Module::iterator F = M.begin(), E = M.end(); F!= E; ++F) {
-        Function* func = &*F;
-        if (strstr(func->getName().data(), "functions.cpp")) {
+        // if reached gRPC code, translation is ended
+        if (isgRPCCode(&*F)) {
             break;
         } 
         for(Function::iterator BB = F->begin(), E = F->end(); BB != E; ++BB) {
-          changed |= SimpleDCE::runOnBasicBlock(BB);
-//          for(BasicBlock::iterator BI = BB->begin(), BE = BB->end(); BI != BE; ++BI) {
-//            errs() << *BI << "\n";
-//          }
+          SimpleDCE::runOnBasicBlock(BB);
         }
-        errs() << *F << "\n";
+        // errs() << *F << "\n";
       }
 
-      return changed;
+      replaceInstructions(deleteList, addList);
+      return true;
     }
     virtual bool runOnBasicBlock(Function::iterator &BB) {
-      vector<Instruction*> deleteList;
-      vector<Instruction*> addList; 
-      Function* f =  BB->getParent();
-      if (f == hookLoad || f == hookStore || f == hookLoadAddress || f == hookStoreAddress) {
-        return false;
-      }
       for (BasicBlock::iterator BI = BB->begin(), BE = BB->end(); BI != BE; ++BI) {
         if (isa<LoadInst>(&*BI)) {
-          LoadInst *ld = cast<LoadInst>(&*BI);
-          Value* address_of_load = ld->getOperand(0);
-          Value *print_load_arguments[] = { address_of_load };
-          bool pointerToPointer = ld->getType()->getTypeID() == 15;
-          if (pointerToPointer) {
-            //CallInst::Create(hookLoadAddress, print_load_arguments, "")->insertAfter(ld);
-          } else {
-            Instruction* newInst = CallInst::Create(hookLoad, print_load_arguments, "");
-            addList.push_back(newInst);
-            deleteList.push_back(&*BI);
-//            BasicBlock::iterator ii(oldInst);
-           // ReplaceInstWithInst(ld, newInst);
-            // deleteList.push_back(&*BI);
-          }
+          changeLoadToGet(&*BI);
         } else if (isa<StoreInst>(&*BI)) {
-          StoreInst *st = cast<StoreInst>(&*BI);
-          Value* value_to_store = st->getOperand(0);
-          Value* address_of_store = st->getOperand(1);
-          Value *print_store_arguments[] = { address_of_store, value_to_store };
-          bool pointerToPointer = value_to_store->getType()->getTypeID() == 15;
-          if (pointerToPointer) {
-            //CallInst::Create(hookStoreAddress, print_store_arguments, "")->insertAfter(st);
-          } else {
-            Instruction* newInst = CallInst::Create(hookStore, print_store_arguments, "");
-            addList.push_back(newInst);
-            deleteList.push_back(&*BI);
-          }
+          changeStoreToPut(&*BI);
         }
-
-      }
-      for (int i = 0; i < addList.size(); i++) {
-        Instruction* newInst = addList[i];
-        Instruction* oldInst = deleteList[i];
-        ReplaceInstWithInst(oldInst, newInst);
       }
       return true;
     }
