@@ -6,7 +6,8 @@ int main() {
   int i = 5;
   int j = 2;
   i = i + j;
-//  int* r;
+  int* r = &i;
+  *r = 4;
 //  int* p = (int*) malloc(2*sizeof(int));
 //  printf("\n%i\n\n", *p);
 //  *p = c;

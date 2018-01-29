@@ -71,11 +71,38 @@ void put(int* address, int value) {
 
   auto status = bigtableStub->MutateRow(&clientContext, req, &resp);
   if (!status.ok()) {
-      cerr << "Error in MutateRow() request: " << status.error_message()
-           << " [" << status.error_code() << "] " << status.error_details()
-           << endl;
+    cerr << "Error in MutateRow() request: " << status.error_message()
+         << " [" << status.error_code() << "] " << status.error_details()
+         << endl;
   } else {
-       printf("\tPut with key '%p': %i\n", address, value);
+    printf("\tPut with key '%p': %i\n", address, value);
+  }
+}
+
+void put(int** address, int* value) {
+  printf("Store instruction:\n");
+
+  MutateRowRequest req;
+  req.set_table_name(tableName);
+  req.set_row_key(to_string(**address));
+  auto setCell = req.add_mutations()->mutable_set_cell();
+  setCell->set_family_name("values");
+  setCell->set_column_qualifier("value");
+  string value_to_string = to_string(*value);
+  setCell->mutable_value()->swap(value_to_string);
+
+  unique_ptr<Bigtable::Stub> bigtableStub = getBigtableStub();
+
+  MutateRowResponse resp;
+  grpc::ClientContext clientContext;
+
+  auto status = bigtableStub->MutateRow(&clientContext, req, &resp);
+  if (!status.ok()) {
+    cerr << "Error in MutateRow() request: " << status.error_message()
+         << " [" << status.error_code() << "] " << status.error_details()
+         << endl;
+  } else {
+    printf("\tPut with key '%p': %p\n", address, value);
   }
 }
 
@@ -111,4 +138,38 @@ int get(int* address) {
     }
   }
   return value;
+}
+
+int* get(int** address) {
+  printf("Load instruction:\n");
+
+  ReadRowsRequest req;
+  req.set_table_name(tableName);
+  req.mutable_rows()->add_row_keys(to_string(**address));
+
+  unique_ptr<Bigtable::Stub> bigtableStub = getBigtableStub();
+
+  ReadRowsResponse resp;
+  grpc::ClientContext clientContext;
+
+  string currentValue;
+  int value;
+
+  auto stream = bigtableStub->ReadRows(&clientContext, req);
+  while (stream->Read(&resp)) {
+    for (auto& cellChunk : *resp.mutable_chunks()) {
+      if (cellChunk.value_size() > 0) {
+        currentValue.reserve(cellChunk.value_size());
+      }
+      currentValue.append(cellChunk.value());
+      if (cellChunk.commit_row()) {
+        value = stoi(currentValue);
+        printf("\tGet with key '%p': %p\n", address, value);
+      }
+      if (cellChunk.reset_row()) {
+        currentValue.clear();
+      }
+    }
+  }
+  return &value;
 }
