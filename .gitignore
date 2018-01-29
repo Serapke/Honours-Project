@@ -2,3 +2,4 @@ build
 *.ll
 Honours-Project/*
 .idea/*
+*.s
