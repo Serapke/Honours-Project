@@ -76,10 +76,12 @@ void put(int* address, int value) {
       cerr << "Error in MutateRow() request: " << status.error_message()
            << " [" << status.error_code() << "] " << status.error_details()
            << endl;
+  } else {
+       cout << "Put done!" << endl;
   }
 }
 
-void get(int* address) {
+int get(int* address) {
   printf("Load instruction:\n");
   printf("  address = %#010x\n", address);
 
@@ -96,6 +98,7 @@ void get(int* address) {
   string currentColumnFamily;
   string currentColumn;
   string currentValue;
+  string value;
 
   auto stream = bigtableStub->ReadRows(&clientContext, req);
   while (stream->Read(&resp)) {
@@ -120,6 +123,7 @@ void get(int* address) {
       }
       currentValue.append(cellChunk.value());
       if (cellChunk.commit_row()) {
+        value = currentValue;
         printf("Loaded with key '%s', column family name '%s', column '%s': %s\n",
           currentRowKey.c_str(),
           currentColumnFamily.c_str(),
@@ -131,4 +135,5 @@ void get(int* address) {
       }
     }
   }
+  return stoi(value);
 }

@@ -7,6 +7,7 @@
 #include "llvm/IR/Instruction.h"
 #include "llvm/IR/Instructions.h"
 #include "llvm/IR/Constants.h"
+#include "llvm/Transforms/Utils/BasicBlockUtils.h"
 #include <set>
 using namespace llvm;
 using namespace std;
@@ -24,9 +25,9 @@ namespace {
     virtual bool runOnModule(Module &M) {
       Type* pointerType = Type::getInt32PtrTy(M.getContext());
 
-      Constant *hookLoadFunc = M.getOrInsertFunction("get", Type::getVoidTy(M.getContext()), Type::getInt32PtrTy(M.getContext()));
+      Constant *hookLoadFunc = M.getOrInsertFunction("_Z3getPi", Type::getInt32Ty(M.getContext()), Type::getInt32PtrTy(M.getContext()));
 //      Constant *hookLoadAddressFunc = M.getOrInsertFunction("printLoadAddress", Type::getVoidTy(M.getContext()), PointerType::get(pointerType, pointerType->getPointerAddressSpace()), pointerType);
-      Constant *hookStoreFunc = M.getOrInsertFunction("put", Type::getVoidTy(M.getContext()), Type::getInt32PtrTy(M.getContext()), Type::getInt32Ty(M.getContext()));
+      Constant *hookStoreFunc = M.getOrInsertFunction("_Z3putPii", Type::getVoidTy(M.getContext()), Type::getInt32PtrTy(M.getContext()), Type::getInt32Ty(M.getContext()));
 //      Constant *hookStoreAddressFunc = M.getOrInsertFunction("printStoreAddress", Type::getVoidTy(M.getContext()), PointerType::get(pointerType, pointerType->getPointerAddressSpace()), pointerType);
 
       hookLoad = cast<Function>(hookLoadFunc);
@@ -54,6 +55,8 @@ namespace {
       return changed;
     }
     virtual bool runOnBasicBlock(Function::iterator &BB) {
+      vector<Instruction*> deleteList;
+      vector<Instruction*> addList; 
       Function* f =  BB->getParent();
       if (f == hookLoad || f == hookStore || f == hookLoadAddress || f == hookStoreAddress) {
         return false;
@@ -62,12 +65,17 @@ namespace {
         if (isa<LoadInst>(&*BI)) {
           LoadInst *ld = cast<LoadInst>(&*BI);
           Value* address_of_load = ld->getOperand(0);
-          Value *print_load_arguments[] = { address_of_load, ld };
+          Value *print_load_arguments[] = { address_of_load };
           bool pointerToPointer = ld->getType()->getTypeID() == 15;
           if (pointerToPointer) {
             //CallInst::Create(hookLoadAddress, print_load_arguments, "")->insertAfter(ld);
           } else {
-            CallInst::Create(hookLoad, print_load_arguments, "")->insertAfter(ld);
+            Instruction* newInst = CallInst::Create(hookLoad, print_load_arguments, "");
+            addList.push_back(newInst);
+            deleteList.push_back(&*BI);
+//            BasicBlock::iterator ii(oldInst);
+           // ReplaceInstWithInst(ld, newInst);
+            // deleteList.push_back(&*BI);
           }
         } else if (isa<StoreInst>(&*BI)) {
           StoreInst *st = cast<StoreInst>(&*BI);
@@ -78,10 +86,17 @@ namespace {
           if (pointerToPointer) {
             //CallInst::Create(hookStoreAddress, print_store_arguments, "")->insertAfter(st);
           } else {
-            CallInst::Create(hookStore, print_store_arguments, "")->insertAfter(st);
+            Instruction* newInst = CallInst::Create(hookStore, print_store_arguments, "");
+            addList.push_back(newInst);
+            deleteList.push_back(&*BI);
           }
         }
 
+      }
+      for (int i = 0; i < addList.size(); i++) {
+        Instruction* newInst = addList[i];
+        Instruction* oldInst = deleteList[i];
+        ReplaceInstWithInst(oldInst, newInst);
       }
       return true;
     }
