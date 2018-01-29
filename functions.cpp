@@ -54,8 +54,6 @@ unique_ptr<Bigtable::Stub> getBigtableStub() {
 
 void put(int* address, int value) {
   printf("Store instruction:\n");
-  printf("  address = %p", address);
-  printf("  value = %i\n", value);
 
   MutateRowRequest req;
   req.set_table_name(tableName);
@@ -77,13 +75,12 @@ void put(int* address, int value) {
            << " [" << status.error_code() << "] " << status.error_details()
            << endl;
   } else {
-       cout << "Put done!" << endl;
+       printf("\tPut with key '%p': %i\n", address, value);
   }
 }
 
 int get(int* address) {
   printf("Load instruction:\n");
-  printf("  address = %p\n", address);
 
   ReadRowsRequest req;
   req.set_table_name(tableName);
@@ -94,30 +91,24 @@ int get(int* address) {
   ReadRowsResponse resp;
   grpc::ClientContext clientContext;
 
-  int currentRowKey;
   string currentValue;
   int value;
 
   auto stream = bigtableStub->ReadRows(&clientContext, req);
   while (stream->Read(&resp)) {
     for (auto& cellChunk : *resp.mutable_chunks()) {
-      if (!cellChunk.row_key().empty()) {
-        currentRowKey = stoi(cellChunk.row_key());
-      }
       if (cellChunk.value_size() > 0) {
         currentValue.reserve(cellChunk.value_size());
       }
       currentValue.append(cellChunk.value());
       if (cellChunk.commit_row()) {
         value = stoi(currentValue);
-        printf("Loaded with key '%#X': %i\n",
-          currentRowKey,
-          value);
+        printf("\tGet with key '%p': %i\n", address, value);
       }
       if (cellChunk.reset_row()) {
         currentValue.clear();
       }
     }
   }
-  return stoi(value);
+  return value;
 }
