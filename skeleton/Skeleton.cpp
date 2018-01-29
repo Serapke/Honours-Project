@@ -69,6 +69,7 @@ namespace {
       Value* address_of_load = ld->getOperand(0);
       Value* print_load_arguments[] = { address_of_load };
       if (isPointerLoad(ld)) {
+        prepareForTranslation(hookLoadAddress, print_load_arguments, instruction);
         //CallInst::Create(hookLoadAddress, print_load_arguments, "")->insertAfter(ld);
       } else {
         prepareForTranslation(hookLoad, print_load_arguments, instruction);
@@ -81,6 +82,7 @@ namespace {
       Value* address_of_store = st->getOperand(1);
       Value* print_store_arguments[] = { address_of_store, value_to_store };
       if (isPointerStore(value_to_store)) {
+        prepareForTranslation(hookStoreAddress, print_store_arguments, instruction);
         //CallInst::Create(hookStoreAddress, print_store_arguments, "")->insertAfter(st);
       } else {
         prepareForTranslation(hookStore, print_store_arguments, instruction);
@@ -91,14 +93,14 @@ namespace {
       Type* pointerType = Type::getInt32PtrTy(M.getContext());
 
       Constant *hookLoadFunc = M.getOrInsertFunction("_Z3getPi", Type::getInt32Ty(M.getContext()), Type::getInt32PtrTy(M.getContext()));
-//      Constant *hookLoadAddressFunc = M.getOrInsertFunction("printLoadAddress", Type::getVoidTy(M.getContext()), PointerType::get(pointerType, pointerType->getPointerAddressSpace()), pointerType);
+      Constant *hookLoadAddressFunc = M.getOrInsertFunction("_Z3getPPi", Type::getInt32PtrTy(M.getContext()), PointerType::get(pointerType, pointerType->getPointerAddressSpace()));
       Constant *hookStoreFunc = M.getOrInsertFunction("_Z3putPii", Type::getVoidTy(M.getContext()), Type::getInt32PtrTy(M.getContext()), Type::getInt32Ty(M.getContext()));
-//      Constant *hookStoreAddressFunc = M.getOrInsertFunction("printStoreAddress", Type::getVoidTy(M.getContext()), PointerType::get(pointerType, pointerType->getPointerAddressSpace()), pointerType);
+      Constant *hookStoreAddressFunc = M.getOrInsertFunction("_Z3putPPiS_", Type::getVoidTy(M.getContext()), PointerType::get(pointerType, pointerType->getPointerAddressSpace()), pointerType);
 
       hookLoad = cast<Function>(hookLoadFunc);
-//      hookLoadAddress = cast<Function>(hookLoadAddressFunc);
+      hookLoadAddress = cast<Function>(hookLoadAddressFunc);
       hookStore = cast<Function>(hookStoreFunc);
-//      hookStoreAddress = cast<Function>(hookStoreAddressFunc);
+      hookStoreAddress = cast<Function>(hookStoreAddressFunc);
 
       for(Module::iterator F = M.begin(), E = M.end(); F!= E; ++F) {
         // if reached gRPC code, translation is ended

@@ -82,13 +82,18 @@ void put(int* address, int value) {
 void put(int** address, int* value) {
   printf("Store instruction:\n");
 
+  char addr[16+1];
+  char val[16+1];
+  sprintf(addr, "%p", address);
+  sprintf(val, "%p", value);
+
   MutateRowRequest req;
   req.set_table_name(tableName);
-  req.set_row_key(to_string(**address));
+  req.set_row_key(addr);
   auto setCell = req.add_mutations()->mutable_set_cell();
   setCell->set_family_name("values");
   setCell->set_column_qualifier("value");
-  string value_to_string = to_string(*value);
+  string value_to_string(val);
   setCell->mutable_value()->swap(value_to_string);
 
   unique_ptr<Bigtable::Stub> bigtableStub = getBigtableStub();
@@ -143,9 +148,12 @@ int get(int* address) {
 int* get(int** address) {
   printf("Load instruction:\n");
 
+  char addr[16+1];
+  sprintf(addr, "%p", address);
+
   ReadRowsRequest req;
   req.set_table_name(tableName);
-  req.mutable_rows()->add_row_keys(to_string(**address));
+  req.mutable_rows()->add_row_keys(addr);
 
   unique_ptr<Bigtable::Stub> bigtableStub = getBigtableStub();
 
@@ -153,8 +161,7 @@ int* get(int** address) {
   grpc::ClientContext clientContext;
 
   string currentValue;
-  int value;
-
+  int* p;
   auto stream = bigtableStub->ReadRows(&clientContext, req);
   while (stream->Read(&resp)) {
     for (auto& cellChunk : *resp.mutable_chunks()) {
@@ -163,13 +170,13 @@ int* get(int** address) {
       }
       currentValue.append(cellChunk.value());
       if (cellChunk.commit_row()) {
-        value = stoi(currentValue);
-        printf("\tGet with key '%p': %p\n", address, value);
+        sscanf(currentValue.c_str(),"%p",&p);
+        printf("\tGet with key '%p': %p\n", address, p);
       }
       if (cellChunk.reset_row()) {
         currentValue.clear();
       }
     }
   }
-  return &value;
+  return p;
 }

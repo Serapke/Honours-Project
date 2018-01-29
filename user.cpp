@@ -1,4 +1,4 @@
-#include <stdlib.h>
+#include <iostream>
 
 //int c = 3;
 int main() {
@@ -6,8 +6,10 @@ int main() {
   int i = 5;
   int j = 2;
   i = i + j;
-  int* r = &i;
+  int* r;
+  r = &i;
   *r = 4;
+  printf("\n%i\n", *r);
 //  int* p = (int*) malloc(2*sizeof(int));
 //  printf("\n%i\n\n", *p);
 //  *p = c;
