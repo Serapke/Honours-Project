@@ -19,7 +19,6 @@
 #include <iostream>
 #include <string>
 
-
 #include <grpc/grpc.h>
 #include <grpc++/channel.h>
 #include <grpc++/client_context.h>
@@ -52,17 +51,16 @@ unique_ptr<Bigtable::Stub> getBigtableStub() {
   return bigtable_stub;
 }
 
-void put(int* address, int value) {
+void put(char address[], char value[]) {
   printf("Store instruction:\n");
 
   MutateRowRequest req;
   req.set_table_name(tableName);
-  req.set_row_key(to_string(*address));
+  req.set_row_key(addr);
   auto setCell = req.add_mutations()->mutable_set_cell();
   setCell->set_family_name("values");
   setCell->set_column_qualifier("value");
-  string value_to_string = to_string(value);
-  setCell->mutable_value()->swap(value_to_string);
+  setCell->set_value(val);
 
   unique_ptr<Bigtable::Stub> bigtableStub = getBigtableStub();
 
@@ -79,77 +77,24 @@ void put(int* address, int value) {
   }
 }
 
-void put(int** address, int* value) {
-  printf("Store instruction:\n");
-
-  char addr[16+1];
-  char val[16+1];
+void put(int* address, int value) {
+  char addr[16+1], val[16+1];
   sprintf(addr, "%p", address);
   sprintf(val, "%p", value);
 
-  MutateRowRequest req;
-  req.set_table_name(tableName);
-  req.set_row_key(addr);
-  auto setCell = req.add_mutations()->mutable_set_cell();
-  setCell->set_family_name("values");
-  setCell->set_column_qualifier("value");
-  string value_to_string(val);
-  setCell->mutable_value()->swap(value_to_string);
-
-  unique_ptr<Bigtable::Stub> bigtableStub = getBigtableStub();
-
-  MutateRowResponse resp;
-  grpc::ClientContext clientContext;
-
-  auto status = bigtableStub->MutateRow(&clientContext, req, &resp);
-  if (!status.ok()) {
-    cerr << "Error in MutateRow() request: " << status.error_message()
-         << " [" << status.error_code() << "] " << status.error_details()
-         << endl;
-  } else {
-    printf("\tPut with key '%p': %p\n", address, value);
-  }
+  put(addr, val);
 }
 
-int get(int* address) {
-  printf("Load instruction:\n");
-
-  ReadRowsRequest req;
-  req.set_table_name(tableName);
-  req.mutable_rows()->add_row_keys(to_string(*address));
-
-  unique_ptr<Bigtable::Stub> bigtableStub = getBigtableStub();
-
-  ReadRowsResponse resp;
-  grpc::ClientContext clientContext;
-
-  string currentValue;
-  int value;
-
-  auto stream = bigtableStub->ReadRows(&clientContext, req);
-  while (stream->Read(&resp)) {
-    for (auto& cellChunk : *resp.mutable_chunks()) {
-      if (cellChunk.value_size() > 0) {
-        currentValue.reserve(cellChunk.value_size());
-      }
-      currentValue.append(cellChunk.value());
-      if (cellChunk.commit_row()) {
-        value = stoi(currentValue);
-        printf("\tGet with key '%p': %i\n", address, value);
-      }
-      if (cellChunk.reset_row()) {
-        currentValue.clear();
-      }
-    }
-  }
-  return value;
-}
-
-int* get(int** address) {
-  printf("Load instruction:\n");
-
-  char addr[16+1];
+void put(int** address, int* value) {
+  char addr[16+1], val[16+1];
   sprintf(addr, "%p", address);
+  sprintf(val, "%p", value);
+
+  put(addr, val);
+}
+
+string get(char address) {
+  printf("Load instruction:\n");
 
   ReadRowsRequest req;
   req.set_table_name(tableName);
@@ -161,22 +106,34 @@ int* get(int** address) {
   grpc::ClientContext clientContext;
 
   string currentValue;
-  int* p;
+
   auto stream = bigtableStub->ReadRows(&clientContext, req);
   while (stream->Read(&resp)) {
     for (auto& cellChunk : *resp.mutable_chunks()) {
       if (cellChunk.value_size() > 0) {
-        currentValue.reserve(cellChunk.value_size());
-      }
-      currentValue.append(cellChunk.value());
-      if (cellChunk.commit_row()) {
-        sscanf(currentValue.c_str(),"%p",&p);
-        printf("\tGet with key '%p': %p\n", address, p);
-      }
-      if (cellChunk.reset_row()) {
-        currentValue.clear();
+        currentValue = cellChunk.value();
       }
     }
   }
+  return currentValue;
+}
+
+int get(int* address) {
+  char addr[16+1];
+  sprintf(addr, "%p", address);
+
+  int value = stoi(get(addr));
+  printf("\tGet with key '%p': %i\n", address, value);
+  return value;
+}
+
+int* get(int** address) {
+  char addr[16+1];
+  sprintf(addr, "%p", address);
+
+  string value = get(addr);
+  int* p;
+  sscanf(value.c_str(), "%p", &p);
+  printf("\tGet with key '%p': %p\n", address, p);
   return p;
 }

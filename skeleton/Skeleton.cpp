@@ -18,6 +18,11 @@ namespace {
 
     const int POINTER_TYPE_ID = 15;
 
+    const string GET = "_Z3getPi";
+    const string GET_ADDRESS = "_Z3getPPi";
+    const string PUT = "_Z3putPii";
+    const string PUT_ADDRESS = "_Z3putPPiS_";
+
     static char ID;
     Function *hookLoad;
     Function *hookLoadAddress;
@@ -89,18 +94,29 @@ namespace {
       }
     }
 
-    virtual bool runOnModule(Module &M) {
-      Type* pointerType = Type::getInt32PtrTy(M.getContext());
+    void prepareFunctionHooks(Module &M) {
+      Type* pointer = Type::getInt32PtrTy(M.getContext());
+      Type* pointerToPointer = PointerType::get(pointer, pointer->getPointerAddressSpace());
 
-      Constant *hookLoadFunc = M.getOrInsertFunction("_Z3getPi", Type::getInt32Ty(M.getContext()), Type::getInt32PtrTy(M.getContext()));
-      Constant *hookLoadAddressFunc = M.getOrInsertFunction("_Z3getPPi", Type::getInt32PtrTy(M.getContext()), PointerType::get(pointerType, pointerType->getPointerAddressSpace()));
-      Constant *hookStoreFunc = M.getOrInsertFunction("_Z3putPii", Type::getVoidTy(M.getContext()), Type::getInt32PtrTy(M.getContext()), Type::getInt32Ty(M.getContext()));
-      Constant *hookStoreAddressFunc = M.getOrInsertFunction("_Z3putPPiS_", Type::getVoidTy(M.getContext()), PointerType::get(pointerType, pointerType->getPointerAddressSpace()), pointerType);
+      Constant *hookLoadFunc = M.getOrInsertFunction(GET, Type::getInt32Ty(M.getContext()), pointer);
+      Constant *hookLoadAddressFunc = M.getOrInsertFunction(GET_ADDRESS, pointer, pointerToPointer);
+      Constant *hookStoreFunc = M.getOrInsertFunction(PUT,
+                                                      Type::getVoidTy(M.getContext()),
+                                                      pointer,
+                                                      Type::getInt32Ty(M.getContext()));
+      Constant *hookStoreAddressFunc = M.getOrInsertFunction(PUT_ADDRESS,
+                                                             Type::getVoidTy(M.getContext()),
+                                                             pointerToPointer,
+                                                             pointer);
 
       hookLoad = cast<Function>(hookLoadFunc);
       hookLoadAddress = cast<Function>(hookLoadAddressFunc);
       hookStore = cast<Function>(hookStoreFunc);
       hookStoreAddress = cast<Function>(hookStoreAddressFunc);
+    }
+
+    virtual bool runOnModule(Module &M) {
+      prepareFunctionHooks(M);
 
       for(Module::iterator F = M.begin(), E = M.end(); F!= E; ++F) {
         // if reached gRPC code, translation is ended
@@ -130,4 +146,4 @@ namespace {
 }
 char SimpleDCE::ID = 0;
 static RegisterPass<SimpleDCE>
-    X("skeletonpass", "Simple dead code elimination"); // NOLINT
+    X("skeletonpass", "Load and store translation"); // NOLINT
