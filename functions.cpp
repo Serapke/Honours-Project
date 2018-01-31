@@ -56,11 +56,11 @@ void put(char address[], char value[]) {
 
   MutateRowRequest req;
   req.set_table_name(tableName);
-  req.set_row_key(addr);
+  req.set_row_key(address);
   auto setCell = req.add_mutations()->mutable_set_cell();
   setCell->set_family_name("values");
   setCell->set_column_qualifier("value");
-  setCell->set_value(val);
+  setCell->set_value(value);
 
   unique_ptr<Bigtable::Stub> bigtableStub = getBigtableStub();
 
@@ -73,14 +73,14 @@ void put(char address[], char value[]) {
          << " [" << status.error_code() << "] " << status.error_details()
          << endl;
   } else {
-    printf("\tPut with key '%p': %i\n", address, value);
+    printf("\tPut with key '%s': %s\n", address, value);
   }
 }
 
 void put(int* address, int value) {
   char addr[16+1], val[16+1];
   sprintf(addr, "%p", address);
-  sprintf(val, "%p", value);
+  sprintf(val, "%d", value);
 
   put(addr, val);
 }
@@ -93,12 +93,12 @@ void put(int** address, int* value) {
   put(addr, val);
 }
 
-string get(char address) {
+string get(char address[]) {
   printf("Load instruction:\n");
 
   ReadRowsRequest req;
   req.set_table_name(tableName);
-  req.mutable_rows()->add_row_keys(addr);
+  req.mutable_rows()->add_row_keys(address);
 
   unique_ptr<Bigtable::Stub> bigtableStub = getBigtableStub();
 
@@ -109,10 +109,11 @@ string get(char address) {
 
   auto stream = bigtableStub->ReadRows(&clientContext, req);
   while (stream->Read(&resp)) {
-    for (auto& cellChunk : *resp.mutable_chunks()) {
-      if (cellChunk.value_size() > 0) {
-        currentValue = cellChunk.value();
-      }
+    for (auto& cellChunk : *resp.mutable_chunks()) { 
+     if (cellChunk.value_size() > 0) {
+        currentValue.reserve(cellChunk.value_size());
+     }
+     currentValue.append(cellChunk.value());
     }
   }
   return currentValue;
@@ -122,7 +123,9 @@ int get(int* address) {
   char addr[16+1];
   sprintf(addr, "%p", address);
 
-  int value = stoi(get(addr));
+  string valueStr = get(addr);
+  int value;
+  sscanf(valueStr.c_str(), "%i", &value);
   printf("\tGet with key '%p': %i\n", address, value);
   return value;
 }
