@@ -3,13 +3,17 @@
 //int c = 3;
 int main() {
 //  c = 2;
-  int i = 5;
-  int j = 2;
-  i = i + j;
-  int* r;
-  r = &i;
-  *r = 4;
-  printf("\n%i\n", *r);
+  int var;
+  int* ptr;
+  int** pptr;
+  
+  var = 3000;
+  ptr = &var;
+  pptr = &ptr;
+
+  printf("\nValue of var = %d\n", var);
+  printf("\nValue available at *ptr = %d\n", *ptr);
+  printf("\nValue available at **ptr  = %d\n", **pptr);
 //  int* p = (int*) malloc(2*sizeof(int));
 //  printf("\n%i\n\n", *p);
 //  *p = c;

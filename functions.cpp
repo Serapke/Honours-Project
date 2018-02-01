@@ -94,9 +94,11 @@ void put(int** address, int* value) {
 }
 
 void put(int*** address, int** value) {
-  char addr[16+2], val[16+1];
+  char addr[16+1], val[16+1];
   sprintf(addr, "%p", address);
   sprintf(val, "%p", value);
+
+  put(addr, val);
 }
 
 string get(char address[]) {
@@ -152,7 +154,7 @@ int** get(int*** address) {
   sprintf(addr, "%p", address);
 
   string value = get(addr);
-  int* p;
+  int** p;
   sscanf(value.c_str(), "%p", &p);
   printf("\tGet with key '%p': %p\n", address, p);
   return p;

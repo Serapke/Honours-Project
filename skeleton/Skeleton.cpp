@@ -121,7 +121,7 @@ namespace {
 
       Constant *hookLoadFunc = M.getOrInsertFunction(GET, Type::getInt32Ty(M.getContext()), pointer);
       Constant *hookLoadAddressFunc = M.getOrInsertFunction(GET_ADDRESS, pointer, pointerToPointer);
-      Constant *hookLoadPointerAddressFunc = M.getOrInsertFunction(GET_ADDRESS, pointerToPointer, pointerToPointerToPointer);
+      Constant *hookLoadPointerAddressFunc = M.getOrInsertFunction("_Z3getPPPi", pointerToPointer, pointerToPointerToPointer);
       Constant *hookStoreFunc = M.getOrInsertFunction(PUT,
                                                       Type::getVoidTy(M.getContext()),
                                                       pointer,
@@ -130,7 +130,7 @@ namespace {
                                                              Type::getVoidTy(M.getContext()),
                                                              pointerToPointer,
                                                              pointer);
-      Constant *hookStorePointerAddressFunc = M.getOrInsertFunction(PUT_ADDRESS,
+      Constant *hookStorePointerAddressFunc = M.getOrInsertFunction("_Z3putPPPiS0_",
                                                                     Type::getVoidTy(M.getContext()),
                                                                     pointerToPointerToPointer,
                                                                     pointerToPointer);
