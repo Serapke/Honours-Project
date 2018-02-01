@@ -26,8 +26,10 @@ namespace {
     static char ID;
     Function *hookLoad;
     Function *hookLoadAddress;
+    Function *hookLoadPointerAddress;
     Function *hookStore;
     Function *hookStoreAddress;
+    Function *hookStorePointerAddress;
 
     vector<Instruction*> deleteList;
     vector<Instruction*> addList;
@@ -39,9 +41,25 @@ namespace {
       return value->getType()->getTypeID() == POINTER_TYPE_ID;
     }
 
+    bool isPointerAddressLoad(LoadInst* value) {
+      if (value->getType()->getTypeID() == POINTER_TYPE_ID) {
+        PointerType* pt = cast<PointerType>(value->getType());
+        return pt->getElementType()->getTypeID() == POINTER_TYPE_ID;
+      }
+      return false;
+    }
+
     // checks if the value stored is pointer
     bool isPointerStore(Value* value) {
       return value->getType()->getTypeID() == POINTER_TYPE_ID;
+    }
+
+    bool isPointerAddressStore(Value* value) {
+      if (value->getType()->getTypeID() == POINTER_TYPE_ID) {
+        PointerType* pt = cast<PointerType>(value->getType());
+        return pt->getElementType()->getTypeID() == POINTER_TYPE_ID;
+      }
+      return false;
     }
 
     // TODO: improve the detection of gRPC code
@@ -73,9 +91,10 @@ namespace {
       LoadInst* ld = cast<LoadInst>(instruction);
       Value* address_of_load = ld->getOperand(0);
       Value* print_load_arguments[] = { address_of_load };
-      if (isPointerLoad(ld)) {
+      if (isPointerAddressLoad(ld)) {
+        prepareForTranslation(hookLoadPointerAddress, print_load_arguments, instruction);
+      } else if (isPointerLoad(ld)) {
         prepareForTranslation(hookLoadAddress, print_load_arguments, instruction);
-        //CallInst::Create(hookLoadAddress, print_load_arguments, "")->insertAfter(ld);
       } else {
         prepareForTranslation(hookLoad, print_load_arguments, instruction);
       }
@@ -86,9 +105,10 @@ namespace {
       Value* value_to_store = st->getOperand(0);
       Value* address_of_store = st->getOperand(1);
       Value* print_store_arguments[] = { address_of_store, value_to_store };
-      if (isPointerStore(value_to_store)) {
+      if (isPointerAddressStore(value_to_store)) {
+        prepareForTranslation(hookStorePointerAddress, print_store_arguments, instruction);
+      } else if (isPointerStore(value_to_store)) {
         prepareForTranslation(hookStoreAddress, print_store_arguments, instruction);
-        //CallInst::Create(hookStoreAddress, print_store_arguments, "")->insertAfter(st);
       } else {
         prepareForTranslation(hookStore, print_store_arguments, instruction);
       }
@@ -97,9 +117,11 @@ namespace {
     void prepareFunctionHooks(Module &M) {
       Type* pointer = Type::getInt32PtrTy(M.getContext());
       Type* pointerToPointer = PointerType::get(pointer, pointer->getPointerAddressSpace());
+      Type* pointerToPointerToPointer = PointerType::get(pointerToPointer, pointerToPointer->getPointerAddressSpace());
 
       Constant *hookLoadFunc = M.getOrInsertFunction(GET, Type::getInt32Ty(M.getContext()), pointer);
       Constant *hookLoadAddressFunc = M.getOrInsertFunction(GET_ADDRESS, pointer, pointerToPointer);
+      Constant *hookLoadPointerAddressFunc = M.getOrInsertFunction(GET_ADDRESS, pointerToPointer, pointerToPointerToPointer);
       Constant *hookStoreFunc = M.getOrInsertFunction(PUT,
                                                       Type::getVoidTy(M.getContext()),
                                                       pointer,
@@ -108,11 +130,17 @@ namespace {
                                                              Type::getVoidTy(M.getContext()),
                                                              pointerToPointer,
                                                              pointer);
+      Constant *hookStorePointerAddressFunc = M.getOrInsertFunction(PUT_ADDRESS,
+                                                                    Type::getVoidTy(M.getContext()),
+                                                                    pointerToPointerToPointer,
+                                                                    pointerToPointer);
 
       hookLoad = cast<Function>(hookLoadFunc);
       hookLoadAddress = cast<Function>(hookLoadAddressFunc);
+      hookLoadPointerAddress = cast<Function>(hookLoadPointerAddressFunc);
       hookStore = cast<Function>(hookStoreFunc);
       hookStoreAddress = cast<Function>(hookStoreAddressFunc);
+      hookStorePointerAddress = cast<Function>(hookStorePointerAddressFunc);
     }
 
     virtual bool runOnModule(Module &M) {

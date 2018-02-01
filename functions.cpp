@@ -93,6 +93,12 @@ void put(int** address, int* value) {
   put(addr, val);
 }
 
+void put(int*** address, int** value) {
+  char addr[16+2], val[16+1];
+  sprintf(addr, "%p", address);
+  sprintf(val, "%p", value);
+}
+
 string get(char address[]) {
   printf("Load instruction:\n");
 
@@ -131,6 +137,17 @@ int get(int* address) {
 }
 
 int* get(int** address) {
+  char addr[16+1];
+  sprintf(addr, "%p", address);
+
+  string value = get(addr);
+  int* p;
+  sscanf(value.c_str(), "%p", &p);
+  printf("\tGet with key '%p': %p\n", address, p);
+  return p;
+}
+
+int** get(int*** address) {
   char addr[16+1];
   sprintf(addr, "%p", address);
 
