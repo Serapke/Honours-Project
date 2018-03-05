@@ -94,6 +94,13 @@ namespace {
       return strstr(func->getName().data(), "functions.cpp");
     }
 
+    bool hasLinkage(Function* func) {
+      if (func->hasLinkOnceODRLinkage()) {
+        return true;
+      }
+      return false;
+    }
+
     // replaces all of the instructions from oldInstructions list to the ones in newInstructions
     void replaceInstructions(vector<Instruction*> oldInstructions, vector<Instruction*> newInstructions) {
       if (oldInstructions.size() != newInstructions.size()) {
@@ -212,7 +219,7 @@ namespace {
       Value* realloc_arguments[] = { ptr, size };
       prepareForTranslation(hookRealloc, realloc_arguments, instruction);
     }
-    
+
     void changeCalloc(Instruction* instruction) {
       CallInst* ci = cast<CallInst>(instruction);
       Value* num = ci->getArgOperand(0);
@@ -313,8 +320,10 @@ namespace {
       for(Module::iterator F = M.begin(), E = M.end(); F!= E; ++F) {
         // if reached gRPC code, translation is ended
         if (isgRPCCode(&*F)) {
-            break;
-        } 
+          break;
+        }  else if (hasLinkage(&*F)) {
+          continue;
+        }
         for(Function::iterator BB = F->begin(), E = F->end(); BB != E; ++BB) {
           SimpleDCE::runOnBasicBlock(BB);
         }
@@ -338,16 +347,12 @@ namespace {
           Function* callee = CI->getCalledFunction();
           if (callee->getName() == "malloc") {
             changeMalloc(&*BI);
-            errs() << "malloc called!" << "\n";
           } else if (callee->getName() == "free") {
             changeFree(&*BI);
-            errs() << "free called!" << "\n";
           } else if (callee->getName() == "realloc") {
             changeRealloc(&*BI);
-            errs() << "realloc called!" << "\n";
           } else if (callee->getName() == "calloc") {
             changeCalloc(&*BI);
-            errs() << "calloc called!" << "\n";
           }
         }
       }

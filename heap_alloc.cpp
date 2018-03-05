@@ -161,7 +161,7 @@ void copy_block(p_block src, p_block dst) {
 }
 
 void* my_malloc(size_t size) {
-  cout << "malloc called with: " << size << endl;
+//  cout << "malloc called with: " << size << endl;
   p_block b, last;
   size_t s;
   s = align4(size);
@@ -198,7 +198,7 @@ void* my_malloc(size_t size) {
 }
 
 void my_free(void* ptr) {
-  cout << "free called with: " << ptr << endl;
+//  cout << "free called with: " << ptr << endl;
   p_block b;
 //  mtx.lock();
   if (valid_heap_addr(ptr)) {
@@ -236,7 +236,7 @@ void my_free(void* ptr) {
 }
 
 void* my_realloc(void* ptr, size_t size) {
-  cout << "realloc called with: " << ptr << ", " << size << endl;
+//  cout << "realloc called with: " << ptr << ", " << size << endl;
   size_t s;
   p_block b, new_block;
   void *newp;
@@ -280,14 +280,12 @@ void* my_realloc(void* ptr, size_t size) {
 }
 
 void* my_calloc(size_t num, size_t size) {
-  cout << "calloc called with: " << num << ", " << size << endl;
+//  cout << "calloc called with: " << num << ", " << size << endl;
   int* new_block;
   size_t s4, i;
   new_block = (int*) my_malloc(num * size);
   if (new_block) {
     s4 = align4(num * size) >> 2;
-    cout << align4(num*size) << endl;
-    cout << (8 << 2) << endl;
     for (i = 0; i < s4; i++) {
       put(&new_block[i], 0);
     }
