@@ -32,6 +32,10 @@ namespace {
     const string MEMCPY = "_Z6memcpyPvPKvm";
     const string MEMSET = "_Z6memsetPvim";
     const string MEMSET_CHAR = "_Z6memsetPvcm";
+    const string MALLOC = "_Z9my_mallocm";
+    const string FREE = "_Z7my_freePv";
+    const string REALLOC = "_Z10my_reallocPvm";
+    const string CALLOC = "_Z9my_callocmm";
 
     static char ID;
     Function *hookLoad;
@@ -47,6 +51,10 @@ namespace {
     Function *hookMemCpy;
     Function *hookMemSet;
     Function *hookMemSetChar;
+    Function *hookMalloc;
+    Function *hookFree;
+    Function *hookRealloc;
+    Function *hookCalloc;
 
     vector<Instruction*> deleteList;
     vector<Instruction*> addList;
@@ -183,6 +191,36 @@ namespace {
       }
     }
 
+    void changeMalloc(Instruction* instruction) {
+      CallInst* ci = cast<CallInst>(instruction);
+      Value* size = ci->getArgOperand(0);
+      Value* malloc_arguments[] = { size };
+      prepareForTranslation(hookMalloc, malloc_arguments, instruction);
+    }
+
+    void changeFree(Instruction* instruction) {
+      CallInst* ci = cast<CallInst>(instruction);
+      Value* ptr = ci->getArgOperand(0);
+      Value* free_arguments[] = { ptr };
+      prepareForTranslation(hookFree, free_arguments, instruction);
+    }
+
+    void changeRealloc(Instruction* instruction) {
+      CallInst* ci = cast<CallInst>(instruction);
+      Value* ptr = ci->getArgOperand(0);
+      Value* size = ci->getArgOperand(1);
+      Value* realloc_arguments[] = { ptr, size };
+      prepareForTranslation(hookRealloc, realloc_arguments, instruction);
+    }
+    
+    void changeCalloc(Instruction* instruction) {
+      CallInst* ci = cast<CallInst>(instruction);
+      Value* num = ci->getArgOperand(0);
+      Value* size = ci->getArgOperand(1);
+      Value* calloc_arguments[] = { num, size };
+      prepareForTranslation(hookCalloc, calloc_arguments, instruction);
+    }
+
     void prepareFunctionHooks(Module &M) {
       Type* intPointer = Type::getInt32PtrTy(M.getContext());
       Type* intPointerToPointer = PointerType::get(intPointer, intPointer->getPointerAddressSpace());
@@ -235,6 +273,20 @@ namespace {
                                                        Type::getInt8PtrTy(M.getContext()),
                                                        Type::getInt8Ty(M.getContext()),
                                                        Type::getInt64Ty(M.getContext()));
+      Constant *hookMallocFunc = M.getOrInsertFunction(MALLOC,
+                                                        Type::getInt8PtrTy(M.getContext()),
+                                                        Type::getInt64Ty(M.getContext()));
+      Constant *hookFreeFunc = M.getOrInsertFunction(FREE,
+                                                      Type::getVoidTy(M.getContext()),
+                                                      Type::getInt8PtrTy(M.getContext()));
+      Constant *hookReallocFunc = M.getOrInsertFunction(REALLOC,
+                                                        Type::getInt8PtrTy(M.getContext()),
+                                                        Type::getInt8PtrTy(M.getContext()),
+                                                        Type::getInt64Ty(M.getContext()));
+      Constant *hookCallocFunc = M.getOrInsertFunction(CALLOC,
+                                                      Type::getInt8PtrTy(M.getContext()),
+                                                      Type::getInt64Ty(M.getContext()),
+                                                      Type::getInt64Ty(M.getContext()));
 
       hookLoad = cast<Function>(hookLoadFunc);
       hookLoad64 = cast<Function>(hookLoadFunc64);
@@ -249,6 +301,10 @@ namespace {
       hookMemCpy = cast<Function>(hookMemCpyFunc);
       hookMemSet = cast<Function>(hookMemSetFunc);
       hookMemSetChar = cast<Function>(hookMemSetCharFunc);
+      hookMalloc = cast<Function>(hookMallocFunc);
+      hookFree = cast<Function>(hookFreeFunc);
+      hookRealloc = cast<Function>(hookReallocFunc);
+      hookCalloc = cast<Function>(hookCallocFunc);
     }
 
     virtual bool runOnModule(Module &M) {
@@ -281,12 +337,16 @@ namespace {
         } else if (CallInst *CI = dyn_cast<CallInst>(&*BI)) {
           Function* callee = CI->getCalledFunction();
           if (callee->getName() == "malloc") {
+            changeMalloc(&*BI);
             errs() << "malloc called!" << "\n";
           } else if (callee->getName() == "free") {
+            changeFree(&*BI);
             errs() << "free called!" << "\n";
           } else if (callee->getName() == "realloc") {
+            changeRealloc(&*BI);
             errs() << "realloc called!" << "\n";
           } else if (callee->getName() == "calloc") {
+            changeCalloc(&*BI);
             errs() << "calloc called!" << "\n";
           }
         }
@@ -298,4 +358,5 @@ namespace {
 char SimpleDCE::ID = 0;
 static RegisterPass<SimpleDCE>
     X("skeletonpass", "Load and store translation"); // NOLINT
+
 

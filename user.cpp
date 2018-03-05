@@ -29,11 +29,20 @@ int main() {
 //  void* p = p_a;
 
   int* heap_ptr = (int*) malloc(2*sizeof(int));
+  cout << "after my malloc" << endl;
   cout << heap_ptr << endl;
-//  heap_ptr[0] = 1;
+  heap_ptr[0] = 1;
+  cout << heap_ptr[0] << endl;
+  int* new_heap_ptr = (int*) realloc(heap_ptr, 3*sizeof(int));
+  cout << new_heap_ptr[0] << endl;
 //  printf("\nAddress of heap_ptr = %p", heap_ptr);
 //  printf("\nValue of heap_ptr = %d\n", heap_ptr[0]);
-//  free(heap_ptr);
+  free(new_heap_ptr);
+
+  int* another_heap_ptr = (int*) calloc(2, sizeof(int));
+  cout << (another_heap_ptr[0] == 0) << endl;
+  cout << (another_heap_ptr[1] == 0) << endl;
+  free(another_heap_ptr);
 
 
 //  char str[] = "almost every programmer should know memset!";
@@ -42,5 +51,6 @@ int main() {
 
   return 0;
 }
+
 
 
