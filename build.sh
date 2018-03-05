@@ -13,4 +13,4 @@ clang++ -std=c++11 -S -emit-llvm heap_alloc.cpp
 
 ~/build/bin/llc single-optimised.ll
 
-clang++ -std=c++11 -L/usr/local/lib -lgrpc -lgrpc++ -lgrpc++_cronet -lprotobuf -I ~/grpc/include single-optimised.s ~/grpc/googleapis/gens/*.o -o run
+clang++ -std=c++11 -pthread -L/usr/local/lib -lgrpc -lgrpc++ -lgrpc++_cronet -lprotobuf -I ~/grpc/include single-optimised.s ~/grpc/googleapis/gens/*.o -o run
