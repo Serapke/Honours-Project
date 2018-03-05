@@ -85,12 +85,28 @@ void put(int* address, int value) {
   put(addr, val);
 }
 
+void put(int64_t* address, int64_t value) {
+  char addr[16+1], val[16+1];
+  sprintf(addr, "%p", address);
+  sprintf(val, "%ld", value);
+
+  put(addr, val);
+}
+
 void put(int** address, int* value) {
   char addr[16+1], val[16+1];
   sprintf(addr, "%p", address);
   sprintf(val, "%p", value);
 
   put(addr, val);
+}
+
+void put(int8_t** address, int8_t* value) {
+  put((int**) address, (int*) value);
+}
+
+void put(int8_t** address, int32_t* value) {
+  put((int**) address, value);
 }
 
 void put(int*** address, int** value) {
@@ -138,12 +154,34 @@ int get(int* address) {
   return value;
 }
 
+int64_t get(int64_t* address) {
+  char addr[16+1];
+  sprintf(addr, "%p", address);
+
+  string valueStr = get(addr);
+  int64_t value;
+  sscanf(valueStr.c_str(), "%li", &value);
+  printf("\tGet with key '%p': %li\n", address, value);
+  return value;
+}
+
 int* get(int** address) {
   char addr[16+1];
   sprintf(addr, "%p", address);
 
   string value = get(addr);
   int* p;
+  sscanf(value.c_str(), "%p", &p);
+  printf("\tGet with key '%p': %p\n", address, p);
+  return p;
+}
+
+int8_t* get(int8_t** address) {
+  char addr[16+1];
+  sprintf(addr, "%p", address);
+
+  string value = get(addr);
+  int8_t* p;
   sscanf(value.c_str(), "%p", &p);
   printf("\tGet with key '%p': %p\n", address, p);
   return p;
