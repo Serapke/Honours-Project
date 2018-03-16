@@ -18,6 +18,7 @@
 
 #include <iostream>
 #include <string>
+#include <mutex>
 
 #include <grpc/grpc.h>
 #include <grpc++/channel.h>
@@ -42,6 +43,10 @@ using namespace std;
 
 static auto creds = grpc::GoogleDefaultCredentials();
 string tableName = "projects/infra-inkwell-192811/instances/instance/tables/table";
+string familyName = "values";
+string columnQualifier = "value";
+
+mutex mtx;
 
 unique_ptr<Bigtable::Stub> getBigtableStub() {
   auto channel = grpc::CreateChannel("bigtable.googleapis.com", creds);
@@ -51,81 +56,50 @@ unique_ptr<Bigtable::Stub> getBigtableStub() {
   return bigtable_stub;
 }
 
-void put(char address[], char value[]) {
-  printf("Store instruction:\n");
-
+void put(string address, string value) {
   MutateRowRequest req;
   req.set_table_name(tableName);
   req.set_row_key(address);
   auto setCell = req.add_mutations()->mutable_set_cell();
-  setCell->set_family_name("values");
-  setCell->set_column_qualifier("value");
+  setCell->set_family_name(familyName);
+  setCell->set_column_qualifier(columnQualifier);
   setCell->set_value(value);
 
   unique_ptr<Bigtable::Stub> bigtableStub = getBigtableStub();
 
   MutateRowResponse resp;
+
   grpc::ClientContext clientContext;
 
   auto status = bigtableStub->MutateRow(&clientContext, req, &resp);
+
   if (!status.ok()) {
     cerr << "Error in MutateRow() request: " << status.error_message()
          << " [" << status.error_code() << "] " << status.error_details()
          << endl;
-  } else {
-    printf("\tPut with key '%s': %s\n", address, value);
+  } else if (DEBUG) {
+    cout << "\tStored successfully!" << endl;
   }
 }
 
-void put(int* address, int value) {
-  char addr[16+1], val[16+1];
-  sprintf(addr, "%p", address);
-  sprintf(val, "%d", value);
+void put(unsigned long long address, long long value) {
+  mtx.lock();
+
+  if (DEBUG)
+    cout << "\tPut with key '" << std::hex << address << "': " << std::dec << value << endl;
+  string addr = to_string(address);
+  string val = to_string(value);
 
   put(addr, val);
+  mtx.unlock();
 }
 
-void put(int64_t* address, int64_t value) {
-  char addr[16+1], val[16+1];
-  sprintf(addr, "%p", address);
-  sprintf(val, "%ld", value);
-
-  put(addr, val);
-}
-
-void put(int** address, int* value) {
-  char addr[16+1], val[16+1];
-  sprintf(addr, "%p", address);
-  sprintf(val, "%p", value);
-
-  put(addr, val);
-}
-
-void put(int8_t** address, int8_t* value) {
-  put((int**) address, (int*) value);
-}
-
-void put(int8_t** address, int32_t* value) {
-  put((int**) address, value);
-}
-
-void put(int*** address, int** value) {
-  char addr[16+1], val[16+1];
-  sprintf(addr, "%p", address);
-  sprintf(val, "%p", value);
-
-  put(addr, val);
-}
-
-string get(char address[]) {
-  printf("Load instruction:\n");
-
+string get(string address) {
   ReadRowsRequest req;
   req.set_table_name(tableName);
   req.mutable_rows()->add_row_keys(address);
 
   unique_ptr<Bigtable::Stub> bigtableStub = getBigtableStub();
-
   ReadRowsResponse resp;
   grpc::ClientContext clientContext;
 
@@ -133,7 +107,7 @@ string get(char address[]) {
 
   auto stream = bigtableStub->ReadRows(&clientContext, req);
   while (stream->Read(&resp)) {
-    for (auto& cellChunk : *resp.mutable_chunks()) { 
+    for (auto& cellChunk : *resp.mutable_chunks()) {
      if (cellChunk.value_size() > 0) {
         currentValue.reserve(cellChunk.value_size());
      }
@@ -143,57 +117,20 @@ string get(char address[]) {
   return currentValue;
 }
 
-int get(int* address) {
-  char addr[16+1];
-  sprintf(addr, "%p", address);
+long long get(unsigned long long address) {
+  mtx.lock();
 
-  string valueStr = get(addr);
-  int value;
-  sscanf(valueStr.c_str(), "%i", &value);
-  printf("\tGet with key '%p': %i\n", address, value);
+  if (DEBUG)
+    cout << "\tGet with key '" << std::hex << address << endl;
+  string valueStr = get(to_string(address));
+
+  long long value = 0;
+  if (!valueStr.empty())
+    value = stoll(valueStr);
+
+  if (DEBUG) {
+    cout << "\tLoaded successfully! Value " << dec << value << endl;
+  }
+  mtx.unlock();
   return value;
-}
-
-int64_t get(int64_t* address) {
-  char addr[16+1];
-  sprintf(addr, "%p", address);
-
-  string valueStr = get(addr);
-  int64_t value;
-  sscanf(valueStr.c_str(), "%li", &value);
-  printf("\tGet with key '%p': %li\n", address, value);
-  return value;
-}
-
-int* get(int** address) {
-  char addr[16+1];
-  sprintf(addr, "%p", address);
-
-  string value = get(addr);
-  int* p;
-  sscanf(value.c_str(), "%p", &p);
-  printf("\tGet with key '%p': %p\n", address, p);
-  return p;
-}
-
-int8_t* get(int8_t** address) {
-  char addr[16+1];
-  sprintf(addr, "%p", address);
-
-  string value = get(addr);
-  int8_t* p;
-  sscanf(value.c_str(), "%p", &p);
-  printf("\tGet with key '%p': %p\n", address, p);
-  return p;
-}
-
-int** get(int*** address) {
-  char addr[16+1];
-  sprintf(addr, "%p", address);
-
-  string value = get(addr);
-  int** p;
-  sscanf(value.c_str(), "%p", &p);
-  printf("\tGet with key '%p': %p\n", address, p);
-  return p;
 }
