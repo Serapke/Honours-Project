@@ -9,7 +9,7 @@ clang++ -std=c++11 -S -emit-llvm heap_alloc.cpp -DDEBUG=false
 
 ~/build/bin/llvm-link -S -v -o single.ll memops.ll user.ll functions.ll heap_alloc.ll
 
-~/build/bin/opt -load build/skeleton/libSkeletonPass.so -skeletonpass single.ll -S -o single-optimised.ll
+~/build/bin/opt -load build/passes/libTranslationPass.so -heap-translation single.ll -S -o single-optimised.ll
 
 ~/build/bin/llc single-optimised.ll
 
