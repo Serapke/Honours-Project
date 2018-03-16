@@ -4,3 +4,4 @@ Honours-Project/*
 .idea/*
 *.s
 run
+cmake-build-debug/*
