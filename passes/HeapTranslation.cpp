@@ -431,12 +431,12 @@ namespace {
           }
         }
       }
-      for (int i = 0; i < deleteList.size(); i++) {
-          oldStores[i]->eraseFromParent();
-      }
       for (int i = 0; i < storeConds.size(); i++) {
         preparePutBranch(i);
         prepareStoreBranch(i);
+      }
+      for (int i = 0; i < oldStores.size(); i++) {
+        oldStores[i]->eraseFromParent();
       }
       for (int i = 0; i < loadConds.size(); i++) {
         prepareGetBranch(i, M);
