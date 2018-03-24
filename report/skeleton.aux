@@ -5,10 +5,9 @@
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{toc}{\contentsline {section}{\numberline {1.1}Motivation}{7}}
-\@writefile{toc}{\contentsline {section}{\numberline {1.2}Scope}{7}}
-\@writefile{toc}{\contentsline {section}{\numberline {1.3}Approach}{8}}
-\@writefile{toc}{\contentsline {section}{\numberline {1.4}Contributions}{8}}
-\@writefile{toc}{\contentsline {section}{\numberline {1.5}Synopsis}{8}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.2}Scope}{8}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.3}Contributions}{8}}
+\@writefile{toc}{\contentsline {section}{\numberline {1.4}Synopsis}{8}}
 \citation{google-bigtable}
 \@writefile{toc}{\contentsline {chapter}{\numberline {2}Data store for DSM}{11}}
 \@writefile{lof}{\addvspace {10\p@ }}
@@ -33,52 +32,94 @@
 \newlabel{write-latency}{{2.3}{14}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2.4}{\ignorespaces Read operations latency (\( \mu s\)) for Workload A (500 reads) and Workload B (1000 reads)\relax }}{14}}
 \newlabel{read-latency}{{2.4}{14}}
+\citation{grpc}
 \@writefile{lof}{\contentsline {figure}{\numberline {2.5}{\ignorespaces Read-modify-operations latency (\( \mu s\))\relax }}{15}}
 \newlabel{read-modify-write-latency}{{2.5}{15}}
 \@writefile{lof}{\contentsline {figure}{\numberline {2.6}{\ignorespaces Throughput (\(ops/sec\)) for Workloads A (1000 operations) and Workload B (2000 operations)\relax }}{15}}
 \newlabel{throughput}{{2.6}{15}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.5.3}Conclusions}{15}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {3}Interim report}{17}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.6}Reading and writing the contents of Bigtable}{15}}
+\citation{grpc}
+\citation{grpc}
+\@writefile{lof}{\contentsline {figure}{\numberline {2.7}{\ignorespaces Communication between gRPC server and gRPC stubs (clients) \cite  [source:][Guides page]{grpc}\relax }}{16}}
+\newlabel{fig:grpc}{{2.7}{16}}
+\newlabel{put}{{2.1}{16}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2.1}Writing content to Bigtable using put() function}{16}}
+\citation{grpc_issue}
+\newlabel{get}{{2.2}{17}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2.2}Reading content from Bigtable using get() function}{17}}
+\@writefile{toc}{\contentsline {section}{\numberline {2.7}Issues encountered}{18}}
+\citation{openshmem}
+\@writefile{toc}{\contentsline {chapter}{\numberline {3}Calling get/put functions on Bigtable}{19}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {3.1}Accomplishments so far}{17}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.2}Remains to be done}{17}}
-\@writefile{toc}{\contentsline {section}{\numberline {3.3}Timeline for final semester}{18}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {4}Load and store instructions translation}{19}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.1}Research on possible solutions}{19}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.1}Source code level solutions}{19}}
+\citation{openshmem_fig}
+\citation{openshmem_fig}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces OpenSHMEM Memory Model \cite  [source:][]{openshmem_fig}\relax }}{20}}
+\newlabel{fig:openshmem_memory_model}{{3.1}{20}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1.2}Compiler level solution}{20}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.2}LLVM}{20}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces LLVM compiler architecture\relax }}{21}}
+\newlabel{fig:llvm}{{3.2}{21}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.3}Architecture}{21}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces LLVM solution architecture\relax }}{22}}
+\newlabel{fig:architecture}{{3.3}{22}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.4}{\ignorespaces Translation barrier\relax }}{22}}
+\newlabel{fig:barrier}{{3.4}{22}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.4}LLVM pass}{23}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.5}{\ignorespaces LLVM instruction set before and after store instruction translation\relax }}{23}}
+\newlabel{fig:store_translation}{{3.5}{23}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.6}{\ignorespaces LLVM instruction set before and after get instruction translation\relax }}{24}}
+\newlabel{fig:load_translation}{{3.6}{24}}
+\citation{malloc_tutorial}
+\@writefile{toc}{\contentsline {chapter}{\numberline {4}Custom heap allocator}{25}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {4.1}Architecture}{19}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.1}Overview}{19}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.2}gRPC and protobuf}{19}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.3}get() and put() functions}{19}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.1.4}Memory management}{19}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.2}Try at Intel PIN}{19}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.3}LLVM pass}{19}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.1}Overview}{19}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.3.2}Translation}{19}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {5}Problems with heap allocation}{21}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.1}Motivation}{25}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.2}Implementation}{25}}
+\citation{leadlmalloc}
+\newlabel{setbtbrk}{{4.1}{26}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.1}set\_bt\_brk function implementation}{26}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces LLVM instruction set before and after get instruction translation\relax }}{26}}
+\newlabel{fig:heap_organisation}{{4.1}{26}}
+\newlabel{copyblock}{{4.2}{27}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.2}copy\_block implementation}{27}}
+\newlabel{set0}{{4.3}{28}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {4.3}new\_block initialisation with zeroes}{28}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.3}Consistency on multithreaded programs}{28}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}Translation improvements}{29}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {5.1}Overview}{21}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.2}Implementation of malloc()}{21}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {6}Results}{23}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.1}Different type of arguments to get and put functions}{29}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.2}Detecting store and load instructions to heap memory}{29}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {6}Results}{31}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {chapter}{\numberline {7}API}{25}}
-\@writefile{lof}{\addvspace {10\p@ }}
-\@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{toc}{\contentsline {section}{\numberline {6.1}Benchmarking heap allocators}{31}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.2}Full and heap translation comparison}{31}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.3}Comparison to uninstrumented program}{31}}
 \bibstyle{plainnat}
 \bibdata{mybibfile}
-\@writefile{toc}{\contentsline {chapter}{\numberline {8}Conclusions}{27}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {7}Conclusions}{33}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.0.1}Overview}{27}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.0.2}Future work}{27}}
-\bibcite{ycsb}{{1}{2010}{{Cooper et~al.}}{{Cooper, Silberstein, Tam, Ramakrishnan, and Sears}}}
-\bibcite{google-bigtable}{{2}{2018{a}}{{Google}}{{}}}
-\bibcite{google-datastore}{{3}{2018{b}}{{Google}}{{}}}
-\bibcite{google-spanner}{{4}{2018{c}}{{Google}}{{}}}
-\bibcite{nosql-data-stores}{{5}{2013}{{Grolinger et~al.}}{{Grolinger, Higashino, Tiwari, and Capretz}}}
-\bibcite{synchronous-replication}{{6}{2016}{{Rouse}}{{}}}
-\bibcite{vodca}{{7}{2006}{{Z.Huang et~al.}}{{Z.Huang, W.Chen, M.Purvis, and W.Zheng}}}
-\@writefile{toc}{\contentsline {chapter}{Bibliography}{29}}
+\@writefile{toc}{\contentsline {section}{\numberline {7.1}Overview}{33}}
+\@writefile{toc}{\contentsline {section}{\numberline {7.2}Future work}{33}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.2.1}Better support for structured data}{33}}
+\bibcite{grpc_issue}{{1}{2017}{{grp}}{{}}}
+\bibcite{reaps}{{2}{2002}{{Berger et~al.}}{{Berger, Zorn, and McKinley}}}
+\bibcite{malloc_tutorial}{{3}{2009}{{Burelle}}{{}}}
+\bibcite{openshmem}{{4}{2010}{{Chapman et~al.}}{{Chapman, Curtis, Pophale, Poole, Kuehn, Koelbel, and Smith}}}
+\bibcite{ycsb}{{5}{2010}{{Cooper et~al.}}{{Cooper, Silberstein, Tam, Ramakrishnan, and Sears}}}
+\bibcite{google-bigtable}{{6}{2018{a}}{{Google}}{{}}}
+\bibcite{google-datastore}{{7}{2018{b}}{{Google}}{{}}}
+\bibcite{google-spanner}{{8}{2018{c}}{{Google}}{{}}}
+\bibcite{grpc}{{9}{2018{d}}{{Google}}{{}}}
+\bibcite{nosql-data-stores}{{10}{2013}{{Grolinger et~al.}}{{Grolinger, Higashino, Tiwari, and Capretz}}}
+\bibcite{leadlmalloc}{{11}{}{{Lea}}{{}}}
+\bibcite{openshmem_fig}{{12}{2016}{{OpenSHMEM-1.3.pdf}}{{}}}
+\bibcite{synchronous-replication}{{13}{2016}{{Rouse}}{{}}}
+\bibcite{vodca}{{14}{2006}{{Z.Huang et~al.}}{{Z.Huang, W.Chen, M.Purvis, and W.Zheng}}}
+\@writefile{toc}{\contentsline {chapter}{Bibliography}{35}}
