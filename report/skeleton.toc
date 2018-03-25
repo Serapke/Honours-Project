@@ -1,9 +1,8 @@
 \contentsline {chapter}{\numberline {1}Introduction}{7}
 \contentsline {section}{\numberline {1.1}Motivation}{7}
-\contentsline {section}{\numberline {1.2}Scope}{7}
-\contentsline {section}{\numberline {1.3}Approach}{8}
-\contentsline {section}{\numberline {1.4}Contributions}{8}
-\contentsline {section}{\numberline {1.5}Synopsis}{8}
+\contentsline {section}{\numberline {1.2}Scope}{8}
+\contentsline {section}{\numberline {1.3}Contributions}{8}
+\contentsline {section}{\numberline {1.4}Synopsis}{8}
 \contentsline {chapter}{\numberline {2}Data store for DSM}{11}
 \contentsline {section}{\numberline {2.1}Overview}{11}
 \contentsline {section}{\numberline {2.2}Bigtable}{11}
@@ -13,26 +12,28 @@
 \contentsline {subsection}{\numberline {2.5.1}Loading the data}{13}
 \contentsline {subsection}{\numberline {2.5.2}Workloads}{13}
 \contentsline {subsection}{\numberline {2.5.3}Conclusions}{15}
-\contentsline {chapter}{\numberline {3}Interim report}{17}
-\contentsline {section}{\numberline {3.1}Accomplishments so far}{17}
-\contentsline {section}{\numberline {3.2}Remains to be done}{17}
-\contentsline {section}{\numberline {3.3}Timeline for final semester}{18}
-\contentsline {chapter}{\numberline {4}Load and store instructions translation}{19}
-\contentsline {section}{\numberline {4.1}Architecture}{19}
-\contentsline {subsection}{\numberline {4.1.1}Overview}{19}
-\contentsline {subsection}{\numberline {4.1.2}gRPC and protobuf}{19}
-\contentsline {subsection}{\numberline {4.1.3}get() and put() functions}{19}
-\contentsline {subsection}{\numberline {4.1.4}Memory management}{19}
-\contentsline {section}{\numberline {4.2}Try at Intel PIN}{19}
-\contentsline {section}{\numberline {4.3}LLVM pass}{19}
-\contentsline {subsection}{\numberline {4.3.1}Overview}{19}
-\contentsline {subsection}{\numberline {4.3.2}Translation}{19}
-\contentsline {chapter}{\numberline {5}Problems with heap allocation}{21}
-\contentsline {section}{\numberline {5.1}Overview}{21}
-\contentsline {section}{\numberline {5.2}Implementation of malloc()}{21}
-\contentsline {chapter}{\numberline {6}Results}{23}
-\contentsline {chapter}{\numberline {7}API}{25}
-\contentsline {chapter}{\numberline {8}Conclusions}{27}
-\contentsline {subsection}{\numberline {8.0.1}Overview}{27}
-\contentsline {subsection}{\numberline {8.0.2}Future work}{27}
-\contentsline {chapter}{Bibliography}{29}
+\contentsline {section}{\numberline {2.6}Reading and writing the contents of Bigtable}{15}
+\contentsline {section}{\numberline {2.7}Issues encountered}{18}
+\contentsline {chapter}{\numberline {3}Calling get/put functions on Bigtable}{19}
+\contentsline {section}{\numberline {3.1}Research on possible solutions}{19}
+\contentsline {subsection}{\numberline {3.1.1}Source code level solutions}{19}
+\contentsline {subsection}{\numberline {3.1.2}Compiler level solution}{20}
+\contentsline {section}{\numberline {3.2}LLVM}{20}
+\contentsline {section}{\numberline {3.3}Architecture}{21}
+\contentsline {section}{\numberline {3.4}LLVM pass}{23}
+\contentsline {chapter}{\numberline {4}Custom heap allocator}{25}
+\contentsline {section}{\numberline {4.1}Motivation}{25}
+\contentsline {section}{\numberline {4.2}Implementation}{25}
+\contentsline {section}{\numberline {4.3}Consistency on multithreaded programs}{28}
+\contentsline {chapter}{\numberline {5}Translation improvements}{29}
+\contentsline {section}{\numberline {5.1}Different type of arguments to get and put functions}{29}
+\contentsline {section}{\numberline {5.2}Detecting store and load instructions to heap memory}{29}
+\contentsline {chapter}{\numberline {6}Results}{31}
+\contentsline {section}{\numberline {6.1}Benchmarking heap allocators}{31}
+\contentsline {section}{\numberline {6.2}Full and heap translation comparison}{31}
+\contentsline {section}{\numberline {6.3}Comparison to uninstrumented program}{31}
+\contentsline {chapter}{\numberline {7}Conclusions}{33}
+\contentsline {section}{\numberline {7.1}Overview}{33}
+\contentsline {section}{\numberline {7.2}Future work}{33}
+\contentsline {subsection}{\numberline {7.2.1}Better support for structured data}{33}
+\contentsline {chapter}{Bibliography}{35}

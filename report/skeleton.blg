@@ -3,51 +3,59 @@ Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: skeleton.aux
 The style file: plainnat.bst
 Database file #1: mybibfile.bib
+Warning--entry type for "grpc_issue" isn't style-file defined
+--line 20 of file mybibfile.bib
+Warning--entry type for "grpc" isn't style-file defined
+--line 28 of file mybibfile.bib
 Warning--entry type for "google-spanner" isn't style-file defined
---line 34 of file mybibfile.bib
+--line 77 of file mybibfile.bib
 Warning--entry type for "google-datastore" isn't style-file defined
---line 43 of file mybibfile.bib
+--line 87 of file mybibfile.bib
 Warning--entry type for "google-bigtable" isn't style-file defined
---line 52 of file mybibfile.bib
-You've used 7 entries,
+--line 97 of file mybibfile.bib
+Warning--to sort, need author or key in grpc_issue
+Warning--empty journal in openshmem
+Warning--empty year in leadlmalloc
+Warning--empty year in leadlmalloc
+You've used 14 entries,
             2773 wiz_defined-function locations,
-            626 strings with 5829 characters,
-and the built_in function-call counts, 3047 in all, are:
-= -- 260
-> -- 166
-< -- 7
-+ -- 60
-- -- 51
-* -- 227
-:= -- 458
-add.period$ -- 20
-call.type$ -- 7
-change.case$ -- 35
-chr.to.int$ -- 5
-cite$ -- 14
-duplicate$ -- 148
-empty$ -- 261
-format.name$ -- 58
-if$ -- 648
-int.to.chr$ -- 3
+            660 strings with 6588 characters,
+and the built_in function-call counts, 5580 in all, are:
+= -- 478
+> -- 302
+< -- 11
++ -- 110
+- -- 93
+* -- 424
+:= -- 840
+add.period$ -- 41
+call.type$ -- 14
+change.case$ -- 68
+chr.to.int$ -- 11
+cite$ -- 33
+duplicate$ -- 270
+empty$ -- 484
+format.name$ -- 106
+if$ -- 1173
+int.to.chr$ -- 4
 int.to.str$ -- 1
-missing$ -- 4
-newline$ -- 41
-num.names$ -- 28
-pop$ -- 90
+missing$ -- 7
+newline$ -- 76
+num.names$ -- 52
+pop$ -- 178
 preamble$ -- 1
-purify$ -- 31
+purify$ -- 59
 quote$ -- 0
-skip$ -- 128
+skip$ -- 221
 stack$ -- 0
-substring$ -- 66
-swap$ -- 30
+substring$ -- 97
+swap$ -- 43
 text.length$ -- 3
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 77
-warning$ -- 0
-while$ -- 26
+type$ -- 154
+warning$ -- 4
+while$ -- 46
 width$ -- 0
-write$ -- 93
-(There were 3 warnings)
+write$ -- 176
+(There were 9 warnings)
