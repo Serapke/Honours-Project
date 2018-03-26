@@ -128,7 +128,7 @@ namespace {
       // truncate if integer and bit width is smaller
       Instruction* truncInst = nullptr;
       IntegerType *it = dyn_cast<IntegerType>(callGet->getType());
-      if (bw != -1) {   // expected return value type is not integer
+      if (bw != -1 && ind_count==0) {   // expected return value type is not integer
         if (it->getBitWidth() > bw) {
           truncInst = cast<Instruction>(new TruncInst(callGet, IntegerType::get(M.getContext(), bw), ""));
         }

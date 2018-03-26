@@ -1,21 +1,3 @@
-/*
- *
- * Copyright 2015 gRPC authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- */
-
 #include <iostream>
 #include <string>
 #include <mutex>
@@ -38,39 +20,41 @@ using google::bigtable::v2::MutateRowRequest;
 using google::bigtable::v2::MutateRowResponse;
 using google::bigtable::v2::ReadRowsRequest;
 using google::bigtable::v2::ReadRowsResponse;
+using google::bigtable::v2::ReadModifyWriteRowRequest;
+using google::bigtable::v2::ReadModifyWriteRule;
+using google::bigtable::v2::ReadModifyWriteRowResponse;
 
 using namespace std;
 
 static auto creds = grpc::GoogleDefaultCredentials();
-string tableName = "projects/infra-inkwell-192811/instances/instance/tables/table";
-string familyName = "values";
-string columnQualifier = "value";
+string TABLE_NAME = "projects/infra-inkwell-192811/instances/instance/tables/table";
+string FAMILY_NAME = "values";
+string COLUMN_QUALIFIER = "value";
+string BIGTABLE_API = "bigtable.googleapis.com";
 
 mutex mtx;
+auto channel = grpc::CreateChannel(BIGTABLE_API, creds);
+unique_ptr<Bigtable::Stub> bigtableStub(Bigtable::NewStub(channel));
 
-unique_ptr<Bigtable::Stub> getBigtableStub() {
-  auto channel = grpc::CreateChannel("bigtable.googleapis.com", creds);
-  unique_ptr<Bigtable::Stub> bigtable_stub(
-    Bigtable::NewStub(channel)
-  );
-  return bigtable_stub;
-}
+void put(unsigned long long addr, long long val) {
+  mtx.lock();
+  if (DEBUG)
+    cout << "\tPut with key '" << std::hex << addr << "': " << std::dec << val << endl;
+  string address = to_string(addr);
+  string value = to_string(val);
 
-void put(string address, string value) {
+  // setup request
   MutateRowRequest req;
-  req.set_table_name(tableName);
+  req.set_table_name(TABLE_NAME);
   req.set_row_key(address);
   auto setCell = req.add_mutations()->mutable_set_cell();
-  setCell->set_family_name(familyName);
-  setCell->set_column_qualifier(columnQualifier);
+  setCell->set_family_name(FAMILY_NAME);
+  setCell->set_column_qualifier(COLUMN_QUALIFIER);
   setCell->set_value(value);
 
-  unique_ptr<Bigtable::Stub> bigtableStub = getBigtableStub();
-
+  // invoke mutate row request
   MutateRowResponse resp;
-
   grpc::ClientContext clientContext;
-
   auto status = bigtableStub->MutateRow(&clientContext, req, &resp);
 
   if (!status.ok()) {
@@ -80,57 +64,80 @@ void put(string address, string value) {
   } else if (DEBUG) {
     cout << "\tStored successfully!" << endl;
   }
-}
-
-void put(unsigned long long address, long long value) {
-  mtx.lock();
-
-  if (DEBUG)
-    cout << "\tPut with key '" << std::hex << address << "': " << std::dec << value << endl;
-  string addr = to_string(address);
-  string val = to_string(value);
-
-  put(addr, val);
   mtx.unlock();
 }
 
-string get(string address) {
+long long get(unsigned long long addr) {
+  mtx.lock();
+
+  if (DEBUG)
+      cout << "\tGet with key '" << std::hex << addr << endl;
+
+  // setup request
   ReadRowsRequest req;
-  req.set_table_name(tableName);
+  req.set_table_name(TABLE_NAME);
+  string address = to_string(addr);
   req.mutable_rows()->add_row_keys(address);
 
-  unique_ptr<Bigtable::Stub> bigtableStub = getBigtableStub();
+  // invoke mutate row request
   ReadRowsResponse resp;
   grpc::ClientContext clientContext;
 
-  string currentValue;
+  string valueStr;
 
   auto stream = bigtableStub->ReadRows(&clientContext, req);
   while (stream->Read(&resp)) {
     for (auto& cellChunk : *resp.mutable_chunks()) {
      if (cellChunk.value_size() > 0) {
-        currentValue.reserve(cellChunk.value_size());
+        valueStr.reserve(cellChunk.value_size());
      }
-     currentValue.append(cellChunk.value());
+     valueStr.append(cellChunk.value());
     }
   }
-  return currentValue;
-}
 
-long long get(unsigned long long address) {
-  mtx.lock();
-
-  if (DEBUG)
-    cout << "\tGet with key '" << std::hex << address << endl;
-  string valueStr = get(to_string(address));
-
+  // convert value to 64-bit integer
   long long value = 0;
   if (!valueStr.empty())
-    value = stoll(valueStr);
+      value = stoll(valueStr);
 
   if (DEBUG) {
-    cout << "\tLoaded successfully! Value " << dec << value << endl;
+      cout << "\tLoaded successfully! Value " << dec << value << endl;
   }
+
   mtx.unlock();
+  return value;
+}
+
+long long bytesToInt(const char* bytes) {
+  long long result = 0;
+  for (unsigned n = 0; n < sizeof(bytes); n++)
+    result = (result << 8) + bytes[n];
+  return result;
+}
+
+long long atomic_increment(string address, unsigned long long increment) {
+  ReadModifyWriteRowRequest req;
+  req.set_table_name(TABLE_NAME);
+  req.set_row_key(address);
+  ReadModifyWriteRule rule;
+  rule.set_family_name(FAMILY_NAME);
+  rule.set_column_qualifier(COLUMN_QUALIFIER);
+  rule.set_increment_amount(increment);
+  *req.add_rules() = std::move(rule);
+
+  ReadModifyWriteRowResponse resp;
+  grpc::ClientContext clientContext;
+
+  auto status = bigtableStub->ReadModifyWriteRow(&clientContext, req, &resp);
+  if (!status.ok()) {
+    cerr << "Error in MutateRow() request: " << status.error_message()
+         << " [" << status.error_code() << "] " << status.error_details()
+         << endl;
+  }
+  const char* bytes = resp.mutable_row()->mutable_families(0)->mutable_columns(0)->mutable_cells(0)->value().c_str();
+  long long value = bytesToInt(bytes);
+  if (DEBUG) {
+    cout << "\tAtomic increment: " << value << endl;
+  }
   return value;
 }
