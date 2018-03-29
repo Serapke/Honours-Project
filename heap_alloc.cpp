@@ -21,6 +21,7 @@ typedef struct block* p_block;
 
 p_block head = NULL;
 map<void*, p_block> lookup_table;
+
 uintptr_t current_bt_break;
 uintptr_t initial_bt_break;
 
@@ -32,6 +33,7 @@ extern mutex mtx;
  * If incr = 0, returns the current break of Bigtable.
  */
 void* set_bt_brk(int incr) {
+  // if uninitialised, set to sbrk(0)
   if (current_bt_break == 0) {
     current_bt_break = (uintptr_t) sbrk(0);
     initial_bt_break = current_bt_break;
