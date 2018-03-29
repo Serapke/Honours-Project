@@ -73,11 +73,9 @@ namespace {
 
     HeapTranslation() : ModulePass(ID) {}
 
-    // TODO: improve the detection of gRPC code
-    // gRPC code starts with a function, which name includes 'functions.cpp' substring
-    bool isgRPCCode(Function* func) {
+    bool functionNameContains(Function* func, const char* data) {
       if (!func->getName().empty()) {
-        return strstr(func->getName().data(), "functions.cpp");
+        return strstr(func->getName().data(), data);
       }
       return true;
     }
@@ -111,6 +109,17 @@ namespace {
       Instruction* functionCallInst = CallInst::Create(hook, args, "");
       addList.push_back(functionCallInst);
       deleteList.push_back(instructionToChange);
+    }
+
+    /*
+     * if index == 1, BI points to store instruction; otherwise, to load instruction
+     */
+    bool includesGlobalVariable(BasicBlock::iterator BI, int index) {
+      if (index == 0) {
+        if (const GlobalValue *g = dyn_cast<GlobalValue>(&*BI->getOperand(index))) return true;
+      }
+      if (const GlobalValue *g = dyn_cast<GlobalValue>(&*BI->getOperand(index))) return true;
+      return false;
     }
 
     void prepareForBranching(BasicBlock* BB, BasicBlock::iterator BI, int index) {
@@ -295,12 +304,8 @@ namespace {
       parent->getInstList().insert(BI, stores[i]);
     }
 
-    Instruction* prepareGetBranch(int i, Module &M) {
-      TerminatorInst *thenTerm = thenTermsForLoads[i];
-      BasicBlock *parentThen = thenTerm->getParent();
-      BasicBlock::iterator BI = parentThen->begin();
-      Value* address_of_load = loads[i]->getOperand(0);
-
+    void addGetCall(Value* address_of_load, Module &M, Instruction** ptrToIntInst,
+                       Instruction** callGet, Instruction** truncInst, Instruction** intToPtrInst) {
       // get (underlying element, if pointer) type and keep count of number of levels of indirection
       Type* value_type;
       int ind_count = 0;
@@ -313,25 +318,23 @@ namespace {
         bw = it->getBitWidth();
       }
 
-      // new way
-      Instruction* ptrToIntInst = cast<Instruction>(new PtrToIntInst(address_of_load, INT64TY, ""));
-      Value* argsFixed[] = { ptrToIntInst };
+      *ptrToIntInst = cast<Instruction>(new PtrToIntInst(address_of_load, INT64TY, ""));
+      Value* argsFixed[] = { *ptrToIntInst };
 
-
-      Instruction* callGet = CallInst::Create(hookGet, argsFixed, "");
+      *callGet = CallInst::Create(hookGet, argsFixed, "");
 
       // truncate if integer and bit width is smaller
-      Instruction* truncInst = nullptr;
-      IntegerType *it = dyn_cast<IntegerType>(callGet->getType());
-      if (bw != -1) {   // expected return value type is not integer
+      *truncInst = nullptr;
+      IntegerType *it = dyn_cast<IntegerType>((*callGet)->getType());
+      if (bw != -1 && ind_count == 0) {   // expected return value type is not integer
         if (it->getBitWidth() > bw) {
-          truncInst = cast<Instruction>(new TruncInst(callGet, IntegerType::get(M.getContext(), bw), ""));
+          *truncInst = cast<Instruction>(new TruncInst(*callGet, IntegerType::get(M.getContext(), bw), ""));
         }
       }
 
       // cast to pointer if pointer type is expected
-      Instruction* intToPtrInst = nullptr;
-      Instruction* instBefore = truncInst ? truncInst : callGet;
+      *intToPtrInst = nullptr;
+      Instruction* instBefore = *truncInst ? *truncInst : *callGet;
       if (ind_count) {
         Type* it = value_type;
         Type* it_p = PointerType::getUnqual(it);
@@ -340,29 +343,37 @@ namespace {
           it_p = PointerType::getUnqual(it_p);
           ind_count--;
         }
-        intToPtrInst = cast<Instruction>(new IntToPtrInst(instBefore, it_p, ""));
+        *intToPtrInst = cast<Instruction>(new IntToPtrInst(instBefore, it_p, ""));
       }
-
-      parentThen->getInstList().insert(BI, ptrToIntInst);
-      parentThen->getInstList().insert(BI, callGet);
-      if (truncInst)
-        parentThen->getInstList().insert(BI, truncInst);
-      if (intToPtrInst)
-        parentThen->getInstList().insert(BI, intToPtrInst);
-      return callGet;
     }
 
-    Instruction* prepareLoadBranch(int i) {
+    void prepareGetBranch(int i, Module &M) {
+      TerminatorInst *thenTerm = thenTermsForLoads[i];
+      BasicBlock *parentThen = thenTerm->getParent();
+      BasicBlock::iterator BI = parentThen->begin();
+      Value* address_of_load = loads[i]->getOperand(0);
+
+      Instruction *instructions[4];
+      addGetCall(address_of_load, M, &instructions[0], &instructions[1],  &instructions[2],  &instructions[3]);
+
+      parentThen->getInstList().insert(BI, instructions[0]);
+      parentThen->getInstList().insert(BI, instructions[1]);
+      if (instructions[2])
+        parentThen->getInstList().insert(BI, instructions[2]);
+      if (instructions[3])
+        parentThen->getInstList().insert(BI, instructions[3]);
+    }
+
+    void prepareLoadBranch(int i) {
       TerminatorInst *elseTerm = elseTermsForLoads[i];
       BasicBlock *parent = elseTerm->getParent();
       BasicBlock::iterator BI = parent->begin();
       parent->getInstList().insert(BI, loads[i]);
-      return loads[i];
     }
 
     void printFunctions(Module &M) {
       for(Module::iterator F = M.begin(), E = M.end(); F!= E; ++F) {
-        if (isgRPCCode(&*F)) {
+        if (functionNameContains(&*F, "functions.cpp")) {
           break;
         }
         else if (hasLinkage(&*F)) {
@@ -378,10 +389,10 @@ namespace {
 
       for(Module::iterator F = M.begin(), E = M.end(); F!= E; ++F) {
         // if reached gRPC code, translation is ended
-        if (isgRPCCode(&*F)) {
+        if (functionNameContains(&*F, "functions.cpp")) {
           break;
         }
-        else if (hasLinkage(&*F)) {
+        else if (hasLinkage(&*F) || functionNameContains(&*F, "main")) {
           continue;
         }
         for(Function::iterator BB = F->begin(), E = F->end(); BB != E; ++BB) {
@@ -390,19 +401,19 @@ namespace {
       }
 
       for(Module::iterator F = M.begin(), E = M.end(); F!= E; ++F) {
-        if (isgRPCCode(&*F)) {
+        if (functionNameContains(&*F, "functions.cpp")) {
           break;
         }
-        else if (hasLinkage(&*F)) {
+        else if (hasLinkage(&*F) || functionNameContains(&*F, "main")) {
           continue;
         }
         for(Function::iterator BB = F->begin(), E = F->end(); BB != E; ++BB) {
           for (BasicBlock::iterator BI = BB->begin(), BE = BB->end(); BI != BE; ++BI) {
-            if (isa<StoreInst>(&*BI)) {
+            if (isa<StoreInst>(&*BI) && !includesGlobalVariable(BI, 1)) {
               storeConds.push_back(&*BI->getPrevNode());
               splitsBeforeStore.push_back(&*BI);
               stores.push_back(&*BI->clone());
-            } else if (isa<LoadInst>(&*BI)) {
+            } else if (isa<LoadInst>(&*BI) && !includesGlobalVariable(BI, 0)) {
               loadConds.push_back(&*BI->getPrevNode());
               splitsBeforeLoad.push_back(&*BI);
               loads.push_back(&*BI->clone());
@@ -415,17 +426,17 @@ namespace {
       createIfThenPatternForLoads();
 
       for(Module::iterator F = M.begin(), E = M.end(); F!= E; ++F) {
-        if (isgRPCCode(&*F)) {
+        if (functionNameContains(&*F, "functions.cpp")) {
           break;
         }
-        else if (hasLinkage(&*F)) {
+        else if (hasLinkage(&*F) || functionNameContains(&*F, "main")) {
           continue;
         }
         for(Function::iterator BB = F->begin(), E = F->end(); BB != E; ++BB) {
           for (BasicBlock::iterator BI = BB->begin(), BE = BB->end(); BI != BE; ++BI) {
-            if (isa<StoreInst>(&*BI)) {
+            if (isa<StoreInst>(&*BI) && !includesGlobalVariable(BI, 1)) {
               oldStores.push_back(&*BI);
-            } else if (isa<LoadInst>(&*BI)) {
+            } else if (isa<LoadInst>(&*BI) && !includesGlobalVariable(BI, 0)) {
               oldLoads.push_back(&*BI);
             }
           }
@@ -464,9 +475,9 @@ namespace {
     virtual bool runOnBasicBlock(Function::iterator &FI, Module &M) {
       BasicBlock* BB = &*FI;
       for (BasicBlock::iterator BI = FI->begin(), BE = FI->end(); BI != BE; ++BI) {
-        if (isa<LoadInst>(&*BI)) {
+        if (isa<LoadInst>(&*BI) && !includesGlobalVariable(BI, 0)) {
           prepareForBranching(BB, BI, 0);
-        } else if (isa<StoreInst>(&*BI)) {
+        } else if (isa<StoreInst>(&*BI) && !includesGlobalVariable(BI, 1)) {
           prepareForBranching(BB, BI, 1);
         }
 //        else if (isa<MemCpyInst>(&*BI)) {
@@ -495,6 +506,7 @@ namespace {
 char HeapTranslation::ID = 0;
 static RegisterPass<HeapTranslation>
     X("heap-translation", "Load and store on heap translation"); // NOLINT
+
 
 
 

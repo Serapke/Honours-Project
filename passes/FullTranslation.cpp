@@ -55,9 +55,9 @@ namespace {
 
     // TODO: improve the detection of gRPC code
     // gRPC code starts with a function, which name includes 'functions.cpp' substring
-    bool isgRPCCode(Function* func) {
+    bool isgRPCCode(Function* func, const char* data) {
       if (!func->getName().empty()) {
-        return strstr(func->getName().data(), "functions.cpp");
+        return strstr(func->getName().data(), data);
       }
       return true;
     }
@@ -91,6 +91,17 @@ namespace {
       Instruction* functionCallInst = CallInst::Create(hook, args, "");
       addList.push_back(functionCallInst);
       deleteList.push_back(instructionToChange);
+    }
+
+    /*
+     * if index == 1, BI points to store instruction; otherwise, to load instruction
+     */
+    bool includesGlobalVariable(BasicBlock::iterator BI, int index) {
+      if (index == 0) {
+        if (const GlobalValue *g = dyn_cast<GlobalValue>(&*BI->getOperand(index))) return true;
+      }
+      if (const GlobalValue *g = dyn_cast<GlobalValue>(&*BI->getOperand(index))) return true;
+      return false;
     }
 
     void getTypeInfo(Type* type, int &ind_count, Type** elementType) {
@@ -128,7 +139,7 @@ namespace {
       // truncate if integer and bit width is smaller
       Instruction* truncInst = nullptr;
       IntegerType *it = dyn_cast<IntegerType>(callGet->getType());
-      if (bw != -1 && ind_count==0) {   // expected return value type is not integer
+      if (bw != -1 && ind_count == 0) {   // expected return value type is not integer
         if (it->getBitWidth() > bw) {
           truncInst = cast<Instruction>(new TruncInst(callGet, IntegerType::get(M.getContext(), bw), ""));
         }
@@ -276,7 +287,7 @@ namespace {
           // truncate if integer and bit width is smaller
           Instruction* truncInst = nullptr;
           IntegerType *it = dyn_cast<IntegerType>(callGet->getType());
-          if (bw != -1) {   // expected return value type is not integer
+          if (bw != -1 && ind_count == 0) {   // expected return value type is not integer
             if (it->getBitWidth() > bw) {
               truncInst = cast<Instruction>(new TruncInst(callGet, IntegerType::get(M.getContext(), bw), ""));
             }
@@ -334,7 +345,7 @@ namespace {
 
     void printFunctions(Module &M) {
       for(Module::iterator F = M.begin(), E = M.end(); F!= E; ++F) {
-        if (isgRPCCode(&*F)) {
+        if (isgRPCCode(&*F, "functions.cpp")) {
           break;
         }
         else if (hasLinkage(&*F)) {
@@ -350,10 +361,10 @@ namespace {
 
       for(Module::iterator F = M.begin(), E = M.end(); F!= E; ++F) {
         // if reached gRPC code, translation is ended
-        if (isgRPCCode(&*F)) {
+        if (isgRPCCode(&*F, "functions.cpp")) {
           break;
         }
-        else if (hasLinkage(&*F)) {
+        else if (hasLinkage(&*F) || isgRPCCode(&*F, "main")) {
           continue;
         }
         for(Function::iterator BB = F->begin(), E = F->end(); BB != E; ++BB) {
@@ -370,9 +381,9 @@ namespace {
     virtual bool runOnBasicBlock(Function::iterator &FI, Module &M) {
       BasicBlock* BB = &*FI;
       for (BasicBlock::iterator BI = FI->begin(), BE = FI->end(); BI != BE; ++BI) {
-        if (isa<LoadInst>(&*BI)) {
+        if (isa<LoadInst>(&*BI) && !includesGlobalVariable(BI, 0)) {
           changeLoadToGet(BB, BI, M);
-        } else if (isa<StoreInst>(&*BI)) {
+        } else if (isa<StoreInst>(&*BI) && !includesGlobalVariable(BI, 1)) {
           changeStoreToPut(BB, BI);
         }
 //        else if (isa<MemCpyInst>(&*BI)) {
@@ -408,5 +419,6 @@ namespace {
 char FullTranslation::ID = 0;
 static RegisterPass<FullTranslation>
     X("full-translation", "Full load and store translation"); // NOLINT
+
 
 
