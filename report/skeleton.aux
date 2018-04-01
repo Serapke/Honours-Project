@@ -9,7 +9,7 @@
 \@writefile{toc}{\contentsline {section}{\numberline {1.3}Contributions}{8}}
 \@writefile{toc}{\contentsline {section}{\numberline {1.4}Synopsis}{8}}
 \citation{google-bigtable}
-\@writefile{toc}{\contentsline {chapter}{\numberline {2}Data store for DSM}{11}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {2}Data store}{11}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{toc}{\contentsline {section}{\numberline {2.1}Overview}{11}}
@@ -50,7 +50,7 @@
 \@writefile{lol}{\contentsline {lstlisting}{\numberline {2.2}Reading content from Bigtable using get() function}{17}}
 \@writefile{toc}{\contentsline {section}{\numberline {2.7}Issues encountered}{18}}
 \citation{openshmem}
-\@writefile{toc}{\contentsline {chapter}{\numberline {3}Calling get/put functions on Bigtable}{19}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {3}Translation tool}{19}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{toc}{\contentsline {section}{\numberline {3.1}Research on possible solutions}{19}}
@@ -89,27 +89,37 @@
 \newlabel{set0}{{4.3}{28}}
 \@writefile{lol}{\contentsline {lstlisting}{\numberline {4.3}new\_block initialisation with zeroes}{28}}
 \@writefile{toc}{\contentsline {section}{\numberline {4.3}Consistency on multithreaded programs}{28}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {5}Translation improvements}{29}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.4}Results}{29}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.1}Virtual memory usage}{29}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces The Linux top command output of memory usage by 4 different runs of an instrumented program\relax }}{29}}
+\newlabel{fig:malloc_run}{{4.2}{29}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.2}Performance}{29}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}Heap memory translator}{31}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {5.1}Different type of arguments to get and put functions}{29}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.2}Detecting store and load instructions to heap memory}{29}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {6}Results}{31}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.1}Motivation}{31}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.2}Implementation}{31}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces Load and store instruction translation on heap memory translator. Instructions coloured in orange and green are added during translation.\relax }}{32}}
+\newlabel{fig:heap_translation}{{5.1}{32}}
+\citation{producer-consumer}
+\@writefile{toc}{\contentsline {chapter}{\numberline {6}Evaluation}{33}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {6.1}Benchmarking heap allocators}{31}}
-\@writefile{toc}{\contentsline {section}{\numberline {6.2}Full and heap translation comparison}{31}}
-\@writefile{toc}{\contentsline {section}{\numberline {6.3}Comparison to uninstrumented program}{31}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.1}Performance}{33}}
+\@writefile{lot}{\contentsline {table}{\numberline {6.1}{\ignorespaces Time taken to execute each function in microseconds ($\mu s$)\relax }}{34}}
+\newlabel{table:performance}{{6.1}{34}}
+\@writefile{toc}{\contentsline {section}{\numberline {6.2}Instruction count}{34}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6.1}{\ignorespaces LLVM instruction counts for different functions.\relax }}{35}}
+\newlabel{fig:instruction_count}{{6.1}{35}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {7}Conclusions}{37}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{toc}{\contentsline {section}{\numberline {7.1}Overview}{37}}
+\@writefile{toc}{\contentsline {section}{\numberline {7.2}Future work}{37}}
 \bibstyle{plainnat}
 \bibdata{mybibfile}
-\@writefile{toc}{\contentsline {chapter}{\numberline {7}Conclusions}{33}}
-\@writefile{lof}{\addvspace {10\p@ }}
-\@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {section}{\numberline {7.1}Overview}{33}}
-\@writefile{toc}{\contentsline {section}{\numberline {7.2}Future work}{33}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.2.1}Better support for structured data}{33}}
 \bibcite{grpc_issue}{{1}{2017}{{grp}}{{}}}
-\bibcite{reaps}{{2}{2002}{{Berger et~al.}}{{Berger, Zorn, and McKinley}}}
+\bibcite{producer-consumer}{{2}{2000}{{Andrews}}{{}}}
 \bibcite{malloc_tutorial}{{3}{2009}{{Burelle}}{{}}}
 \bibcite{openshmem}{{4}{2010}{{Chapman et~al.}}{{Chapman, Curtis, Pophale, Poole, Kuehn, Koelbel, and Smith}}}
 \bibcite{ycsb}{{5}{2010}{{Cooper et~al.}}{{Cooper, Silberstein, Tam, Ramakrishnan, and Sears}}}
@@ -118,8 +128,12 @@
 \bibcite{google-spanner}{{8}{2018{c}}{{Google}}{{}}}
 \bibcite{grpc}{{9}{2018{d}}{{Google}}{{}}}
 \bibcite{nosql-data-stores}{{10}{2013}{{Grolinger et~al.}}{{Grolinger, Higashino, Tiwari, and Capretz}}}
-\bibcite{leadlmalloc}{{11}{}{{Lea}}{{}}}
-\bibcite{openshmem_fig}{{12}{2016}{{OpenSHMEM-1.3.pdf}}{{}}}
-\bibcite{synchronous-replication}{{13}{2016}{{Rouse}}{{}}}
+\bibcite{leadlmalloc}{{11}{1996}{{Lea and Gloger}}{{}}}
+\bibcite{synchronous-replication}{{12}{2016}{{Rouse}}{{}}}
+\bibcite{openshmem_fig}{{13}{2016}{{ten Bruggencate et~al.}}{{ten Bruggencate, Chapman, Curtis, D'Azevedo, Dinan, Feind, Venkata, Hammond, Hernandez, Knaak, Koenig, Kuehn, Lopez, Manser, Mintz, Park, Poole, Poole, Pophale, Raymond, Shamis, Shende, Smith, and Welch}}}
+\@writefile{toc}{\contentsline {chapter}{Bibliography}{39}}
 \bibcite{vodca}{{14}{2006}{{Z.Huang et~al.}}{{Z.Huang, W.Chen, M.Purvis, and W.Zheng}}}
-\@writefile{toc}{\contentsline {chapter}{Bibliography}{35}}
+\@writefile{toc}{\contentsline {chapter}{\numberline {A}Test program}{41}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{section:test}{{A}{41}}

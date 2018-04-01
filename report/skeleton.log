@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.29)  24 MAR 2018 18:45
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.29)  1 APR 2018 23:44
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -276,27 +276,38 @@ Package xcolor Info: Model `wave' substituted by `hsb' on input line 1371.
 (/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/dvipsnam.def
 File: dvipsnam.def 2016/06/17 v3.0m Driver-dependent file (DPC,SPQR)
 ))
+(/usr/local/texlive/2017/texmf-dist/tex/latex/caption/subcaption.sty
+Package: subcaption 2016/05/22 v1.1-161 Sub-captions (AR)
+\c@subfigure=\count116
+\c@subtable=\count117
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/appendix/appendix.sty
+Package: appendix 2009/09/02 v1.2b extra appendix facilities
+\c@@pps=\count118
+\c@@ppsavesec=\count119
+\c@@ppsaveapp=\count120
+)
 (./skeleton.aux)
 \openout1 = `skeleton.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for OMS/pzccm/m/n on input line 16.
-LaTeX Font Info:    Try loading font information for OMS+pzccm on input line 16
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OMS/pzccm/m/n on input line 18.
+LaTeX Font Info:    Try loading font information for OMS+pzccm on input line 18
 .
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/omspzccm.fd
 File: omspzccm.fd 2000/01/03 Fontinst v1.801 font definitions for OMS/pzccm.
 )
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 16.
-LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 18.
+LaTeX Font Info:    ... okay on input line 18.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -334,16 +345,16 @@ LaTeX Font Info:    ... okay on input line 16.
 
 (/usr/local/texlive/2017/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count116
+\scratchcounter=\count121
 \scratchdimen=\dimen135
 \scratchbox=\box33
-\nofMPsegments=\count117
-\nofMParguments=\count118
+\nofMPsegments=\count122
+\nofMParguments=\count123
 \everyMPshowfont=\toks25
-\MPscratchCnt=\count119
+\MPscratchCnt=\count124
 \MPscratchDim=\dimen136
-\MPnumerator=\count120
-\makeMPintoPDFobject=\count121
+\MPnumerator=\count125
+\makeMPintoPDFobject=\count126
 \everyMPtoPDFconversion=\toks26
 ) (/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2017/03/19 v0.25 Utility functions of pdfTeX for LuaTeX (HO
@@ -396,13 +407,13 @@ Package caption Info: float package is loaded.
 Package caption Info: listings package is loaded.
 Package caption Info: wrapfig package is loaded.
 Package caption Info: End \AtBeginDocument code.
-\c@lstlisting=\count122
+\c@lstlisting=\count127
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <20.74> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 53.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 55.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <20.74> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 53.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 55.
 LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
-(Font)              scaled to size 18.66588pt on input line 53.
+(Font)              scaled to size 18.66588pt on input line 55.
 
 [1
 
@@ -411,29 +422,29 @@ LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
 
 ]
 LaTeX Font Info:    Font shape `OT1/phv/m/n' will be
-(Font)              scaled to size 10.79993pt on input line 53.
+(Font)              scaled to size 10.79993pt on input line 55.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <12> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 53.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 55.
 LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
-(Font)              scaled to size 10.79993pt on input line 53.
+(Font)              scaled to size 10.79993pt on input line 55.
 LaTeX Font Info:    Font shape `OT1/phv/m/it' in size <12> not available
-(Font)              Font shape `OT1/phv/m/sl' tried instead on input line 53.
+(Font)              Font shape `OT1/phv/m/sl' tried instead on input line 55.
 LaTeX Font Info:    Font shape `OT1/phv/m/sl' will be
-(Font)              scaled to size 10.79993pt on input line 53.
+(Font)              scaled to size 10.79993pt on input line 55.
  [3]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <17.28> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 57.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 59.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <17.28> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 57.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 59.
 LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
-(Font)              scaled to size 15.55188pt on input line 57.
+(Font)              scaled to size 15.55188pt on input line 59.
  [4]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <24.88> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 60.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 62.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <24.88> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 60.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 62.
 LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
-(Font)              scaled to size 22.39185pt on input line 60.
+(Font)              scaled to size 22.39185pt on input line 62.
  (./skeleton.toc
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1.
@@ -468,13 +479,13 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
  [6]
 Chapter 1.
 
-Overfull \hbox (1.34593pt too wide) in paragraph at lines 69--70
+Overfull \hbox (1.34593pt too wide) in paragraph at lines 71--72
 \OT1/ptm/m/n/12 Distributed shared mem-ory (DSM) is mem-ory ar-chi-tec-ture whe
 re phys-i-cally dis-tributed
  []
 
 
-Overfull \hbox (9.65106pt too wide) in paragraph at lines 71--72
+Overfull \hbox (9.65106pt too wide) in paragraph at lines 73--74
 \OT1/ptm/m/n/12 schema-free, most pop-u-lar data mod-els be-ing key-value store
 s, doc-u-ment stores, column-
  []
@@ -486,47 +497,47 @@ Underfull \vbox (badness 2591) has occurred while \output is active []
 
 ]
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <12> not available
-(Font)              Font shape `OMS/pzccm/m/n' tried instead on input line 86.
+(Font)              Font shape `OMS/pzccm/m/n' tried instead on input line 88.
 
 [8] [9] [10
 
 ]
 Chapter 2.
 [11]
-Overfull \hbox (12.30247pt too wide) in paragraph at lines 154--155
+Overfull \hbox (12.30247pt too wide) in paragraph at lines 156--157
 \OT1/ptm/m/n/12 Spanner (Google, 2018c) is a hor-i-zon-tally scal-able, glob-al
 ly con-sis-tent re-la-tional database
  []
 
 [12]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 167.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 169.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 167.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 169.
 LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
-(Font)              scaled to size 12.9599pt on input line 167.
+(Font)              scaled to size 12.9599pt on input line 169.
  <images/load-latency.png, id=47, 602.25pt x 372.39125pt>
 File: images/load-latency.png Graphic file (type png)
 
 <use images/load-latency.png>
-Package pdftex.def Info: images/load-latency.png used on input line 173.
+Package pdftex.def Info: images/load-latency.png used on input line 175.
 (pdftex.def)             Requested size: 284.52756pt x 175.93874pt.
 
 <images/load-throughput.png, id=48, 602.25pt x 372.39125pt>
 File: images/load-throughput.png Graphic file (type png)
 
 <use images/load-throughput.png>
-Package pdftex.def Info: images/load-throughput.png used on input line 179.
+Package pdftex.def Info: images/load-throughput.png used on input line 181.
 (pdftex.def)             Requested size: 284.52756pt x 175.93874pt.
 
 <images/write-latency.png, id=49, 599.841pt x 291.0072pt>
 File: images/write-latency.png Graphic file (type png)
 
 <use images/write-latency.png>
-Package pdftex.def Info: images/write-latency.png used on input line 190.
+Package pdftex.def Info: images/write-latency.png used on input line 192.
 (pdftex.def)             Requested size: 199.16928pt x 96.62325pt.
  [13 <./images/load-latency.png (PNG copy)>]
-Underfull \hbox (badness 1048) in paragraph at lines 196--197
+Underfull \hbox (badness 1048) in paragraph at lines 198--199
 \OT1/ptm/m/n/12 than Span-ner and more than 4 times
  []
 
@@ -534,7 +545,7 @@ Underfull \hbox (badness 1048) in paragraph at lines 196--197
 File: images/read-latency.png Graphic file (type png)
 
 <use images/read-latency.png>
-Package pdftex.def Info: images/read-latency.png used on input line 203.
+Package pdftex.def Info: images/read-latency.png used on input line 205.
 (pdftex.def)             Requested size: 341.43306pt x 196.6703pt.
 
 <images/read-modify-write-latency.png, id=56, 633.36626pt x 372.39125pt>
@@ -542,14 +553,14 @@ File: images/read-modify-write-latency.png Graphic file (type png)
 
 <use images/read-modify-write-latency.png>
 Package pdftex.def Info: images/read-modify-write-latency.png used on input lin
-e 210.
+e 212.
 (pdftex.def)             Requested size: 369.88582pt x 217.48149pt.
 
 <images/throughput.png, id=57, 549.7338pt x 294.8616pt>
 File: images/throughput.png Graphic file (type png)
 
 <use images/throughput.png>
-Package pdftex.def Info: images/throughput.png used on input line 217.
+Package pdftex.def Info: images/throughput.png used on input line 219.
 (pdftex.def)             Requested size: 341.43306pt x 183.13623pt.
  [14 <./images/load-throughput.png (PNG copy)> <./images/write-latency.png> <./
 images/read-latency.png>] [15 <./images/read-modify-write-latency.png (PNG copy
@@ -557,7 +568,7 @@ images/read-latency.png>] [15 <./images/read-modify-write-latency.png (PNG copy
 <images/grpc.png, id=68, 704.6325pt x 447.6725pt>
 File: images/grpc.png Graphic file (type png)
  <use images/grpc.png>
-Package pdftex.def Info: images/grpc.png used on input line 232.
+Package pdftex.def Info: images/grpc.png used on input line 234.
 (pdftex.def)             Requested size: 371.30595pt x 235.89911pt.
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/listings/lstlang1.sty
@@ -570,22 +581,22 @@ File: lstlang1.sty 2015/06/04 1.6 listings language file
 File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
-(Font)              Font shape `OMS/pzccm/m/n' tried instead on input line 261.
+(Font)              Font shape `OMS/pzccm/m/n' tried instead on input line 263.
 
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 270.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 272.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 270.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 272.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 270.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 272.
  [16 <./images/grpc.png>]
-LaTeX Font Info:    Try loading font information for OML+ptm on input line 300.
+LaTeX Font Info:    Try loading font information for OML+ptm on input line 302.
 
  (/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/omlptm.fd
 File: omlptm.fd 
 )
 LaTeX Font Info:    Font shape `OML/ptm/m/n' in size <10> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 300.
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 302.
 
 Underfull \vbox (badness 4048) has occurred while \output is active []
 
@@ -599,20 +610,20 @@ File: images/openshmem_memory_model.png Graphic file (type png)
 
 <use images/openshmem_memory_model.png>
 Package pdftex.def Info: images/openshmem_memory_model.png used on input line 3
-36.
+38.
 (pdftex.def)             Requested size: 371.30595pt x 210.03864pt.
  [20 <./images/openshmem_memory_model.png>] <images/llvm.pdf, id=88, 592.81981p
 t x 295.3936pt>
 File: images/llvm.pdf Graphic file (type pdf)
  <use images/llvm.pdf>
-Package pdftex.def Info: images/llvm.pdf used on input line 359.
+Package pdftex.def Info: images/llvm.pdf used on input line 361.
 (pdftex.def)             Requested size: 412.56497pt x 205.57515pt.
 
 <images/architecture.pdf, id=89, 528.86113pt x 233.76685pt>
 File: images/architecture.pdf Graphic file (type pdf)
 
 <use images/architecture.pdf>
-Package pdftex.def Info: images/architecture.pdf used on input line 372.
+Package pdftex.def Info: images/architecture.pdf used on input line 374.
 (pdftex.def)             Requested size: 412.56497pt x 182.36594pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -622,119 +633,202 @@ t>
 File: images/barrier.pdf Graphic file (type pdf)
 
 <use images/barrier.pdf>
-Package pdftex.def Info: images/barrier.pdf used on input line 381.
+Package pdftex.def Info: images/barrier.pdf used on input line 383.
 (pdftex.def)             Requested size: 206.28249pt x 190.70062pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [22 <./images/architecture.pdf> <./images/barrier.pdf>]
-<images/store_translation.pdf, id=148, 605.49326pt x 297.55025pt>
+<images/store_translation.pdf, id=148, 554.15633pt x 259.83534pt>
 File: images/store_translation.pdf Graphic file (type pdf)
 
 <use images/store_translation.pdf>
-Package pdftex.def Info: images/store_translation.pdf used on input line 398.
-(pdftex.def)             Requested size: 330.05322pt x 162.19571pt.
+Package pdftex.def Info: images/store_translation.pdf used on input line 400.
+(pdftex.def)             Requested size: 330.05322pt x 154.76451pt.
  [23 <./images/store_translation.pdf>]
-<images/load_translation.pdf, id=170, 601.86588pt x 302.58905pt>
+<images/load_translation.pdf, id=170, 564.43233pt x 264.96672pt>
 File: images/load_translation.pdf Graphic file (type pdf)
 
 <use images/load_translation.pdf>
-Package pdftex.def Info: images/load_translation.pdf used on input line 407.
-(pdftex.def)             Requested size: 330.05322pt x 165.93968pt.
+Package pdftex.def Info: images/load_translation.pdf used on input line 409.
+(pdftex.def)             Requested size: 330.05322pt x 154.94627pt.
  [24 <./images/load_translation.pdf>]
 Chapter 4.
 [25
 
-] <images/heap_organisation.pdf, id=195, 699.33923pt x 291.6735pt>
+] <images/heap_organisation.pdf, id=195, 697.69159pt x 274.19159pt>
 File: images/heap_organisation.pdf Graphic file (type pdf)
 
 <use images/heap_organisation.pdf>
 Package pdftex.def Info: images/heap_organisation.pdf used on input line 448.
-(pdftex.def)             Requested size: 412.56497pt x 172.0725pt.
+(pdftex.def)             Requested size: 412.56497pt x 162.13562pt.
  [26 <./images/heap_organisation.pdf>]
-[27] [28]
-Chapter 5.
-[29
+[27] [28] <images/no_malloc.png, id=222, 350.30875pt x 64.24pt>
+File: images/no_malloc.png Graphic file (type png)
 
-] [30
+<use images/no_malloc.png>
+Package pdftex.def Info: images/no_malloc.png used on input line 508.
+(pdftex.def)             Requested size: 170.71652pt x 31.30632pt.
+
+Overfull \hbox (5.69305pt too wide) in paragraph at lines 508--509
+ [][] 
+ []
+
+LaTeX Font Info:    Font shape `OT1/phv/m/n' will be
+(Font)              scaled to size 9.85492pt on input line 509.
+<images/default_malloc.png, id=223, 324.21124pt x 62.2325pt>
+File: images/default_malloc.png Graphic file (type png)
+
+<use images/default_malloc.png>
+Package pdftex.def Info: images/default_malloc.png used on input line 514.
+(pdftex.def)             Requested size: 170.71652pt x 32.76941pt.
+
+Overfull \hbox (5.69305pt too wide) in paragraph at lines 514--515
+ [][] 
+ []
+
+<images/custom_malloc.png, id=224, 328.22626pt x 64.24pt>
+File: images/custom_malloc.png Graphic file (type png)
+
+<use images/custom_malloc.png>
+Package pdftex.def Info: images/custom_malloc.png used on input line 519.
+(pdftex.def)             Requested size: 170.71652pt x 33.41283pt.
+
+Overfull \hbox (5.69305pt too wide) in paragraph at lines 519--520
+ [][] 
+ []
+
+<images/simple_malloc.png, id=225, 326.21875pt x 63.23625pt>
+File: images/simple_malloc.png Graphic file (type png)
+
+<use images/simple_malloc.png>
+Package pdftex.def Info: images/simple_malloc.png used on input line 525.
+(pdftex.def)             Requested size: 170.71652pt x 33.09337pt.
+
+Overfull \hbox (5.69305pt too wide) in paragraph at lines 525--526
+ [][] 
+ []
+
+[29 <./images/no_malloc.png> <./images/default_malloc.png> <./images/custom_mal
+loc.png> <./images/simple_malloc.png>] [30
 
 ]
+Chapter 5.
+
+LaTeX Warning: Reference `' on page 31 undefined on input line 538.
+
+[31] <images/heap_store_translation.pdf, id=240, 509.8211pt x 506.34198pt>
+File: images/heap_store_translation.pdf Graphic file (type pdf)
+
+<use images/heap_store_translation.pdf>
+Package pdftex.def Info: images/heap_store_translation.pdf used on input line 5
+52.
+(pdftex.def)             Requested size: 199.16928pt x 197.81253pt.
+
+Overfull \hbox (13.51631pt too wide) in paragraph at lines 552--553
+ [][] 
+ []
+
+<images/heap_load_translation.pdf, id=241, 550.72437pt x 545.09004pt>
+File: images/heap_load_translation.pdf Graphic file (type pdf)
+
+<use images/heap_load_translation.pdf>
+Package pdftex.def Info: images/heap_load_translation.pdf used on input line 55
+8.
+(pdftex.def)             Requested size: 199.16928pt x 197.13054pt.
+
+Overfull \hbox (13.51631pt too wide) in paragraph at lines 558--559
+ [][] 
+ []
+
+[32 <./images/heap_store_translation.pdf> <./images/heap_load_translation.pdf>]
 Chapter 6.
-[31] [32
+[33
+
+] [34] <images/instruction_count.png, id=285, 602.25pt x 491.8375pt>
+File: images/instruction_count.png Graphic file (type png)
+
+<use images/instruction_count.png>
+Package pdftex.def Info: images/instruction_count.png used on input line 604.
+(pdftex.def)             Requested size: 412.56497pt x 336.94417pt.
+ [35 <./images/instruction_count.png (PNG copy)>] [36
 
 ]
 Chapter 7.
-(./skeleton.bbl [33] [34
-
-]
-Underfull \hbox (badness 10000) in paragraph at lines 9--11
-[]\OT1/ptm/m/n/12 grpc c++ fails to com-pile (zlib), De-cem-ber 2017.  URL
+[37] (./skeleton.bbl [38]
+Underfull \hbox (badness 7667) in paragraph at lines 14--18
+[]\OT1/ptm/m/n/12 Greg An-drews.  Foun-da-tions of mul-ti-threaded, par-al-lel,
+ and dis-tributed
  []
 
 
-Underfull \hbox (badness 2435) in paragraph at lines 13--19
-[]\OT1/ptm/m/n/12 Emery D. Berger, Ben-jamin G. Zorn, and Kathryn S. McKin-ley.
-  Re-con-
+Underfull \hbox (badness 10000) in paragraph at lines 14--18
+\OT1/ptm/m/n/12 pro-gram-ming. Source code for pro-grams, Jan-uary 2000.  URL
  []
 
 
-Underfull \hbox (badness 1383) in paragraph at lines 13--19
-\OT1/ptm/m/n/12 sid-er-ing cus-tom mem-ory al-lo-ca-tion.  \OT1/ptm/m/it/12 SIG
--PLAN Not.\OT1/ptm/m/n/12 , 37(11):1--12, Novem-
- []
-
-
-Underfull \hbox (badness 5217) in paragraph at lines 13--19
-\OT1/ptm/m/n/12 ber 2002.  ISSN 0362-1340.  doi: 10.1145/583854.582421.  URL
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 34--41
+Underfull \hbox (badness 10000) in paragraph at lines 33--40
 []\OT1/ptm/m/n/12 Brian F. Cooper, Adam Sil-ber-stein, Er-win Tam, Raghu Ra-mak
 r-ish-
  []
 
 
-Underfull \hbox (badness 8056) in paragraph at lines 34--41
+Underfull \hbox (badness 8056) in paragraph at lines 33--40
 \OT1/ptm/m/n/12 nan, and Rus-sell Sears.  Bench-mark-ing cloud serv-ing sys-tem
 s with
  []
 
 
-Underfull \hbox (badness 3872) in paragraph at lines 34--41
+Underfull \hbox (badness 3872) in paragraph at lines 33--40
 \OT1/ptm/m/n/12 ycsb.  In \OT1/ptm/m/it/12 Pro-ceed-ings of the 1st ACM Sym-po-
 sium on Cloud Com-put-
  []
 
 
-Overfull \hbox (49.19356pt too wide) in paragraph at lines 34--41
+Overfull \hbox (49.19356pt too wide) in paragraph at lines 33--40
 \OT1/pcr/m/n/12 https://www2.cs.duke.edu/courses/fall13/cps296.4/838-CloudPaper
 s/ycsb.pdf\OT1/ptm/m/n/12 . 
  []
 
-[35]) [36] (./skeleton.aux) ) 
+
+Overfull \hbox (16.79369pt too wide) in paragraph at lines 81--89
+\OT1/pcr/m/n/12 http://openshmem.org/site/sites/default/site[]files/OpenSHMEM-1
+.3.pdf\OT1/ptm/m/n/12 . 
+ []
+
+[39
+
+]) [40]
+Appendix A.
+[41
+
+] [42] (./skeleton.aux)
+
+LaTeX Warning: There were undefined references.
+
+ ) 
 Here is how much of TeX's memory you used:
- 6938 strings out of 492995
- 101182 string characters out of 6132703
- 211357 words of memory out of 5000000
- 10342 multiletter control sequences out of 15000+600000
- 49656 words of font info for 93 fonts, out of 8000000 for 9000
+ 7190 strings out of 492995
+ 105449 string characters out of 6132703
+ 218786 words of memory out of 5000000
+ 10581 multiletter control sequences out of 15000+600000
+ 51416 words of font info for 95 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 43i,8n,67p,1375b,1702s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2017/texmf-dist/fonts/enc/dvip
-s/base/8r.enc}</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/c
-m/cmmi10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm
-/cmsy10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/courier/ucrr8a.
-pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></u
-sr/local/texlive/2017/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/loca
-l/texlive/2017/texmf-dist/fonts/type1/urw/helvetic/uhvro8a.pfb></usr/local/texl
-ive/2017/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2017/t
-exmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2017/texmf-dist/
-fonts/type1/urw/times/utmri8a.pfb>
-Output written on skeleton.pdf (36 pages, 541656 bytes).
+ 43i,8n,67p,1729b,1702s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2017/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
+exlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/te
+xlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/tex
+live/2017/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/201
+7/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2017/texmf
+-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2017/texmf-dist/f
+onts/type1/urw/helvetic/uhvro8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/t
+ype1/urw/times/utmb8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/t
+imes/utmr8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmri
+8a.pfb>
+Output written on skeleton.pdf (42 pages, 669910 bytes).
 PDF statistics:
- 279 PDF objects out of 1000 (max. 8388607)
- 193 compressed objects within 2 object streams
+ 346 PDF objects out of 1000 (max. 8388607)
+ 236 compressed objects within 3 object streams
  0 named destinations out of 1000 (max. 500000)
- 71 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 106 words of extra memory for PDF output out of 10000 (max. 10000000)
 

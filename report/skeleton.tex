@@ -10,6 +10,8 @@
 \usepackage[round]{natbib}
 \usepackage{listings}
 \usepackage[dvipsnames]{xcolor}
+\usepackage{subcaption}
+\usepackage[title]{appendix}
 
 \graphicspath{ {images/} }
 
@@ -114,7 +116,7 @@ Chapter 6 introduces the API which lets computers on two different locations in 
 
 Chapter 7 summarizes the work done and possible ways of improving the system.
 
-\chapter{Data store for DSM}
+\chapter{Data store}
 
 \section{Overview}
 
@@ -317,7 +319,7 @@ long long get(unsigned long long addr) {
 
 Even though both gRPC and protobuf (protocol buffers) libraries are developed by Google, some difficulties were encountered while compiling source builds. The errors were made known to the developers \citep{grpc_issue}, but it has slightly stalled the development of the project.
 
-\chapter{Calling get/put functions on Bigtable}
+\chapter{Translation tool}
 
 \section{Research on possible solutions}
 
@@ -414,9 +416,7 @@ Load instruction translation begins by identifying its return type and pointer i
 
 \section{Motivation}
 
-Even though all load and store instructions were translated using the translation pass, the space for heap was still being allocated on the main memory. This was detected using Valgrind, a tool for memory debugging and profiling.
-% TODO: insert results
-The issue was solved by developing a custom first-fit free-list heap allocator, which does not allocate space from main memory.
+Calls to malloc function allocate virtual memory space. When this allocated virtual memory is "touched" (i.e. load from or stored to), it is mapped to real memory by call to special function of the operating system (i.e. mmap). As translation tool eliminates all loads and stores to memory, the allocated memory is never accessed, thus never really mapped to physical memory. Nevertheless, the allocated memory is left unused on virtual address space. This might cause problems when a program tries to allocate more space than possible on virtual memory. Some operating systems (i.e. Windows or macOS) limit the virtual memory space, thus providing a custom heap allocator, which would reduce the amount of memory allocated on virtual address space, seems beneficial. The proposed solution is a first-fit free-list heap allocator.
 
 \section{Implementation}
 
@@ -467,7 +467,6 @@ void copy_block(block src, block dst) {
     a = (unsigned long long*) &sdata[i];
     b = (unsigned long long) a;  
     value = get(b);
-    
     // convert int* to 64-bit integer
     a = (unsigned long long*) &ddata[i];
     b = (unsigned long long) a;
@@ -488,6 +487,7 @@ Calloc function accepts an integer representing a number of elements to allocate
   }
 \end{lstlisting}
 
+For comparison purposes, it was decided to also implement a heap allocator with only a malloc function, without any memory releasing strategy. Heap memory address is incremented with an atomic read-modify-write operation provided by Bigtable. This way the calls to malloc don't have to be synchronised explicitly, as the job is done by atomic calls to Bigtable. 
 
 \section{Consistency on multithreaded programs}
 
@@ -495,34 +495,227 @@ Even though the malloc tutorial was very helpful in implementing a custom heap a
 
 Another way to solve the thread-safety problem is by allocating a large chunk of memory off the heap to each thread and then managing the space within the thread. However, some threads might not be using all of their allocated memory, which results in poor memory usage efficiency. Moreover, some threads might need more memory than given by default, thus there should be ways to increase the per thread heap memory. Thus, it can be seen that the increase in performance adds additional complexity to the allocator. Clearly, this is a more involved solution and due to a strict time limits for the project it was not implemented. This is one of the areas where the translation tool could be improve in the future work.
 
-For comparison purposes, it was decided to also implement a heap allocator with only a malloc function, without any memory releasing strategy. Heap memory address is incremented with an atomic read-modify-write operation provided by Bigtable. This way the calls to malloc don't have to be synchronised explicitly, as the job is done by atomic calls to Bigtable. 
+\section{Results}
 
-\chapter{Translation improvements}
+\subsection{Virtual memory usage}
 
-% TODO: bigtable uses the addresses assigned as if they would appear in main memory. This creates a limitation, Bigtable provides can provide much more memory than the main memory, thus its address space should be bigger. 
+Both heap allocators implemented were tested for virtual memory usage. The figure \ref{fig:malloc_run} shows the linux top command output of memory usage by 4 different runs of an instrumented program. The top left screenshot shows a program run without any heap allocations. It is used as a baseline run to better understand how much memory a simple instrumented program uses. Each of the other 3 program runs malloced 1 gigabyte of memory. Clearly, the programs using the implemented heap allocators solve problem of virtual memory usage, as they do not allocate virtual memory but rather assigns some address space on the Bigtable.
 
-\section{Detecting store and load instructions to heap memory}
+\begin{figure}[H]%
+    \centering
+    \begin{subfigure}{.4\linewidth}
+    	\centering
+    	\includegraphics[width=6cm]{images/no_malloc}
+	\caption{run without malloc}
+    \end{subfigure}
+    \hskip2em
+    \begin{subfigure}{.4\linewidth}
+    	\centering
+    	\includegraphics[width=6cm]{images/default_malloc}
+	\caption{run with default malloc}
+    \end{subfigure}
+    \begin{subfigure}{.4\linewidth}
+    	\centering
+    	\includegraphics[width=6cm]{images/custom_malloc}
+	\caption{run with custom malloc}
+    \end{subfigure}
+    \hskip2em
+    \begin{subfigure}{.4\linewidth}
+    	\centering
+    	\includegraphics[width=6cm]{images/simple_malloc}
+	\caption{run with custom malloc without free}
+    \end{subfigure}
+    \caption{The Linux top command output of memory usage by 4 different runs of an instrumented program}
+    \label{fig:malloc_run}
+\end{figure}
 
-\chapter{Results}
+\subsection{Performance}
 
-\section{Benchmarking heap allocators}
+\chapter{Heap memory translator}
 
-\section{Full and heap translation comparison}
+\section{Motivation}
 
-\section{Comparison to uninstrumented program}
+It might be preferable to use Bigtable as a storage for only shared data. This way, the concurrency problems with shared memory are handled by the Bigtable, while the rest of the memory is stored locally, thus making the access to it faster. Each thread of the process have its own stack but shares the heap and global variables. As the memory for global variables is already allocated by the frontend of the compiler, it was decided not to translate store and load instructions on these variables. Therefore, a new translator was implemented to instrument only store and load instructions on heap variables. In theory, such translator should work faster than the full memory translator described in Chapter \ref{}, as it translates only a fraction of the existing store and load operations. 
+
+\section{Implementation}
+
+The easiest way to determine if the variable is stored on the heap is to check if its address is inside the heap address space. If the address of the variable is between the start of the heap and the current break of the heap, then we want to store such variable on the Bigtable. Thus, while iterating through instructions we need to check if the address of load or store instruction is inside the heap address space. If it is, we call GET or PUT function on Bigtable and do the similar type casts as in full memory translator. Otherwise, we want to leave the original load or store instruction as is. 
+
+Firstly, the custom heap allocator was extended to have to new functions. The getter functions for heap boundaries. In order to accomplish this, the heap allocator saves the start of the heap on the first call to malloc.
+
+For both store and load instructions the translation starts with calls to get heap boundaries. The address of the translated instruction is cast from pointer type to 64-bit integer and compared using icmp instructions with both heap boundaries. The comparison results are conjoined bitwise and used as a condition for branch instruction. In a case where the bitwise conjunction is equal to 1, the program continues with the instructions for GET or PUT function. Otherwise, the program jumps to the label with the original load or store instructions. If the translated function is load, then a PHI node is added to take on the value corresponding to the input control block (either call to GET function or load instruction). Phi node is an instruction used to select a value depending on the predecessor of the current block.
+
+\begin{figure}[H]%
+    \centering
+    \begin{subfigure}{.45\linewidth}
+    	\centering
+    	\includegraphics[width=7cm]{images/heap_store_translation}
+	\caption{Store instruction translation}
+    \end{subfigure}
+    \hskip2em
+    \begin{subfigure}{.45\linewidth}
+    	\centering
+    	\includegraphics[width=7cm]{images/heap_load_translation}
+	\caption{Load instruction translation}
+    \end{subfigure}
+    \caption{Load and store instruction translation on heap memory translator. Instructions coloured in orange and green are added during translation.}
+    \label{fig:heap_translation}
+\end{figure}
+
+As seen in figure \ref{fig:heap_translation}, heap memory translation adds a lot of additional instructions. The insertion of instructions is done in several phases. On the first phase, the first six instruction are inserted before (coloured in orange) any load or store instruction. Next, the original basic block the load or store instruction belongs to is split in two and two additional basic blocks for branches are created using SplitBlockAndInsertIfThenElse function. After that the first basic block (label1) is populated by adding a call to GET or PUT function and the casting instructions if needed. The second basic block (label2) is populated with a clone of the original load or store instruction, as the original still exists on the next basic block (label3). Finally, the original store instructions are deleted from the last basic block (label3), while the original load instructions are replaced with phi node instructions.
+
+\chapter{Evaluation}
+
+Even though the translation tool introduced in this paper does not aim to compete on performance with existing technologies, it is still interesting to compare the original  programs with the ones instrumented with the translation tool. Of course, the efficiency of the system which stores and loads all its memory on another machine, however fast the connection between two machines, is not going to compete with the system storing and loading memory situated on the same machine. Nonetheless, performance and other results can be of great value, as they reveal the areas where system could be improved.
+
+% TODO: describe the environment: Google Compute engine VM on the same cluster as Bigtable, etc...
+
+During the testing and evaluation process, it was decided to measure the performance of individual functions rather than the execution of the whole program itself. This decision was taken in order to exclude the time it takes to load the program into memory and prepare it for execution. These measurements are highly depended on the architecture of the machine and the operating system.
+
+\section{Performance}
+
+For the performance benchmarking, wall clock time was used instead of CPU time, as it takes into account the time taken for I/O operations (i.e. calls to Bigtable). All tests are run 100 times and averaged, as the execution time of a single test run fluctuates due to external factors (i.e. OS scheduling, memory usage, etc).
+
+The benchmarking was done using three test functions (source code can be find in Appendix \ref{section:test}), namely stack allocation, heap allocation and parallel producer-consumer problem adapted from Greg Andrews' textbook website \citep{producer-consumer}. The stack allocation test initialises a stack-based 10x10 character matrix with new values. All load and store operations are done on the stack. Similarly, the heap allocation test writes values to heap-allocated 10x10 character matrix. Approximately one of ten load and store instructions are for heap-based accesses. Other, stack-based, memory operations are used for iterating through the matrix. The producer-consumer test uses C's Posix threads (Pthreads) library for thread creation, synchronisation and similar purposes. Also, for this task the time elapsed includes thread creation and join operations. Two threads were used (one for producer and one for consumer operations). The buffer size was set to 1, while, in total, 50 integers were produced/consumed by the algorithm. A simple adjustment was made to allocate buffer on the heap in order to have at least one GET or PUT function call on the function translated with heap translator.
+
+As expected the original program with load and store operations on memory situated on the same machine worked efficiently. The producer-consumer took more than a thousand times longer than the other two tests, as the execution time was capped by thread creation and synchronisation time. The stack allocation and heap allocation tests translated with full memory translator took six orders of magnitude longer to execute. This immense increase in time is due to the introduced communication costs to access memory on Bigtable. The producer-consumer problem took half as long to execute, yet the increment from the original code execution time was enormous. Unsurprisingly, the program translated with heap translator showed a huge improvement over the fully translated program in stack allocation test. The improvement is quite clear as none of the load or store instructions are translated, as only heap memory instructions are translated with heap translator. The slow down compared to the original program can be explained by the increase in instruction count of the program (more detailed analysis on this measure provided in the next section). The heap allocation test on the program transformed by heap translator performs 10 times better than to corresponding test instrumented by full memory translator. Heap allocation test skips all stack-based GET and PUT calls on Bigtable and instead stores these variables locally. The test is capped by the time taken to execute 100 put operations on Bigtable. Producer-consumer test again saves some time on load and store instructions on stack variables. The actual results gathered from benchmarking are shown in table \ref{table:performance}.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{ c | c c c }
+Test & Original & Fully translated & Heap translated \\
+\hline
+Stack allocation & 0.411 & 2,798,858 & 3 \\
+Heap allocation & 0.521 & 2,209,032 & 284,047 \\
+Producer-Consumer & 963.717 & 1,272,932 & 295,448
+\end{tabular}
+\caption{Time taken to execute each function in microseconds ($\mu s$)}
+\label{table:performance}
+\end{table}
+
+Overall, it can be seen that the heap translation tool is an improvement over full memory translator but it is still makes the functions run hundreds (producer-consumer test) and even hundreds of thousands (heap allocation test) times slower.
+
+\section{Instruction count}
+
+Instruction count was done using an implemented instruction count pass on test program (see Appendix \ref{section:test}), which includes the performance tests mentioned in the section above. The pass iterates over the functions of the program and prints the count of instructions per function and the total number of instructions in the program. To clarify, this is a static count of the instructions and does not account for how many times any particular instruction can be executed on the runtime. Moreover, the instruction count does not include the instructions from shared libraries and their functions.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{images/instruction_count}
+\caption{LLVM instruction counts for different functions.}
+\label{fig:instruction_count}
+\end{figure}
+
+The original program shows the smallest instruction count on every function and works as a baseline for the programs instrumented with the implemented translation tools. The total instruction count for a program translated with full memory translator increased from 571, achieved by the original program, to 761, which shows a 33 percent growth. On average, each function, on average, increased by 27 instructions. The inflation is a result of translating one load/store instruction with a call to get/put function plus 1-3 casting instructions. A much more substantial growth can be seen in functions translated by heap memory translator. The total amount of instructions is 209 percent higher than in the original program, increasing from 571 to 1768 instructions. Each function, on average, increased by 171 instructions. This can be explained by the additional control flow added to distinguish between memory access to heap and stack variables. The translation adds 9 to 14 instructions per store/load instruction.
+
+Overall, the translation adds a lot of additional instructions. This does not necessarily convert to lower performance of the program (as can be seen by heap translation example with stack allocation test in the previous chapter) and is a much smaller problem then the huge increases in execution time, yet it is definitely a measure which could be improved.
 
 \chapter{Conclusions}
 
 \section{Overview}
 
+This report has introduced a translation tool (with two of its variations), which provides a way to run programs requiring amount of memory that cannot be served by user machine. The translation tool instruments the program by changing all load and store operations to get and put calls on Bigtable, respectively. Additionally, a heap memory translation tool was implemented to translate memory which is shared among threads. This tool can be seen as a step towards an instrument which could expose Bigtable as distributed shared memory to multiple machines (more on that in the next section). The report has also showed that the performance of the instrumented programs are orders of magnitude worse than the original programs. This is mainly caused by the communication costs introduced by calls to Bigtable. Overall, even though the translation tools implemented make the programs run extremely slow, they can be successfully used to overcome lack-of-memory problems.
+
 \section{Future work}
 
-\subsection{Better support for structured data}
+There are many opportunities for extending the work done and improving the tools for load and store instruction translation. Some of these directions are presented in this section.
 
+One major area of future work might be to implement a separate front-end compiler. The important feature of the compiler would be to prevent global variables from being allocated space on main memory. Instead they would be stored on Bigtable. This could also be done with stack variables.
+
+Another major improvement would be to introduce synchronisation through Bigtable between multiple instrumented programs running on different machines. The synchronisation could be achieved by using locks, barriers and other primitives. Bigtable provides an atomic fetch-and-add operation, which can be used as a generalised test-and-set operation, thus it is possible to implement the synchronisation primitives.
+
+There might also be a way to slightly improve the performance of the translated programs by introducing caches. They would store small amount of memory in them and be updated on put operations to Bigtable. Combined with the synchronisation primitives and an appropriate cache coherence protocol the updates would let expose Bigtable as distributed shared memory.
+
+Other possible improvements on the tool:
+\begin{itemize}
+\item
+Implement all memory functions provided by C/C++ standard libraries. This task was already started by implementing a memcpy function, which is used to make copies of struct type variables. The original C/C++ standard library functions use load and store instructions. These must be change to get and put operations on Bigtable. This is quite important as users might need to use these functions in their programs.
+\item
+better support for getting and putting structured data to Bigtable. For instance, C++ standard library class Tuple is represented as a literal struct type (\{i32, *i32\}). Load and store instructions provided by LLVM cope with these type of structures, yet the control flow created by the translation tries to cast the type into 64-bit integer and loses parts of data (32 most significant bits) on the cast back. 
+\item
+A get and put function overloads should be provided for ConstantFP (floating point) type in order to correctly store floating point values on Bigtable.
+\end{itemize}
+
+These extensions could make the translation tools more practical and attractive to potential users.
 
 % use the following and \citep{} as above if you use BibTeX
 % otherwise generate bibtem entries
 \bibliographystyle{plainnat}
 \bibliography{mybibfile}
+
+\appendix
+\chapter{Test program}
+\label{section:test}
+
+\begin{lstlisting}[style=block]
+void test_stack_allocation(char matrix[][M_Y]) {
+  for (int i = 0; i < M_X; i++) {
+    for (int j = 0; j < M_Y; j++) {
+      matrix[i][j] = (i * M_Y + j) % 128;
+    }
+  }
+}
+
+char *test_heap_allocation() {
+  for (int i = 0; i < M_X; i++) {
+    for (int j = 0; j < M_Y; j++) {
+      *(heap_matrix + i * M_Y + j) = (i * M_Y + j) % 128;
+    }
+  }
+}
+
+void *produce(void *arg) {
+  for (int i = 1; i <= N; i++) {
+    sem_wait(&empty);
+    *data = i;
+    sem_post(&full);
+  }
+  return NULL;
+}
+
+void *consume(void *arg) {
+  int total = 0;
+  for (int i = 0; i < N; i++) {
+    sem_wait(&full);
+    total += *data;
+    sem_post(&empty);
+  }
+  return NULL;
+}
+
+bool test_stack_correctness(char matrix[][M_Y]) {
+  for (int i = 0; i < M_X; i++) {
+    for (int j = 0; j < M_Y; j++) {
+      if (matrix[i][j] != (i * M_Y + j) % 128) {
+        cout << i * M_Y + j << "  " << matrix[i][j] << endl;
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+bool test_heap_correctness(char *matrix) {
+  bool correct = true;
+  for (int i = 0; i < M_X; i++) {
+    for (int j = 0; j < M_Y; j++) {
+      if (*(matrix + i * M_Y + j) != (i * M_Y + j) % 128) {
+        correct = false;
+      }
+    }
+  }
+  free(matrix);
+  return correct;
+}
+
+void *test_multithreaded_correctness(void *arg) {
+  for (int i = 0; i < N; i++) {
+    sem_wait(&lock);
+    target++;
+    sem_post(&lock);
+  }
+  return NULL;
+}
+\end{lstlisting}
 
 \end{document}
