@@ -46,18 +46,23 @@
 
 \date{\today}
 
-% TODO: write an abstract
-
 \abstract{
-* Still to be written.
+Computer programs these days require a lot of hardware resources. Sometimes we come across programs, which cannot fit into main memory. The only solution to solve this problem is by physically adding more random access memory (RAM) to the computer.
+
+This project proposes a software solution aimed to run user program using key-value cloud storage service as the main memory source. An implemented translation tool transforms all (or part, depending on the version) store and load instructions to put and get operations on Google Bigtable storage using LLVM transformation pass with its opt tool. 
+
+As expected, the benchmark results on the translation tool proved the programs instrumented by translation tool to run orders of magnitude slower than their original counterparts. However, with some further improvements the tool could be used not only as a solution for memory intensive programs, but also used as a way to provide Bigtable (or any other cloud-based key-value storage) as distributed shared memory for multiple programs running on machines from different parts of the world.
 }
 
 \maketitle
 
-% TODO: write acknowledgements
-
 \section*{Acknowledgements}
-* Still to be written.
+
+I would like to express my gratitude to my supervisor Vijay Nagarajan for aspiring guidance and advice.
+
+I would also like to thank Harry Wagstaff and Aaron Smith for invaluable advice.
+
+Finally, to my family and friends for their support and encouragement.
 
 \tableofcontents
 
