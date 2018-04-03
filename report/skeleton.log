@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.29)  2 APR 2018 16:25
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.29)  3 APR 2018 23:29
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -409,11 +409,11 @@ Package caption Info: wrapfig package is loaded.
 Package caption Info: End \AtBeginDocument code.
 \c@lstlisting=\count127
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <20.74> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 59.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 57.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <20.74> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 59.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 57.
 LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
-(Font)              scaled to size 18.66588pt on input line 59.
+(Font)              scaled to size 18.66588pt on input line 57.
 
 [1
 
@@ -422,29 +422,29 @@ LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
 
 ]
 LaTeX Font Info:    Font shape `OT1/phv/m/n' will be
-(Font)              scaled to size 10.79993pt on input line 59.
+(Font)              scaled to size 10.79993pt on input line 57.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <12> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 59.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 57.
 LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
-(Font)              scaled to size 10.79993pt on input line 59.
+(Font)              scaled to size 10.79993pt on input line 57.
 LaTeX Font Info:    Font shape `OT1/phv/m/it' in size <12> not available
-(Font)              Font shape `OT1/phv/m/sl' tried instead on input line 59.
+(Font)              Font shape `OT1/phv/m/sl' tried instead on input line 57.
 LaTeX Font Info:    Font shape `OT1/phv/m/sl' will be
-(Font)              scaled to size 10.79993pt on input line 59.
+(Font)              scaled to size 10.79993pt on input line 57.
  [3]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <17.28> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 63.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 59.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <17.28> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 63.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 59.
 LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
-(Font)              scaled to size 15.55188pt on input line 63.
+(Font)              scaled to size 15.55188pt on input line 59.
  [4]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <24.88> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 71.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 67.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <24.88> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 71.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 67.
 LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
-(Font)              scaled to size 22.39185pt on input line 71.
+(Font)              scaled to size 22.39185pt on input line 67.
  (./skeleton.toc
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1.
@@ -478,66 +478,50 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
 
  [6]
 Chapter 1.
-
-Overfull \hbox (1.34593pt too wide) in paragraph at lines 80--81
-\OT1/ptm/m/n/12 Distributed shared mem-ory (DSM) is mem-ory ar-chi-tec-ture whe
-re phys-i-cally dis-tributed
- []
-
-
-Overfull \hbox (9.65106pt too wide) in paragraph at lines 82--83
-\OT1/ptm/m/n/12 schema-free, most pop-u-lar data mod-els be-ing key-value store
-s, doc-u-ment stores, column-
- []
-
-
-Underfull \vbox (badness 2591) has occurred while \output is active []
-
- [7
+[7
 
 ]
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <12> not available
-(Font)              Font shape `OMS/pzccm/m/n' tried instead on input line 97.
-
-[8] [9] [10
+(Font)              Font shape `OMS/pzccm/m/n' tried instead on input line 86.
+ [8] [9] [10
 
 ]
 Chapter 2.
 [11]
-Overfull \hbox (12.30247pt too wide) in paragraph at lines 165--166
+Overfull \hbox (12.30247pt too wide) in paragraph at lines 166--167
 \OT1/ptm/m/n/12 Spanner (Google, 2018c) is a hor-i-zon-tally scal-able, glob-al
 ly con-sis-tent re-la-tional database
  []
 
 [12]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 178.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 179.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 178.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 179.
 LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
-(Font)              scaled to size 12.9599pt on input line 178.
+(Font)              scaled to size 12.9599pt on input line 179.
  <images/load-latency.png, id=47, 602.25pt x 372.39125pt>
 File: images/load-latency.png Graphic file (type png)
 
 <use images/load-latency.png>
-Package pdftex.def Info: images/load-latency.png used on input line 184.
+Package pdftex.def Info: images/load-latency.png used on input line 185.
 (pdftex.def)             Requested size: 284.52756pt x 175.93874pt.
 
 <images/load-throughput.png, id=48, 602.25pt x 372.39125pt>
 File: images/load-throughput.png Graphic file (type png)
 
 <use images/load-throughput.png>
-Package pdftex.def Info: images/load-throughput.png used on input line 190.
+Package pdftex.def Info: images/load-throughput.png used on input line 191.
 (pdftex.def)             Requested size: 284.52756pt x 175.93874pt.
 
 <images/write-latency.png, id=49, 599.841pt x 291.0072pt>
 File: images/write-latency.png Graphic file (type png)
 
 <use images/write-latency.png>
-Package pdftex.def Info: images/write-latency.png used on input line 201.
+Package pdftex.def Info: images/write-latency.png used on input line 202.
 (pdftex.def)             Requested size: 199.16928pt x 96.62325pt.
  [13 <./images/load-latency.png (PNG copy)>]
-Underfull \hbox (badness 1048) in paragraph at lines 207--208
+Underfull \hbox (badness 1048) in paragraph at lines 208--209
 \OT1/ptm/m/n/12 than Span-ner and more than 4 times
  []
 
@@ -545,7 +529,7 @@ Underfull \hbox (badness 1048) in paragraph at lines 207--208
 File: images/read-latency.png Graphic file (type png)
 
 <use images/read-latency.png>
-Package pdftex.def Info: images/read-latency.png used on input line 214.
+Package pdftex.def Info: images/read-latency.png used on input line 215.
 (pdftex.def)             Requested size: 341.43306pt x 196.6703pt.
 
 <images/read-modify-write-latency.png, id=56, 633.36626pt x 372.39125pt>
@@ -553,14 +537,14 @@ File: images/read-modify-write-latency.png Graphic file (type png)
 
 <use images/read-modify-write-latency.png>
 Package pdftex.def Info: images/read-modify-write-latency.png used on input lin
-e 221.
+e 222.
 (pdftex.def)             Requested size: 369.88582pt x 217.48149pt.
 
 <images/throughput.png, id=57, 549.7338pt x 294.8616pt>
 File: images/throughput.png Graphic file (type png)
 
 <use images/throughput.png>
-Package pdftex.def Info: images/throughput.png used on input line 228.
+Package pdftex.def Info: images/throughput.png used on input line 229.
 (pdftex.def)             Requested size: 341.43306pt x 183.13623pt.
  [14 <./images/load-throughput.png (PNG copy)> <./images/write-latency.png> <./
 images/read-latency.png>] [15 <./images/read-modify-write-latency.png (PNG copy
@@ -568,7 +552,7 @@ images/read-latency.png>] [15 <./images/read-modify-write-latency.png (PNG copy
 <images/grpc.png, id=68, 704.6325pt x 447.6725pt>
 File: images/grpc.png Graphic file (type png)
  <use images/grpc.png>
-Package pdftex.def Info: images/grpc.png used on input line 243.
+Package pdftex.def Info: images/grpc.png used on input line 244.
 (pdftex.def)             Requested size: 371.30595pt x 235.89911pt.
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/listings/lstlang1.sty
@@ -581,22 +565,22 @@ File: lstlang1.sty 2015/06/04 1.6 listings language file
 File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
 )
 LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
-(Font)              Font shape `OMS/pzccm/m/n' tried instead on input line 272.
+(Font)              Font shape `OMS/pzccm/m/n' tried instead on input line 273.
 
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 281.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 282.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 281.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 282.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 281.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 282.
  [16 <./images/grpc.png>]
-LaTeX Font Info:    Try loading font information for OML+ptm on input line 311.
+LaTeX Font Info:    Try loading font information for OML+ptm on input line 312.
 
  (/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/omlptm.fd
 File: omlptm.fd 
 )
 LaTeX Font Info:    Font shape `OML/ptm/m/n' in size <10> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 311.
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 312.
 
 Underfull \vbox (badness 4048) has occurred while \output is active []
 
@@ -610,20 +594,20 @@ File: images/openshmem_memory_model.png Graphic file (type png)
 
 <use images/openshmem_memory_model.png>
 Package pdftex.def Info: images/openshmem_memory_model.png used on input line 3
-47.
+48.
 (pdftex.def)             Requested size: 371.30595pt x 210.03864pt.
  [20 <./images/openshmem_memory_model.png>] <images/llvm.pdf, id=88, 592.81981p
 t x 295.3936pt>
 File: images/llvm.pdf Graphic file (type pdf)
  <use images/llvm.pdf>
-Package pdftex.def Info: images/llvm.pdf used on input line 370.
+Package pdftex.def Info: images/llvm.pdf used on input line 371.
 (pdftex.def)             Requested size: 412.56497pt x 205.57515pt.
 
 <images/architecture.pdf, id=89, 528.86113pt x 233.76685pt>
 File: images/architecture.pdf Graphic file (type pdf)
 
 <use images/architecture.pdf>
-Package pdftex.def Info: images/architecture.pdf used on input line 383.
+Package pdftex.def Info: images/architecture.pdf used on input line 384.
 (pdftex.def)             Requested size: 412.56497pt x 182.36594pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -633,7 +617,7 @@ t>
 File: images/barrier.pdf Graphic file (type pdf)
 
 <use images/barrier.pdf>
-Package pdftex.def Info: images/barrier.pdf used on input line 392.
+Package pdftex.def Info: images/barrier.pdf used on input line 393.
 (pdftex.def)             Requested size: 206.28249pt x 190.70062pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -643,14 +627,14 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 File: images/store_translation.pdf Graphic file (type pdf)
 
 <use images/store_translation.pdf>
-Package pdftex.def Info: images/store_translation.pdf used on input line 409.
+Package pdftex.def Info: images/store_translation.pdf used on input line 410.
 (pdftex.def)             Requested size: 330.05322pt x 154.76451pt.
  [23 <./images/store_translation.pdf>]
 <images/load_translation.pdf, id=170, 564.43233pt x 264.96672pt>
 File: images/load_translation.pdf Graphic file (type pdf)
 
 <use images/load_translation.pdf>
-Package pdftex.def Info: images/load_translation.pdf used on input line 418.
+Package pdftex.def Info: images/load_translation.pdf used on input line 419.
 (pdftex.def)             Requested size: 330.05322pt x 154.94627pt.
  [24 <./images/load_translation.pdf>]
 Chapter 4.
@@ -660,30 +644,30 @@ Chapter 4.
 File: images/heap_organisation.pdf Graphic file (type pdf)
 
 <use images/heap_organisation.pdf>
-Package pdftex.def Info: images/heap_organisation.pdf used on input line 457.
+Package pdftex.def Info: images/heap_organisation.pdf used on input line 458.
 (pdftex.def)             Requested size: 412.56497pt x 162.13562pt.
  [26 <./images/heap_organisation.pdf>]
 [27] [28] <images/no_malloc.png, id=222, 350.30875pt x 64.24pt>
 File: images/no_malloc.png Graphic file (type png)
 
 <use images/no_malloc.png>
-Package pdftex.def Info: images/no_malloc.png used on input line 517.
+Package pdftex.def Info: images/no_malloc.png used on input line 518.
 (pdftex.def)             Requested size: 170.71652pt x 31.30632pt.
 
-Overfull \hbox (5.69305pt too wide) in paragraph at lines 517--518
+Overfull \hbox (5.69305pt too wide) in paragraph at lines 518--519
  [][] 
  []
 
 LaTeX Font Info:    Font shape `OT1/phv/m/n' will be
-(Font)              scaled to size 9.85492pt on input line 518.
+(Font)              scaled to size 9.85492pt on input line 519.
 <images/default_malloc.png, id=223, 324.21124pt x 62.2325pt>
 File: images/default_malloc.png Graphic file (type png)
 
 <use images/default_malloc.png>
-Package pdftex.def Info: images/default_malloc.png used on input line 523.
+Package pdftex.def Info: images/default_malloc.png used on input line 524.
 (pdftex.def)             Requested size: 170.71652pt x 32.76941pt.
 
-Overfull \hbox (5.69305pt too wide) in paragraph at lines 523--524
+Overfull \hbox (5.69305pt too wide) in paragraph at lines 524--525
  [][] 
  []
 
@@ -691,10 +675,10 @@ Overfull \hbox (5.69305pt too wide) in paragraph at lines 523--524
 File: images/custom_malloc.png Graphic file (type png)
 
 <use images/custom_malloc.png>
-Package pdftex.def Info: images/custom_malloc.png used on input line 528.
+Package pdftex.def Info: images/custom_malloc.png used on input line 529.
 (pdftex.def)             Requested size: 170.71652pt x 33.41283pt.
 
-Overfull \hbox (5.69305pt too wide) in paragraph at lines 528--529
+Overfull \hbox (5.69305pt too wide) in paragraph at lines 529--530
  [][] 
  []
 
@@ -702,10 +686,10 @@ Overfull \hbox (5.69305pt too wide) in paragraph at lines 528--529
 File: images/simple_malloc.png Graphic file (type png)
 
 <use images/simple_malloc.png>
-Package pdftex.def Info: images/simple_malloc.png used on input line 534.
+Package pdftex.def Info: images/simple_malloc.png used on input line 535.
 (pdftex.def)             Requested size: 170.71652pt x 33.09337pt.
 
-Overfull \hbox (5.69305pt too wide) in paragraph at lines 534--535
+Overfull \hbox (5.69305pt too wide) in paragraph at lines 535--536
  [][] 
  []
 
@@ -715,17 +699,17 @@ loc.png> <./images/simple_malloc.png>] [30
 ]
 Chapter 5.
 
-LaTeX Warning: Reference `' on page 31 undefined on input line 547.
+LaTeX Warning: Reference `' on page 31 undefined on input line 548.
 
 [31] <images/heap_store_translation.pdf, id=240, 509.8211pt x 506.34198pt>
 File: images/heap_store_translation.pdf Graphic file (type pdf)
 
 <use images/heap_store_translation.pdf>
 Package pdftex.def Info: images/heap_store_translation.pdf used on input line 5
-61.
+62.
 (pdftex.def)             Requested size: 199.16928pt x 197.81253pt.
 
-Overfull \hbox (13.51631pt too wide) in paragraph at lines 561--562
+Overfull \hbox (13.51631pt too wide) in paragraph at lines 562--563
  [][] 
  []
 
@@ -734,10 +718,10 @@ File: images/heap_load_translation.pdf Graphic file (type pdf)
 
 <use images/heap_load_translation.pdf>
 Package pdftex.def Info: images/heap_load_translation.pdf used on input line 56
-7.
+8.
 (pdftex.def)             Requested size: 199.16928pt x 197.13054pt.
 
-Overfull \hbox (13.51631pt too wide) in paragraph at lines 567--568
+Overfull \hbox (13.51631pt too wide) in paragraph at lines 568--569
  [][] 
  []
 
@@ -749,56 +733,38 @@ Chapter 6.
 File: images/instruction_count.png Graphic file (type png)
 
 <use images/instruction_count.png>
-Package pdftex.def Info: images/instruction_count.png used on input line 613.
+Package pdftex.def Info: images/instruction_count.png used on input line 614.
 (pdftex.def)             Requested size: 412.56497pt x 336.94417pt.
  [35 <./images/instruction_count.png (PNG copy)>] [36
 
 ]
 Chapter 7.
 [37] (./skeleton.bbl [38]
-Underfull \hbox (badness 7667) in paragraph at lines 14--18
+Underfull \hbox (badness 7667) in paragraph at lines 19--23
 []\OT1/ptm/m/n/12 Greg An-drews.  Foun-da-tions of mul-ti-threaded, par-al-lel,
  and dis-tributed
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 14--18
+Underfull \hbox (badness 10000) in paragraph at lines 19--23
 \OT1/ptm/m/n/12 pro-gram-ming. Source code for pro-grams, Jan-uary 2000.  URL
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 33--40
-[]\OT1/ptm/m/n/12 Brian F. Cooper, Adam Sil-ber-stein, Er-win Tam, Raghu Ra-mak
-r-ish-
- []
-
-
-Underfull \hbox (badness 8056) in paragraph at lines 33--40
-\OT1/ptm/m/n/12 nan, and Rus-sell Sears.  Bench-mark-ing cloud serv-ing sys-tem
-s with
- []
-
-
-Underfull \hbox (badness 3872) in paragraph at lines 33--40
-\OT1/ptm/m/n/12 ycsb.  In \OT1/ptm/m/it/12 Pro-ceed-ings of the 1st ACM Sym-po-
-sium on Cloud Com-put-
- []
-
-
-Overfull \hbox (49.19356pt too wide) in paragraph at lines 33--40
-\OT1/pcr/m/n/12 https://www2.cs.duke.edu/courses/fall13/cps296.4/838-CloudPaper
-s/ycsb.pdf\OT1/ptm/m/n/12 . 
- []
-
-
-Overfull \hbox (16.79369pt too wide) in paragraph at lines 81--89
-\OT1/pcr/m/n/12 http://openshmem.org/site/sites/default/site[]files/OpenSHMEM-1
-.3.pdf\OT1/ptm/m/n/12 . 
+Underfull \hbox (badness 5939) in paragraph at lines 52--55
+[]\OT1/ptm/m/n/12 goldilocks.  Can linux ``run out of RAM''?, Septem-ber 2016. 
+ URL
  []
 
 [39
 
-]) [40]
+]
+Overfull \hbox (16.79369pt too wide) in paragraph at lines 104--112
+\OT1/pcr/m/n/12 http://openshmem.org/site/sites/default/site[]files/OpenSHMEM-1
+.3.pdf\OT1/ptm/m/n/12 . 
+ []
+
+) [40]
 Appendix A.
 [41
 
@@ -808,10 +774,10 @@ LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 7190 strings out of 492995
- 105449 string characters out of 6132703
- 219852 words of memory out of 5000000
- 10581 multiletter control sequences out of 15000+600000
+ 7199 strings out of 492995
+ 105698 string characters out of 6132703
+ 219941 words of memory out of 5000000
+ 10590 multiletter control sequences out of 15000+600000
  51416 words of font info for 95 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  43i,8n,67p,1729b,1702s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -825,7 +791,7 @@ onts/type1/urw/helvetic/uhvro8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/t
 ype1/urw/times/utmb8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/t
 imes/utmr8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmri
 8a.pfb>
-Output written on skeleton.pdf (42 pages, 671038 bytes).
+Output written on skeleton.pdf (42 pages, 673008 bytes).
 PDF statistics:
  346 PDF objects out of 1000 (max. 8388607)
  236 compressed objects within 3 object streams

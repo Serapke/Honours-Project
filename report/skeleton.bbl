@@ -1,4 +1,4 @@
-\begin{thebibliography}{14}
+\begin{thebibliography}{17}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -9,6 +9,11 @@
 Github. {gRPC} reporsitory. {Issues}. grpc c++ fails to compile (zlib),
   December 2017.
 \newblock URL \url{https://github.com/grpc/grpc/issues/13640}.
+
+\bibitem[Anderson and Neefe(1998)]{Anderson:1998:ENR:893677}
+Eric~A. Anderson and Jeanna~M. Neefe.
+\newblock An exploration of network ram.
+\newblock Technical report, Berkeley, CA, USA, 1998.
 
 \bibitem[Andrews(2000)]{producer-consumer}
 Greg Andrews.
@@ -34,9 +39,19 @@ Brian~F. Cooper, Adam Silberstein, Erwin Tam, Raghu Ramakrishnan, and Russell
   Sears.
 \newblock Benchmarking cloud serving systems with ycsb.
 \newblock In \emph{Proceedings of the 1st ACM Symposium on Cloud Computing},
-  SoCC '10, pages 143--154, New York, NY, USA, 2010. ACM.
-\newblock URL
-  \url{https://www2.cs.duke.edu/courses/fall13/cps296.4/838-CloudPapers/ycsb.pdf}.
+  pages 143--154, 2010.
+\newblock URL \url{http://bit.ly/benchmarking-cloud-serving-systems-with-ycsb}.
+
+\bibitem[Dean(2009)]{numbers_should_know}
+Jeff Dean.
+\newblock Designs, lessons and advice from building large distributed systems,
+  2009.
+\newblock URL \url{http://bit.ly/numbers-everyone-should-know}.
+
+\bibitem[goldilocks(2016)]{run_out_of_mem}
+goldilocks.
+\newblock Can linux ``run out of {RAM}''?, September 2016.
+\newblock URL \url{https://unix.stackexchange.com/a/92544}.
 
 \bibitem[Google(2018{\natexlab{a}})]{google-bigtable}
 Google.
@@ -69,6 +84,14 @@ Katarina Grolinger, Wilson~A Higashino, Abhinav Tiwari, and Miriam~AM Capretz.
 Doug Lea and Wolfram Gloger.
 \newblock A memory allocator, 1996.
 
+\bibitem[Oleszkiewicz et~al.(2004)Oleszkiewicz, Xiao, and Liu]{1327942}
+J.~Oleszkiewicz, Li~Xiao, and Yunhao Liu.
+\newblock Parallel network ram: effectively utilizing global cluster memory for
+  large data-intensive parallel programs.
+\newblock In \emph{International Conference on Parallel Processing, 2004. ICPP
+  2004.}, pages 353--360 vol.1, Aug 2004.
+\newblock \doi{10.1109/ICPP.2004.1327942}.
+
 \bibitem[Rouse(2016)]{synchronous-replication}
 Margaret Rouse.
 \newblock Synchronous replication.
@@ -86,12 +109,5 @@ Monika ten Bruggencate, Barbara Chapman, Tony Curtis, Eduardo D'Azevedo, James
 \newblock {OpenSHMEM: Application Programming Interface}, February 2016.
 \newblock URL
   \url{http://openshmem.org/site/sites/default/site\_files/OpenSHMEM-1.3.pdf}.
-
-\bibitem[Z.Huang et~al.(2006)Z.Huang, W.Chen, M.Purvis, and W.Zheng]{vodca}
-Z.Huang, W.Chen, M.Purvis, and W.Zheng.
-\newblock Vodca: View-oriented, distributed, cluster-based approach to parallel
-  computing.
-\newblock In \emph{Cluster Computing and the Grid, 2006. CCGRID 06. Sixth IEEE
-  International Symposium on}, volume~2, pages 15--15, May 2006.
 
 \end{thebibliography}

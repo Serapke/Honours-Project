@@ -49,7 +49,7 @@
 \abstract{
 Computer programs these days require a lot of hardware resources. Sometimes we come across programs, which cannot fit into main memory. The only solution to solve this problem is by physically adding more random access memory (RAM) to the computer.
 
-This project proposes a software solution aimed to run user program using key-value cloud storage service as the main memory source. An implemented translation tool transforms all (or part, depending on the version) store and load instructions to put and get operations on Google Bigtable storage using LLVM transformation pass with its opt tool. 
+This project proposes a software solution aimed to run a user program using key-value cloud storage service as the main memory source. An implemented translation tool transforms all (or part, depending on the version) store and load instructions to put and get operations on Google Bigtable storage using LLVM transformation pass with its opt tool. 
 
 As expected, the benchmark results on the translation tool proved the programs instrumented by translation tool to run orders of magnitude slower than their original counterparts. However, with some further improvements the tool could be used not only as a solution for memory intensive programs, but also used as a way to provide Bigtable (or any other cloud-based key-value storage) as distributed shared memory for multiple programs running on machines from different parts of the world.
 }
@@ -73,53 +73,58 @@ Finally, to my family and friends for their support and encouragement.
 
 \section{Motivation}
 
-Distributed shared memory (DSM) is memory architecture where physically distributed memory can be accessed as one logically shared address space. Systems based on shared memory architecture reduce the complexity of parallel programming \citep{vodca}. Unfortunately, building an efficient distributed shared memory system is a huge challenge and the documentation on the existing open-source DSMs is rather limited. Thus it can be a daunting task to run parallel programs on distributed shared memory systems.
+Many computing applications demand a large amount of memory space. All this memory has to be provided by the primary memory, also called random access memory (RAM). In some operating systems (i.e. Linux or Mac OS), when the primary memory does not have enough memory for a requesting process, it moves inactive pages in memory to swap space. Swap space is usually a limited amount of memory located on the secondary storage, thus it provides orders of magnitude slower access times than RAM. Problems begin when even swap space is not enough to satisfy memory requirements of a program. Some systems have hard limits on the amount of memory a process can operate on and thus denies any excessive amounts of memory allocations. Other systems behave more wildly, allows to allocate more memory than the system has and eventually starts killing processes by some predefined heuristic \citep{run_out_of_mem}. Neither of them solve the problem of main memory shortage and the only possible solution seems to be physically adding more RAM to the system. This project proposes a software solution aimed to run a user program using key-value cloud storage as the main memory source.
 
-With cloud computing becoming increasingly popular new solution became available, namely NoSQL data stores \citep{nosql-data-stores}. NoSQL can be completely schema-free, most popular data models being key-value stores, document stores, column-family stores, and graph databases. It is able to scale horizontally over many commodity servers. On top of that, some cloud data management systems provide strong consistency model, which means that after update operations all nodes agree on the new value before making it available to the user. All these properties make it possible to use such data stores as distributed shared memory.
+The decision to use key-value cloud storage was based on the progress cloud services made during the last decade. We are particularly interested in NoSQL data stores \citep{nosql-data-stores}. NoSQL can be completely schema-free, with most popular data models being key-value stores, document stores, column-family stores, and graph databases. It is able to scale horizontally over many commodity servers, thus providing huge amounts of memory storage. Some cloud storage services (i.e. Google Bigtable) even provide in-memory tables, which greatly decreases read and write times in such systems.  On top of that, some cloud data management systems provide strong consistency model, which means that after an update operation all nodes agree on the new value before making it available to the user. All these properties let cloud storages to be used as the main memory source.
 
-The focus of this project is to expose the distributed shared memory model in a cloud by implementing an instrumentation tool which translates load and store instructions to get and put calls to key-value store. This tool will let users to run parallel programs on cloud using key-value store without editing a single line of code.
+The proposed solution in this project is somewhat similar to the idea of network RAM. When using network RAM, the system pages to idle memory over the network rather than to disk. This seems like a valid solution from the performance perspective, as the latency of some networks is much lower than the latency of disk seek \citep{numbers_should_know}. Although the main purposes of using such systems are described to be performance improvement \citep{Anderson:1998:ENR:893677} and better resource utilisation in distributed systems \citep{1327942}, it can also benefit as an external memory provider. For our project, the cloud storage stands as an abstraction of parallel network RAM. 
 
-Moreover, the load and store instructions translation tool provide a way to run programs on the systems which do not have enough main memory for these programs. By translating the loads and stores to get and put methods, the system will use Bigtable as its main memory source. It is expected that the instrumented program is going to be magnitudes of order slower than the original program. This issue is not covered in this paper.
+Four different solutions, their advantages and disadvantages were identified:
+
+\begin{itemize}
+\item
+\textbf{Explicit management by user.} This solution requires the user to explicitly move data back and forth from either disk or cloud storage. It requires a lot of code modification, thus might not be well accepted by users.
+\item
+\textbf{Compiler level}. This solution compiles the user code and transforms it during the optimisation phase. This method doesn't require any code modification from the user and is more portable than other solutions.
+\item
+\textbf{Device driver}. This solution replaces paging and swap devices for the operating system with a device which sends the pages through the network. This solution does not require any modification to the user code. However, as this driver intercepts all pages, some of them (i.e. OS pages) should always be stored locally for the security reasons. This adds additional complexity to the solution. Moreover, this solution is less portable than the compiler-level implementation and adds an additional overhead due to context switching.
+\item
+\textbf{Modified kernel}. This solution should achieve highest performance (no context switching) without any modifications to the source code. On the other hand, this solution is only possible on open-source operating systems, it is not portable between the architectures and is unattainable during the timespan of the project.
+\end{itemize}
+
+After careful examination it was decided to do a compiler level solution, as it seemed the most straight-forward and portable way to solve the problem without any modifications to the user source code. The implementation involves translating load and store instructions to get and put calls for key-value store. The translation part is done using LLVM tools and compiler. Two different versions of the translation tool were developed in order to offer the user more control on what type of data to store on the cloud storage.
 
 \section{Scope}
 
-One of the initial goals of the project was to create a tool which can instrument programs written in any user preferred language. Unfortunately, this turned out to be infeasible and not practical in the time span of the project. Communication with Google data store needs a different  gRPC library for each language used. Moreover, different LLVM frontends are needed to translate from source language to LLVM Intermediate Representation (on which the actual translation is applied). Currently, LLVM has full support for C and C++ source languages through Clang, while other language frontends have been written using LLVM by the community. As the main aim of the project is to use Bigtable as the key-value store, the use of different source languages seems more like a nice-to-have feature, rather than the essential part of the project. Thus, I decided to make a proof of concept tool for C++ programming language, which can later be extended to instrumenting other source languages. 
+It was understood that an industry quality tool should be as portable as possible and work with any cloud storage. However, due to the limited timespan of the project, it was decided to create a modular proof of concept tool that works with Google Bigtable and could be easily extended to work with other cloud storages. For the same reason, the implemented tool works only with programs written in C and C++. These specific languages were selected as they are both fully supported by LLVM through Clang compiler, while other languages are mainly supported by LLVM community created compiler frontends.
 
 \section{Contributions}
 
 The contributions of this paper are as follows:
 \begin{itemize}
 \item
-Research on Google data stores, namely Bigtable, Datastore and Spanner, their features and the consistency models they provide.
+Research and benchmark of multiple Google data stores.
 \item
-Benchmarked the above data stores based on their throughput and latency using YCSB tool.
-% \item
-% Research on OpenSHMEM and POSIX threads and their suitability for the project (hardware/software required).
+Implementation of the tool which translates all program's load and store instructions to get and put calls on Bigtable.
 \item
-Research on available tools to create calls to Google Bigtable data store (gRPC, protobuf, OpenSHMEM, Intel PIN, LLVM).
+Implemented custom heap allocator.
 \item
-Implemented an LLVM pass which translates all load and store instructions to get and put calls on Bigtable.
-\item
-Implemented custom heap allocation functions to minimise main memory usage on instrumented programs.
-\item
-Implemented an LLVM pass which translates only load and store instructions originating from dynamic (heap) memory.
+Implemented a variant of the translation tool which instruments only the load and store instructions originating from dynamic (heap) memory.
 \end{itemize}
-
-% TODO_LATER: update contributions
 
 \section{Synopsis}
 
-Chapter 2 presents the main requirements for the data stores to be used as distributed shared memory systems. The chapter continues with the background information on the selected Google Cloud data stores, namely Bigtable, Datastore and Spanner. Finally, the chapter discusses the results of the benchmark ran on these data stores.
+Chapter 2 presents the main requirements for the data stores to be used as the main memory source. The chapter continues with the background information on the selected Google Cloud data stores, namely Bigtable, Datastore and Spanner, and discusses the results of the benchmark ran on these data stores. Finally, the methods which invocate read and write operations on Bigtable are presented.
 
-Chapter 3 starts with the architecture of the tool, also briefly introducing gRPC and protobuf libraries. Then, the chapter briefly talks about the unsuccessful attempt to translate store and load instructions to get and put operations on data store using Intel PIN tool. The chapter continues with an LLVM pass implementation.
+Chapter 3 starts with the brief description of alternative solutions considered for memory extension through cloud storage problem. Then, the chapter introduces LLVM project and the architecture of the translation tool implemented. The chapter finishes with a more in-depth look at the implementation of the tool.
 
-Chapter 4 presents the memory wasting problem, introduced by storing heap variables on Bigtable, and describes the solution - the implementation of custom heap memory allocation functions. 
+Chapter 4 presents the virtual memory waste problem, introduced by storing heap variables on Bigtable, and describes the solution - the implementation of custom heap memory allocator. Moreover, the chapter briefly introduces another version of the custom heap allocator which does not reuse the freed memory. Finally, the chapter discusses the consistency of the proposed allocators on multithreaded applications and finishes with virtual memory usage and performance analysis.
 
-Chapter 5 discusses the correctness and efficiency of the system. 
+Chapter 5 introduces the implemented heap memory translation tool, which only translates load and store instructions operating on heap memory space.
 
-Chapter 6 introduces the API which lets computers on two different locations in the world use the key-value store as distributed shared memory in scenarios like producer/consumer.
+Chapter 6 presents the evaluation of the two translation tools based on the performance and instruction count of the programs.
 
-Chapter 7 summarizes the work done and possible ways of improving the system.
+Chapter 7 summarizes the work done and proposes a few possible improvements for future work.
 
 \chapter{Data store}
 
