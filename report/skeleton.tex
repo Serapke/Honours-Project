@@ -12,24 +12,27 @@
 \usepackage[dvipsnames]{xcolor}
 \usepackage{subcaption}
 \usepackage[title]{appendix}
+\usepackage{verbatim}
+
+\usepackage{minted}
 
 \graphicspath{ {images/} }
 
 \begin{document}
 
-\title{Shared memory through key-value stores}
+\title{Memory through key-value stores}
 
 \author{Mantas Serapinas}
 
 % to choose your course
 % please un-comment just one of the following
-\course{Artificial Intelligence and Computer Science}
+%\course{Artificial Intelligence and Computer Science}
 %\course{Artificial Intelligence and Software Engineering}
 %\course{Artificial Intelligence and Mathematics}
 %\course{Artificial Intelligence and Psychology }   
 %\course{Artificial Intelligence with Psychology }   
 %\course{Linguistics and Artificial Intelligence}    
-%\course{Computer Science}
+\course{Computer Science}
 %\course{Software Engineering}
 %\course{Computer Science and Electronics}    
 %\course{Electronics and Software Engineering}    
@@ -40,7 +43,7 @@
 
 % to choose your report type
 % please un-comment just one of the following
-%\project{Undergraduate Dissertation} % CS&E, E&SE, AI&L
+\project{Undergraduate Dissertation} % CS&E, E&SE, AI&L
 %\project{Undergraduate Thesis} % AI%Psy
 \project{4th Year Project Report}
 
@@ -66,7 +69,7 @@ Finally, to my family and friends for their support and encouragement.
 
 \tableofcontents
 
-%\pagenumbering{arabic}
+\pagenumbering{arabic}
 
 
 \chapter{Introduction}
@@ -77,8 +80,10 @@ Many computing applications demand a large amount of memory space. All this memo
 
 The decision to use key-value cloud storage was based on the progress cloud services made during the last decade. We are particularly interested in NoSQL data stores \citep{nosql-data-stores}. NoSQL can be completely schema-free, with most popular data models being key-value stores, document stores, column-family stores, and graph databases. It is able to scale horizontally over many commodity servers, thus providing huge amounts of memory storage. Some cloud storage services (i.e. Google Bigtable) even provide in-memory tables, which greatly decreases read and write times in such systems.  On top of that, some cloud data management systems provide strong consistency model, which means that after an update operation all nodes agree on the new value before making it available to the user. All these properties let cloud storages to be used as the main memory source.
 
-The proposed solution in this project is somewhat similar to the idea of network RAM. When using network RAM, the system pages to idle memory over the network rather than to disk. This seems like a valid solution from the performance perspective, as the latency of some networks is much lower than the latency of disk seek \citep{numbers_should_know}. Although the main purposes of using such systems are described to be performance improvement \citep{Anderson:1998:ENR:893677} and better resource utilisation in distributed systems \citep{1327942}, it can also benefit as an external memory provider. For our project, the cloud storage stands as an abstraction of parallel network RAM. 
+The proposed solution in this project is somewhat similar to the idea of network RAM. When using network RAM, the system pages to idle memory over the network rather than to disk. This seems like a valid solution from the performance perspective, as the latency of some networks is much lower than the latency of disk seek \citep{numbers_should_know}. Although the main purposes of using such systems are described to be performance improvement \citep{Anderson:1998:ENR:893677} and better resource utilisation in distributed systems \citep{1327942}, it can also benefit as an external memory provider. For our project, the cloud storage stands as an abstraction of parallel network RAM. However, as the idea about network RAM was discovered in one of the final stages of project development, the proposed solution uses the network RAM (or the cloud storage) as substitution not only for disk but also for main memory accesses. This, of course, makes the instrumented programs very inefficient and is identified as one of the key improvements for future work.
 
+
+% ------------------------------- UPDATE
 Four different solutions, their advantages and disadvantages were identified:
 
 \begin{itemize}
@@ -93,6 +98,7 @@ Four different solutions, their advantages and disadvantages were identified:
 \end{itemize}
 
 After careful examination it was decided to do a compiler level solution, as it seemed the most straight-forward and portable way to solve the problem without any modifications to the user source code. The implementation involves translating load and store instructions to get and put calls for key-value store. The translation part is done using LLVM tools and compiler. Two different versions of the translation tool were developed in order to offer the user more control on what type of data to store on the cloud storage.
+% ------------------------------- UPDATE
 
 \section{Scope}
 
@@ -130,123 +136,147 @@ Chapter 7 summarizes the work done and proposes a few possible improvements for 
 
 \section{Overview}
 
-In order to build and test the translation tool, a single cloud data store was chosen to be used as a distributed shared memory system for the project. The main requirements for the data store were:
+The proposed translation tool instruments the program and makes it use the cloud data store as the main memory source. For the purpose of the project, a single cloud storage solution was chosen.
+The main requirements for the data store were:
 
 \begin{itemize}
 \item
-provide efficient throughput and latency results;
+provide high throughput and low latency read and write operations;
 \item
 provide strong consistency model;
 \item
-have a way to run user programs on the same data centre, the data store is located on;
+provide a geographical locality for the machine that runs the instrumented program and the data store. In other words, have an option to choose that both machines would be located in the same data centre. This provides better throughput and latency results, as the nodes in the same data centre have very high bandwidth (1 Gbps - 100 Gbps) connections;
 \item
-provide an API to communicate in C++;
+provide a C++ API for data store operations;
 \item
 preferably provide key-value database model.
 \end{itemize}
 
-Three Google cloud storages, which met almost all of the requirements, were suggested, namely Bigtable, Datastore and Spanner. Even though neither of the three candidates had key-value store as their primary database model, they were one of the few that provided communication between C++ program and a data store. Google cloud products provide this functionality through gRPC (open source remote procedure call system) using protobuf library and Google APIs. Moreover, all of these Google data storages can be chosen to be located in the same data centre for best throughput and latency results. Further sections provide a brief look into each of the candidates and show the results of the benchmarking on throughput and latency.
+After a brief research three Google cloud storages were selected for further examination: Bigtable, Datastore and Spanner. Even though neither of the three candidates have key-value store as their primary database model, they are one of the few that provide a C++ API for data store operations. This is achieved by using a combination of gRPC and protobuf libraries and Google APIs. Furthermore, all of the three storages have an option to be located on the same data centre as the machine running the instrumented program. All of the three data stores provide strong consistency models, with Spanner providing even stronger model, namely external consistency\footnote{External consistency guarantees that for any two transactions, T\textsubscript{1} and T\textsubscript{2}: if T\textsubscript{2} starts to commit after T\textsubscript{1} finishes committing, then the timestamp for T\textsubscript{2} is greater than the timestamp for T\textsubscript{1}.}. Finally, the three selected Google data-serving systems were further analysed by performing a benchmark for their throughput and latency results.
 
-\section{Bigtable}
+%\section{Datastore}
 
-Bigtable \citep{google-bigtable} is high performance, wide column NoSQL database, which stores data in massively scalable tables, each of which is a sorted key/value map. Tables consists of rows, each of which is essentially a collection of key/value entries, where the key is a combination of the column family, column qualifier and timestamp. 
+%Datastore \citep{google-datastore} is highly-scalable NoSQL, document store model database developed by Google. Unlike Bigtable, it provides a SQL-like query language (GQL) and ACID (Atomicity, Consistency, Isolation, Durability) properties for atomic transactions. Moreover, it supports a variety of data types, including integers, floating-point numbers and many more, although such functionality is not needed for purpose of the project as the tool stores binary data directly. Datastore uses synchronous replication, meaning that data is written to primary storage and the replica simultaneously.
 
-Bigtable treats all data as raw byte strings. If a row does not include a value for a specific key, the key/value pair simply does not exist. Changes to a row take up extra storage space, as Bigtable stores mutations sequentially and compacts them only periodically, but as the usual amount of data sent from our tool does not exceed 32/64 bits (depending on the machine architecture) the additional amount of memory used is insignificant. 
+%Similarly to Bigtable, Datastore provides strong consistency for entity (row) lookups by key. It also provides strong consistency for ancestor queries but they are not relevant to the project.
 
-Most importantly, Bigtable supports look up value associated with key operation and provides strong consistency - all writes are seen in the same order.
+%\section{Spanner}
 
-\section{Datastore}
+%Spanner \citep{google-spanner} is a horizontally scalable, globally consistent relational database service. Unlike the previously discussed storages, Spanner has an key-value store as additional database model, data scheme and uses SQL. Similarly to the Datastore, it provides ACID transaction properties.
 
-Datastore \citep{google-datastore} is highly-scalable NoSQL, document store model database developed by Google. Unlike Bigtable, it provides a SQL-like query language (GQL) and ACID (Atomicity, Consistency, Isolation, Durability) properties for atomic transactions. Moreover, it supports a variety of data types, including integers, floating-point numbers and many more, although such functionality is not needed for purpose of the project as the tool stores binary data directly. Datastore uses synchronous replication, meaning that data is written to primary storage and the replica simultaneously.
-
-Similarly to Bigtable, Datastore provides strong consistency for entity (row) lookups by key. It also provides strong consistency for ancestor queries but they are not relevant to the project.
-
-\section{Spanner}
-
-Spanner \citep{google-spanner} is a horizontally scalable, globally consistent relational database service. Unlike the previously discussed storages, Spanner has an key-value store as additional database model, data scheme and uses SQL. Similarly to the Datastore, it provides ACID transaction properties.
-
-Spanner provides even stronger consistency property than strong consistency, namely external consistency. External consistency guarantees that for any two transactions, T\textsubscript{1} and T\textsubscript{2}: if T\textsubscript{2} starts to commit after T\textsubscript{1} finishes committing, then the timestamp for T\textsubscript{2} is greater than the timestamp for T\textsubscript{1} . 
+%Spanner provides even stronger consistency property than strong consistency, namely external consistency. 
 
 \section{Benchmarking results}
 
-For the benchmarking an existing industry tool was used - Yahoo! Cloud
-Serving Benchmark (YCSB) \citep{ycsb}. A key feature of YCSB, as described by its developers, is that it is extensible. YCSB is open-source, supports easy definitions of new systems and workloads. Workloads allow to understand the performance tradeoffs of different systems.
+The benchmarking was done using Yahoo! Cloud Serving Benchmark(YCSB) \citep{ycsb} tool. YCSB is an open-source framework for evaluating and comparing the performance of multiple types of data-serving systems. A key feature of YCSB, as described by its developers and users, is its extensibility, as it supports easy definitions of new systems and workloads. Workloads define the data that is loaded into the data store during the loading phase, and the operations are executed against the data set during the transaction phase. Workloads allow to better understand the performance tradeoffs of different data-serving systems.
 
-The main operations done by the translation tool are reads and writes with a small amount of read-modify-write operations on heap allocation pointer, keeping track of the address to next free memory space. Thus, workloads A and F were chosen, simulating update heavy and read-modify-write using systems, respectively.
+The main operations done by the program instrumented with the translation tool are reads and writes with a small amount of read-modify-write for possible atomic operations. The predefined workloads A (update heavy) and F (read-modify-write) were selected out of six provided by YCSB framework, as they correctly imitate the behaviour of an average user program. 
 
-For the best results the benchmarking was run on Google Compute Engine (GCE) virtual machine situated at the same data centre as the data stores.
+For the best results the benchmark was run on Google Compute Engine (GCE) virtual machine situated at the same data centre as the data stores.
 
-\subsection{Loading the data}
+The benchmark consists of two phases: loading and transaction. In the loading phase, 1000 entries are inserted into each data-serving system. Figures \ref{fig:insert_operations}a and \ref{fig:insert_operations}b show the latency and throughput achieved by each cloud storage. The results show that both Bigtable and Spanner have much lower latency and higher throughput than Datastore. This might be due to the fact that Datastore, unlike the other to data-serving systems in question, is using synchronous replication, which makes the host wait until all replications are created, as described in Margaret's Rouse article Synchronous replication \citep{synchronous-replication}.
 
-Before running the benchmark on workloads, 1000 rows were inserted into each data store. Figures \ref{load-latency} and \ref{load-throughput} show the latency and throughput achieved by each cloud storage. The results show that both Bigtable and Spanner have much lower latency and higher throughput than Datastore. This can be explained by research results on Datastore using synchronous replication, which makes the host wait until all replications are created, as described in Margaret's Rouse article Synchronous replication \citep{synchronous-replication}.
-
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=10cm]{load-latency}
-	\caption{Latency (\( \mu s\)) for 1000 insert (write) operations}
-	\label{load-latency}
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{.45\linewidth}
+    	\centering
+    	\includegraphics[width=6.5cm]{images/load-latency}
+	\caption{Latency (\( \mu s\))}
+    \end{subfigure}
+    \hskip2em
+    \begin{subfigure}{.45\linewidth}
+    	\centering
+    	\includegraphics[width=6.5cm]{images/load-throughput}
+	\caption{Throughput (\(ops/sec\))}
+    \end{subfigure}
+    \caption{Latency and throughput for 1000 insert (write) operations}
+    \label{fig:insert_operations}
 \end{figure}
-\begin{figure}[ht]
+
+In the transaction phase, two workloads were run. Workload A consists of 1000 operations (500 reads and 500 updates) while workload F consists of 2000 operations (1000 reads, 500 atomic read-modify-write operations and 500 updates). The results of the benchmark in terms of latency on write (update) operations were consistent with the previous loading benchmark results, with Bigtable and Spanner performing significantly better over Datastore (Figure \ref{write-latency}). However, the gap between Bigtable and Spanner was wider than the one observed in the loading phase, with Bigtable achieving the latencies of 4,627 \( \mu s\) on workload A and 4,682 \( \mu s\) on workload B, while Spanner struggling with the latencies of 9,944 \( \mu s\) and 7,338 \( \mu s\), respectively.
+
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=10cm]{load-throughput}
-	\caption{Throughput (\(ops/sec\)) for 1000 insert (write) operations}
-	\label{load-throughput}
-\end{figure}
-
-\subsection{Workloads}
-
-Workload A consists of 1000 operations (500 reads and 500 writes) while workload F consists of 2000 operations (1000 reads, 500 atomic read-modify-write operations and 500 writes). The results of the benchmark in terms of latency on write operations were consistent with the previous loading benchmark results, with Bigtable and Spanner performing significantly better over Datastore (Figure \ref{write-latency}). The latency on write operations showed a clear dominance by Bigtable. 
-
-\begin{wrapfigure}{r}{0.5\textwidth}
-	\centering
-	\includegraphics[width=7cm]{write-latency}
-	\caption{}
-% 	\caption{Write operations latency (\( \mu s\)) for Workload A (500 writes) and Workload B (1000 writes)}
+	\includegraphics[width=12cm]{write-latency}
+ 	\caption{Update operations latencies (\( \mu s\)) for Workload A (500 writes) and Workload B (1000 writes)}
 	\label{write-latency}
-\end{wrapfigure}
+\end{figure}
 
 Even though, the difference on read operations latency between Datastore and two other data storages were smaller than with write operations (Figure \ref{read-latency}), Datastore still was more than two times slower than Spanner and more than 4 times slower than Bigtable. The latency results on read-modify-write operations showed a similar trend as read and write operations (Figure \ref{read-modify-write-latency}). 
 
-The overall throughput, again, showed a significant superiority by Bigtable, as indicated in Figure \ref{throughput}. 
-
-
-\begin{figure}[ht]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=12cm]{read-latency}
 	\caption{Read operations latency (\( \mu s\)) for Workload A (500 reads) and Workload B (1000 reads)}
 	\label{read-latency}
 \end{figure}
 
-\begin{figure}[ht]
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=13cm]{read-modify-write-latency}
+	\includegraphics[width=12cm]{read-modify-write-latency}
 	\caption{Read-modify-operations latency (\( \mu s\))}
 	\label{read-modify-write-latency}
 \end{figure}
 
-\begin{figure}[!ht]
+The overall throughput for each workload, again, showed a significant superiority by Bigtable, as indicated in Figure \ref{throughput}. Bigtable achieved a throughput of 149.67 and 113.26 operations per second for workloads A and F, respectively. Spanner reached 105.63 and 78.19 operations per second, while Datastore performed worst with only 20.37 and 18.82 operations per second.
+
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=12cm]{throughput}
 	\caption{Throughput (\(ops/sec\)) for Workloads A (1000 operations) and Workload B (2000 operations)}
 	\label{throughput}
 \end{figure}
 
-\subsection{Conclusions}
+The benchmark proved Bigtable to be fastest among the three selected data stores. The latency results for write and read operations are similar to the ones provided on Google Cloud Platform Blog post introducing Bigtable \citep{bigtable-introduction}. Furthermore, the post claims Bigtable to provide cheaper write throughput (MB/s) per dollar performance than better read/write operations latency than their biggest competitors, namely HBase and Cassandra. Since, Bigtable meet all the requirements set for data store and showed the best latency and throughput results, it was decided to use it as the main memory source for the programs instrumented with the translation tool. The next section gives a more in-depth look at Bigtable in order to better understand how it works and how it achieves such great performance.
 
-As Bigtable showed the best results in loading of data and on both of the workloads the benchmarks were run on, and since it provided a strong consistency model, it was selected to be used as a distributed shared memory system for the translation tool.
+\section{Bigtable}
+
+Bigtable \citep{google-bigtable} is a high performance, wide column NoSQL database, designed to reliably scale to petabytes of data and thousands of machines. It is used by such Google products and projects like Google Analytics, Google Earth or Google Finance. Bigtable stores data in massively scalable tables, each of which is a persistent sorted key/value map. Tables consists of rows, each of which is essentially a collection of key/value entries, where the key is a combination of the column family, column qualifier and timestamp. Every read or write of data under a single row key is atomic. Moreover, Bigtable maintains data in lexicographic order by row key. The row range for a table is dynamically partitioned into tablets, which are the units of distribution and load balancing.
+
+Bigtable uses the distributed Google File System (GFS) to store log and data files. It depends on a cluster management system for scheduling jobs, managing resources on shared machines, dealing with machine failures, and monitoring machine status. Bigtable data is stored using SSTable file format. Each SSTable contains a sequence of blocks. A block index is used to locate blocks; the index is loaded into memory when the SSTable is opened, allowing a lookup to be performed in a single disk seek. Optionally, an SSTable can be completely mapped into memory, which greatly increases the performance. However, such setup is very expensive and was not considered throughout the project.
+
+Bigtable treats all data as raw byte strings. If a row does not include a value for a specific key, the key/value pair simply does not exist. Changes to a row take up extra storage space, as Bigtable stores mutations sequentially and compacts them only periodically.
+
+Most importantly, Bigtable supports look up value associated with key operation and provides strong consistency - all writes are seen in the same order.
 
 \section{Reading and writing the contents of Bigtable}
 
-Bigtable uses gRPC client to read and write content using C++ remote function calls. According to gRPC webpage \citep{grpc}, gRPC client application can directly call methods on a server application on a different machine as if it was a local object (similarly to Java RMI). By default gRPC uses protocol buffers, Google's open source language and platform neutral mechanism for serialising structured data. The figure \ref{fig:grpc} visualises communication between gRPC server and client (stub). Bigtable gRPC client is provided through Google APIs repository. In order to simplify the communication with Bigtable table, two functions for putting and getting data to table were implemented, namely put() and get().
+Bigtable uses gRPC client to read and write content using C++ remote function calls. According to gRPC webpage \citep{grpc}, gRPC client application can directly call methods on a server application on a different machine as if it was a local object (similarly to Java RMI). By default gRPC uses protocol buffers, Google's open source language and platform neutral mechanism for serialising structured data. The figure \ref{fig:grpc} visualises communication between Bigtable and its gRPC clients (stubs). Bigtable gRPC client is provided through Google APIs repository. 
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.9\textwidth]{images/grpc}
-\caption{Communication between gRPC server and gRPC stubs (clients) \cite[source:][Guides page]{grpc}}
+\includegraphics[width=0.55\textwidth]{images/grpc1}
+\caption{Communication between Bigtable gRPC server and Bigtable gRPC stubs (clients)}
 \label{fig:grpc}
 \end{figure}
 
-Put function takes two arguments, 64-bit integer as an address (or key) and 64-bit integer as a value, and does not return anything (see Listing \ref{put}). First, the arguments are casted to string type. Then a new row mutation request is built, by providing full path to the table (including project, instance and table names), row key, family name and column qualifier and value. Family name and column qualifier are constant as we are using Bigtable as key-value store, thus only one column family and qualifier is used. Finally, the row mutation function is called remotely through Bigtable stub and some status information is stored for debugging purposes.
+Get and put functions were implemented to abstract the specific details of the communication with Bigtable from the translation tool that calls them. This way the cloud storage service can be easily changed without the need to change the part that does the translation. 
+
+\begin{listing}[H]
+\begin{minted}[fontsize=\footnotesize]{c++}
+void put(unsigned long long addr, long long val)  {
+  // cast arguments to string type
+  string address = std::to_string(addr);
+  string value = std::to_string(val);
+  // setup the request
+  MutateRowRequest req;
+  req.set_table_name(tableName);
+  req.set_row_key(address);
+  auto setCell = req.add_mutations()->mutable_set_cell();
+  setCell->set_family_name(familyName);
+  setCell->set_column_qualifier(columnQualifier);
+  setCell->set_value(value);
+  // invoke row mutation on Bigtable
+  MutateRowResponse resp;
+  grpc::ClientContext clientContext;
+  auto status = bigtableStub->MutateRow(&clientContext, req, &resp);
+}
+\end{minted}
+\caption{Writing content to Bigtable using put function}
+\label{put}
+\end{listing}
+
+Put function takes two arguments, 64-bit integer as an address (key) and 64-bit integer as a value, and does not return anything (see Listing \ref{put}). First, the arguments are casted to string type. Then a new \texttt{MutateRowRequest} is built, by providing full path to the table (including project, instance and table names), row key, family name and column qualifier and value. Family name and column qualifier are constant as we are using Bigtable as key-value store, thus only one column family and qualifier is used. Finally, the \texttt{MutateRow} function is called remotely through Bigtable stub and response status is stored for debugging purposes.
 
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
@@ -269,100 +299,93 @@ Put function takes two arguments, 64-bit integer as an address (or key) and 64-b
   captionpos=b
 }
 
-\begin{lstlisting}[caption=Writing content to Bigtable using put() function, label=put, style=block]
-void put(unsigned long long addr, long long val)  {
-	// cast arguments to string type
-	string address = std::to_string(addr);
-	string value = std::to_string(val);
+Get function takes 64-bit integer representing the address (key) as an argument and returns a 64-bit integer value (see Listing \ref{get}). Similarly to put function, the address value is cast to string. A read row request is created by providing the full path to the table and address string is passed as a row key. The call on \texttt{ReadRows} function returns a stream, which is read by chunks and appended to the \texttt{valueStr} variable. The nested loops should run at most one time, as only one row key was provided. Before the value is returned, an if statement checks if the given key had the corresponding value in the table and if so, casts the value to 64-bit integer. If no value was found with corresponding key, the function returns 0. This behaviour is expected, when the program reads uninitialised variable.
 
-	// setup the request
-	MutateRowRequest req;
-	req.set_table_name(tableName);
-	req.set_row_key(address);
-	auto setCell = req.add_mutations()->mutable_set_cell();
-	setCell->set_family_name(familyName);
-	setCell->set_column_qualifier(columnQualifier);
-	setCell->set_value(value);
-
-	// invoke row mutation on Bigtable
-	MutateRowResponse resp;
-	grpc::ClientContext clientContext;
-	auto status = bigtableStub->MutateRow(&clientContext, req, &resp);
-}
-\end{lstlisting}
-
-Get function takes an address (or key) with type 64-bit integer as an argument and returns a 64-bit integer value (see Listing \ref{get}). Similarly to put function, the address value is cast to string. A read row request is created by providing the same full path to the table mentioned above and address string is passed as a row key. The call on rows reading function returns a stream, which is read by chunks and appended to the valueStr variable. As all keys in key-value store are assumed to be unique, the nested loops should run at most one time. Before the value is returned, an if statement checks if the given key had the corresponding value in the table and if so, casts the value to 64-bit integer. If no value was found with corresponding key, the function returns 0.
-
-\begin{lstlisting}[caption=Reading content from Bigtable using get() function, label=get, style=block]
+\begin{listing}[H]
+\begin{minted}[fontsize=\footnotesize]{c++}
 long long get(unsigned long long addr) {
-	// convert argument to string type
-	string address = to_string(addr);
-
-	// setup the request
-	ReadRowsRequest req;
-	req.set_table_name(tableName);
-	req.mutable_rows()->add_row_keys(address);
-        
-	string valueStr;
-	
-	// invoke row reading on Bigtable
-	auto stream = bigtableStub->ReadRows(&clientContext, req);
-	while (stream->Read(&resp)) {
-		for (auto& cellChunk : *resp.mutable_chunks()) {
-			if (cellChunk.value_size() > 0) {
-				valueStr.reserve(cellChunk.value_size());
-			}
-			valueStr.append(cellChunk.value());
-		}
-	}
-	
-	// convert value to 64-bit integer
-	long long value = 0;
-	if (!valueStr.empty())
-		value = stoll(valueStr);
-	}
-	return value;
+  // convert argument to string type
+  string address = to_string(addr);
+  // setup the request
+  ReadRowsRequest req;
+  req.set_table_name(tableName);
+  req.mutable_rows()->add_row_keys(address);
+  string valueStr;	
+  // invoke row reading on Bigtable
+  auto stream = bigtableStub->ReadRows(&clientContext, req);
+    while (stream->Read(&resp)) {
+      for (auto& cellChunk : *resp.mutable_chunks()) {
+        if (cellChunk.value_size() > 0) {
+          valueStr.reserve(cellChunk.value_size());
+        }
+        valueStr.append(cellChunk.value());
+      }
+    }
+    // convert value to 64-bit integer
+    long long value = 0;
+    if (!valueStr.empty())
+      value = stoll(valueStr);
+    return value;
 }
-\end{lstlisting}
+\end{minted}
+\caption{Reading content from Bigtable using get function}
+\label{get}
+\end{listing}
+
+Additionally, atomic increment function was implemented, which given an address and a 64-bit integer increment invokes Bigtable's \texttt{ReadModifyWriteRow} method with the \texttt{increment\_amount} rule. At first, the address is cast to string and set as a row key for \texttt{ReadModifyWriteRowRequest}. After request setup, read-modify-write operation is invoked. The respond message contains an array of bytes represented as an array of characters. A \texttt{bytesToInt} function was implemented in order to concatenate the bytes into a 64-bit value, which is then returned by the function.
+
+\begin{listing}[H]
+\begin{minted}[fontsize=\footnotesize]{c++}
+long long atomic_increment(unsigned long long address, unsigned long long increment) {
+  // convert address to string
+  string address = to_string(address);
+  // setup the request
+  ReadModifyWriteRowRequest req;
+  req.set_table_name(TABLE_NAME);
+  req.set_row_key(address);
+  ReadModifyWriteRule rule;
+  rule.set_family_name(FAMILY_NAME);
+  rule.set_column_qualifier(COLUMN_QUALIFIER);
+  rule.set_increment_amount(increment);
+  *req.add_rules() = std::move(rule);
+  // invoke read-modify-write operation on Bigtable
+  ReadModifyWriteRowResponse resp;
+  grpc::ClientContext clientContext;
+  auto status = bigtableStub->ReadModifyWriteRow(&clientContext, req, &resp);
+  const char* bytes = resp.mutable_row()->mutable_families(0)->
+  			mutable_columns(0)->mutable_cells(0)->value().c_str();
+  long long value = bytesToInt(bytes);
+  return value;
+}
+\end{minted}
+\caption{A read-modify-write operation with an increment rule on Bigtable using atomic\_increment function}
+\label{get}
+\end{listing}
 
 \section{Issues encountered}
 
 Even though both gRPC and protobuf (protocol buffers) libraries are developed by Google, some difficulties were encountered while compiling source builds. The errors were made known to the developers \citep{grpc_issue}, but it has slightly stalled the development of the project.
 
+
+
+
+
+
+
+
+
 \chapter{Translation tool}
+\label{translation-tool}
 
-\section{Research on possible solutions}
-
-% Talk about problems with OpenSHMEM and Intel PIN
-
-Having benchmarked and chosen the cloud data store, the next step was to find out ways to invoke write and read operations on Bigtable with data meant to be shared. Three different strategies were identified: library implementation (or source code level solution), binary translation and compiler level solution.
-
-\subsection{Source code level solutions}
-
-The first option for source code level solution would involve creating an application programming interface (API), which includes calls to Bigtable gRPC client with different types of data. This looked like the easiest solution but it would have introduced the requirement for the user to change the source code in order for the tool to work. Moreover, different data types would require different get and put function overloads, thus the search continued on more generic solutions.
-
-Another source code level solution was considered which involved using OpenSHMEM \citep{openshmem}. OpenSHMEM is an open-source partitioned global address space (PGAS) library interface specification. OpenSHMEM implements PGAS by defining remotely accessible data objects (or symmetric data objects) as mechanisms to share information among OpenSMEM processes (also called processing elements) and data objects that are private to each processing element (PE). The interface provides methods to start the OpenSHMEM processing elements in parallel, and communication and synchronization interfaces to access remotely accessible data objects across PEs. The solution using OpenSHMEM involved modifying the API calls for symmetric data objects, changing the storing of shared objects from the symmetric heap (see Figure \ref{fig:openshmem_memory_model}) to Bigtable. Even though this solution would introduce some changes to the user source code, OpenSHMEM is a well-known, broadly used API thus more support would be provided for the user than in the first solution. Unfortunately, OpenSHMEM is more targeted for supercomputers or large high-performance computing clusters with special network setup (i.e. Infiniband network adapters, QsNet interconnect, etc), which is not provided by Google's Compute Engine virtual machines (VMs).
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.9\textwidth]{images/openshmem_memory_model}
-\caption{OpenSHMEM Memory Model \cite[source:][]{openshmem_fig}}
-\label{fig:openshmem_memory_model}
-\end{figure}
-
-\subsection{Compiler level solution}
-
-One way to invoke write and read operations on Bigtable on a compiler level is to customise or create a new compiler, which instead of using load and store instructions for shared memory would call get and put function calls for the Bigtable. Of course, creating a new, industry standard compiler would be too excessive and not feasible in the time span of the project, thus only the customisation of already existing compiler was considered. During the research on this option, a solution using LLVM was discovered. 
+The translation tool was implemented as a compiler level solution mainly because it makes the tool portable across different platforms and it doesn't require any user code modification. One possible way to implement a compiler level solution is by building a new compiler, which instead of using load and store instructions would call get and put functions on Bigtable. Of course, creating a new, industry standard compiler would be too excessive and not feasible in the timespan of the project. Luckily, LLVM provides a compiler and lots of tools to instrument an already compiled code.
 
 \section{LLVM}
 
-% Introduce LLVM
-
-LLVM (Low Level Virtual Machine) is an open source compiler framework for building tools began at the University of Illinois. It supports life-long program analysis and transformation for arbitrary programs. It has an industrial standard compiler (clang/clang++), which has an option to compile C/C++ code to an extensible, strongly typed intermediate representation, namely LLVM IR.
+LLVM (Low Level Virtual Machine), began at the University of Illinois, is an open source compiler framework for building tools. It supports life-long program analysis and transformation for arbitrary programs. It has an industrial standard compiler (clang/clang++), which has an option to compile C/C++ code to an extensible, strongly typed intermediate representation, namely LLVM IR.
 
 LLVM optimizing compiler, like other industry standard compilers, consists of several components: frontend, optimiser, backend and linker. The important advantage over other compilers is the use of LLVM Bitcode, which consists of a bitstream container format and an encoding of LLVM IR. It provides a clean API boundary separating the compiler frontend and backend, thus making it easier to swap in new frontend and backend components (Figure \ref{fig:llvm}). This is especially useful when developing a new language, as one only needs to create a new frontend component of the compiler and use the provided LLVM optimiser and backend components. 
 
-Moreover, as LLVM project is open-source, users can create their own optimisation or transformation passes. Thus it is possible to create an transformation pass for the optimiser, which would iterate over all of the RISC-like instruction set and translate the appropriate load and store instructions to get and put calls for Bigtable.
+Moreover, as LLVM project is open-source, users can create their own optimisation or transformation passes. Thus it is possible to create an transformation pass for \texttt{opt} tool, which would iterate over all of the RISC-like instruction set and translate load and store instructions to get and put function calls for Bigtable.
 
 LLVM has lots of support and documentation on the Internet. Lots of well-known compilers, like NVIDIA's CUDA Compiler or Microsoft DirectX shader compiler, are based on LLVM. All of these features make LLVM a desirable framework to use for our translation tool.
 
@@ -373,11 +396,12 @@ LLVM has lots of support and documentation on the Internet. Lots of well-known c
 \label{fig:llvm}
 \end{figure}
 
+One problem encountered when working with LLVM is that it cannot get LLVM IR representation of C library functions, as C library located on the machine is already compiled and assembled. This introduces a problem, as C library functions use load and store instructions to retrieve the data from the main memory, which after our translation is done will be stored in the cloud storage. The solution is to use portable C libraries like \texttt{ulibc} or \texttt{newlib}. They are C libraries available in source form intended for use on embedded systems. These libraries can be compiled into LLVM IR code, thus letting the translation pass transform load and store instructions.
+
 \section{Architecture}
+\label{architecture}
 
-% Talk about different components involved in translation (user code, get/put functions) and the process of getting instrumented executable
-
-The translation pass tool consists of 4 transitions (see Figure \ref{fig:architecture}). At first, user source code and Bigtable GET/PUT functions are compiled to LLVM IR and combined into a single LLVM Bitcode file. Additional C++ files can be added at this stage if needed later for the LLVM translation pass. After that the code is instrumented by our transformation pass and emits translated LLVM IR into a single LLVM Bitcode file. Then the output is compiled into native machine code and finally linked with gRPC, protobuf and any other relevant libraries to build an executable.
+The translation pass tool consists of 4 transitions (see Figure \ref{fig:architecture}). At first, user source code and Bigtable get and put functions are compiled to LLVM IR and combined into a single LLVM Bitcode file. As mentioned before, get and put functions of any other cloud storage could be used here. Additionally, any other C/C++ files which might be needed during the translation pass must be added at this stage. After that the code is instrumented by our transformation pass using \texttt{opt} tool and is emitted with translated LLVM IR into a LLVM Bitcode file. Then the output is compiled into native machine code using \texttt{llc} tool and finally linked with gRPC, protobuf and any other linked libraries to build an executable.
 
 \begin{figure}[H]
 \centering
@@ -386,7 +410,7 @@ The translation pass tool consists of 4 transitions (see Figure \ref{fig:archite
 \label{fig:architecture}
 \end{figure}
 
-After the preprocessing and compilation of Bigtable GET/PUT functions file, the resulting LLVM Bitcode consists of dozens of gRPC library functions. As we do not want to translate the gRPC load and store instructions, a check was added to the transformation pass, which stops the transformation when the first gRPC function is detected through the iteration. In order for this to work properly, the linking of LLVM Bitcode files in first stage must be done in a strict order: Bigtable GET/PUT functions file must appear after the code that must be translated. This creates a barrier (see Figure \ref{fig:barrier}) between the code that is translated and the code which contains functions to be called translated code (i.e. put and get).
+After the first transition when user source code and Bigtable functions are compiled and combined into a single LLVM Bitcode file, the resulting LLVM IR consists of dozens of gRPC library functions. These functions must not be translated, as they are responsible for setting up the connection and invoking the methods on Bigtable. Thus, a barrier was added to the transformation pass, which stops the transformation when the first gRPC function is detected through the iteration. In order for this to work properly, the linking of LLVM Bitcode files in first stage must be done in a strict order: Bigtable get and put functions file must appear after the code that must be translated\footnote{Notice that this implementation is only relevant for Google cloud storages. As other cloud services do not provide communication with storage using gRPC.}. This creates a barrier (see Figure \ref{fig:barrier}) between the code that is translated and the code which contains functions to be called by the translated code (i.e. put and get functions).
 
 \begin{figure}[H]
 \centering
@@ -396,14 +420,15 @@ After the preprocessing and compilation of Bigtable GET/PUT functions file, the 
 \end{figure}
 
 
-\section{LLVM pass}
+\section{Translation pass}
 
-% Talk about full translation pass
-The previously mentioned barrier dividing instrumented and uninstrumented code is implemented by checking if the currently iterated function is from Bigtable GET/PUT functions file. The translation pass iterates over all instructions until the barrier. When the iteration reaches this function, the loop is ended. Moreover, the pass also skips over inline functions with external linkage.  In LLVM, these functions can be detected by hasLinkOnceODRLinkage function call. 
+% TODO: explain how global variables are translated
 
-Load and store instructions accept different types of arguments (remember IR is a strongly typed instruction set). For store instructions, the address must have a higher pointer indirection degree than the value. For instance, the corresponding store instruction for \lstinline{int* x = &y} (assuming y is of type integer) would have the address with the type of pointer to pointer to integer and the value with the type of pointer to integer. For load function translations, get function must return the value with the same type as load instruction. Moreover, get and load functions only accepts 64-bit integer arguments, thus sign extension instructions might be needed. This makes the translation of store (and get) instructions more complicated that just replacing one instructions with the others.
+The previously mentioned barrier dividing instrumented and uninstrumented code is implemented by checking if the currently iterated function belongs to the original get and put functions file. The translation pass iterates over all instructions until the barrier. When the iteration reaches this function, the translation pass is ended.
 
-Store to put instruction translation starts by converting the address pointer to 64-bit integer with ptrtoint instruction. If the value is of integer type and not 64 bits wide it is sign extended using sext instruction. If the value is of pointer type it is cast to 64-bit integer by ptrtoinst instruction. Otherwise, it is assumed to be 64-bit integer\footnote{Although it might of other type (i.e. struct).}. Finally, both arguments now being of 64-bit\footnote{64-bit integer type for get and put instruction arguments and/or return type was chosen deliberately. This is the maximum biggest type of integer, thus it makes the casting part a bit simpler. For example, if 32-bit integer type was chosen, some values would need to be sign extended while others would need to be truncated.} integer type are given as arguments to put function call. The figure \ref{fig:store_translation} shows a subset of instruction set before and after store instruction translation.
+Load and store instructions accept different types of arguments (remember, LLVM IR contains a strongly typed instruction set). For store instructions, the address must have a higher pointer indirection degree than the value. For instance, the corresponding store instruction for \mintinline{cpp}{int* x = &y} would have the address with the type of pointer to pointer (represented in LLVM as \mintinline{cpp}{**i32}) to integer and the value with the type of pointer to integer (\mintinline{cpp}{*i32}). For load instruction translations, get function must return the value of the same type as load instruction. 
+
+The LLVM load and store instructions accept any types of values for their operands. The same functionality for get and put functions could be achieved by creating multiple overloads. However, this would mean creating numerous overloads for each single type in LLVM, as a new overload function would be needed for each pointer type with different indirection degree. For instance, get function which takes pointer to 32-bit integer, would work with pointer to pointer to 32-bit integer. For this reason, get and load functions only accept 64-bit integer arguments and depend on additional instructions to enforce this type. This makes the translation of store and load instructions more complicated that just replacing one instructions with the other.
 
 \begin{figure}[H]
 \centering
@@ -412,7 +437,9 @@ Store to put instruction translation starts by converting the address pointer to
 \label{fig:store_translation}
 \end{figure}
 
-Load instruction translation begins by identifying its return type and pointer indirection degree (only relevant if of pointer type). Similarly to store translation, the address is cast to 64-bit integer using ptrtoint instruction, and passed to get as an argument. As the return type of get function is 64-bit integer, it must be cast to the appropriate type (unless the load instruction actually returns 64-bit integer). If the returned type is integer it is truncated to the expected integer type using trunc instruction. Finally, if the expected returned type is pointer, the resulting value is converted to a pointer type with an appropriate pointer indirection degree (identified at the beginning) with inttoptr instruction. The figure \ref{fig:load_translation} shows a subset of instruction set before and after store instruction translation.
+Store to put instruction translation starts by converting the address pointer to 64-bit integer with \texttt{ptrtoint} instruction. If the value is of integer type and not 64 bits wide, it is sign extended using \texttt{sext} instruction. If the value is of pointer type it is cast to 64-bit integer by \texttt{ptrtoinst} instruction. Otherwise, it is assumed to be 64-bit integer\footnote{Although it might be of some other type (i.e. struct). These types were not examined in the project and should be considered as future work.}. Finally, both arguments now being of 64-bit\footnote{64-bit integer type for get and put instruction arguments and/or return type was chosen deliberately. This is the maximum biggest type of integer, thus it makes the casting part a bit simpler. For example, if 32-bit integer type was chosen, some values would need to be sign extended while others would need to be truncated.} integer type are given as arguments to put function call. The figure \ref{fig:store_translation} shows a subset of instruction set before and after store instruction translation.
+
+Load instruction translation begins by identifying its return type and pointer indirection degree (only relevant if the value is of pointer type). Similarly to store translation, the address is cast to 64-bit integer using \texttt{ptrtoint} instruction, and passed to get function as an argument. As the return type of get function is a 64-bit integer, it must be cast to the appropriate type (unless the load instruction actually returns 64-bit integer). If the returned type is integer, it is truncated to the expected integer type using \texttt{trunc} instruction. Finally, if the expected returned type is pointer, the resulting value is converted to a pointer type with an appropriate pointer indirection degree (identified at the beginning) with \texttt{inttoptr} instruction. The figure \ref{fig:load_translation} shows a subset of instruction set before and after store instruction translation.
 
 \begin{figure}[H]
 \centering
@@ -421,24 +448,49 @@ Load instruction translation begins by identifying its return type and pointer i
 \label{fig:load_translation}
 \end{figure}
 
+% TODO: might add the part about thread creation with C++ thread library
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \chapter{Custom heap allocator}
 
 \section{Motivation}
 
-Calls to malloc function allocate virtual memory space. When this allocated virtual memory is "touched" (i.e. load from or stored to), it is mapped to real memory by call to special function of the operating system (i.e. mmap). As translation tool eliminates all loads and stores to memory, the allocated memory is never accessed, thus never really mapped to physical memory. Nevertheless, the allocated memory is left unused on virtual address space. This might cause problems when a program tries to allocate more space than possible on virtual memory. Some operating systems (i.e. Windows or macOS) limit the virtual memory space, thus providing a custom heap allocator, which would reduce the amount of memory allocated on virtual address space, seems beneficial. The proposed solution is a first-fit free-list heap allocator.
+Calls to malloc function allocate virtual memory space. When this allocated virtual memory is "touched" (i.e. load from or stored to), it is mapped to real memory by call to special function of the operating system (i.e. mmap). As translation tool eliminates all loads and stores to memory, the allocated memory is never accessed, thus never really mapped to physical memory. Nevertheless, the allocated memory is left unused on virtual address space. This might cause problems when a program tries to allocate more space than possible on virtual memory. Some operating systems (i.e. Windows or macOS) limit the virtual memory space, thus providing a custom heap allocator, which would reduce the amount of memory allocated on virtual address space, seems beneficial. Moreover, a custom heap allocator can be implemented to provide information about the allocated heap boundaries for the program. The reason why this might be advantageous is explained in Chapter \ref{heap-memory-translator}. 
 
 \section{Implementation}
 
-The heap allocator implementation was based on Marwan Burelle's malloc tutorial \citep{malloc_tutorial} and adjusted to work on Bigtable. The heap allocator implements four functions: malloc, free, realloc and calloc. All of these functions are counterparts of the Standard C++ Library functions and have the same function definitions.
+\subsection{First-fit free-list allocator}
 
-The allocator keeps a list of meta-data blocks, which contain information about chunks of data allocated with malloc. This lets the memory be reused after it has been released with call to free function. Unlike in tutorial implementation, only meta-data objects are stored on main memory. The actual requested space is allocated on Bigtable. Thus, the implemented custom heap allocator uses two heaps: main memory and Bigtable. The figure \ref{fig:heap_organisation} sketches the memory organisation of two heaps. The structure of meta-data blocks described in the tutorial were adjusted to reflect these changes. Besides storing the size of data block and pointers to other blocks, the meta-data blocks also stores the address of data block on Bigtable.
+One of the proposed solutions is a first-fit free-list heap allocator. The heap allocator implementation was based on Marwan Burelle's malloc tutorial \citep{malloc_tutorial} and adjusted to work on Bigtable. The heap allocator implements four functions: malloc, free, realloc and calloc. All of these functions are counterparts of the Standard C++ Library functions and have the same function definitions.
 
-The main memory heap is managed by the default memory allocator (Standard C++ library provided malloc, free, etc). For the custom heap allocator, it is used as meta-data objects storage.
+The allocator keeps a list of meta-data blocks, which contain information about chunks of data allocated with the new malloc. This lets the memory be reused after it has been released with a call to free function. Unlike in tutorial implementation, only meta-data objects are stored on main memory. The actual requested space is allocated on Bigtable. Thus, the implemented custom heap allocator uses two heaps: main memory and Bigtable. The figure \ref{fig:heap_organisation} sketches the memory organisation of two heaps. The structure of meta-data blocks described in the tutorial were adjusted to reflect these changes. Besides storing the size of data block and pointers to other blocks, the meta-data blocks also store the address of data block on Bigtable.
 
-The heap on Bigtable is implemented as a continuous space of memory with two bounds: the start of the heap and the end point  called the Bigtable break. The start of the heap is initialized on the first call on custom malloc function by calling sbrk function with an increment equal to 0 (this returns the break address on the main memory heap). Thus, the addresses of main memory and Bigtable heap are identical. The end of the heap is managed by set\_bt\_brk function, which was implemented to reflect the behaviour of sbrk function (see Listing \ref{setbtbrk}).
+\begin{figure}[H]
+\centering
+\includegraphics[width=1\textwidth]{images/heap_organisation}
+\caption{Heap memory organisation using the proposed heap allocator}
+\label{fig:heap_organisation}
+\end{figure}
 
-\begin{lstlisting}[caption=set\_bt\_brk function implementation, label=setbtbrk, style=block]
+The main memory heap is managed by the default memory allocator (Standard C++ library provided malloc, free, etc). All of the malloc (and other memory allocation functions) calls in the user source code are translated to custom heap allocator function calls using the translation pass described in the previous chapter. Other memory allocation function calls (i.e. in gRPC functions) are not translated and use the default allocation functions.
+
+The heap on Bigtable is implemented as a continuous space of memory with two bounds: the start of the heap and the end point  called the Bigtable break. The start of the heap is initialized on the first call on custom malloc function by calling \texttt{sbrk} function with an increment equal to 0 (this returns the break address on the main memory heap). Thus, the start addresses of main memory and Bigtable heap are identical. The end of the heap is managed by set\_bt\_brk function, which was implemented to reflect the behaviour of \texttt{sbrk} function (see Listing \ref{setbtbrk}).
+
+\begin{listing}
+\begin{minted}[fontsize=\footnotesize]{c++}
 void* set_bt_brk(int incr) {
   // if uninitialised, set to sbrk(0)
   if (current_bt_break == 0) {
@@ -449,24 +501,23 @@ void* set_bt_brk(int incr) {
   current_bt_break += incr;
   return (void*) old_break;
 }
-\end{lstlisting}
+\end{minted}
+\caption{set\_bt\_brk function implementation}
+\label{setbtbrk}
+\end{listing}
 
-Of course, another solution could be to allocate both meta-data objects and the actual requested space on the Bigtable, but this would increase the communication costs with Bigtable. As meta-data objects only take up to 40 bytes (on a 64-bit system), the decision was made to store them locally.
+An alternative way to implement such heap allocator is to allocate both meta-data objects and the actual requested space on the Bigtable, but this would increase the communication costs with Bigtable. As meta-data objects only take up to 40 bytes (on a 64-bit system), the decision was made to store them locally.
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=1\textwidth]{images/heap_organisation}
-\caption{LLVM instruction set before and after get instruction translation}
-\label{fig:heap_organisation}
-\end{figure}
+Malloc function starts by changing the requested size to be a multiple of 4 to align the pointers by 32 bits. If the list of meta-data blocks is not empty (meaning custom malloc, calloc or realloc was called before), the linked list of meta-data blocks is searched for the first free chunk that is wide enough for the request. If such block is found and the difference between the requested size and the size of the block is enough to store a minimum allowed block (32 bytes\footnote{In the popular dlmalloc \citep{leadlmalloc} implementation, the smallest allowed allocation is 32 bytes on a 64-bit system, thus it was decided to use the same size in the proposed malloc implementation.}) the block is split into two blocks. The first block is marked as used, while the second one is added to the linked list. If the list of meta-data blocks is empty or no existing wide enough block is found, Bigtable heap is extended by calling set\_bt\_brk and creating a corresponding meta-data block for the allocated space. Finally, the address to the block on Bigtable is returned.
 
-Malloc function starts by changing the requested size to be a multiple of 4 to align the pointers by 32 bits. If the heap is not empty (already called malloc() before), the linked list of meta-data blocks is searched for the first free chunk that is wide enough for the request. If such block is found and the difference between the requested size and the size of the block is enough to store a minimum allowed block (32 bytes\footnote{In the popular dlmalloc \citep{leadlmalloc} implementation, the smallest allowed allocation is 32 bytes on a 64-bit system, thus I decided to use the same size in my malloc implementation.}) the block is split into two blocks. The first block is marked as used. If the heap is empty or no existing wide enough block is found, the heap is extended. Finally, the address to the block on Bigtable is returned.
+Free function accepts a pointer to heap memory block to be freed and starts by checking if the address it points to is a valid Bigtable heap address. If it is, the address is used to retrieve and mark the corresponding meta-data block as free. If the any of the neighbouring meta-data blocks are free, the blocks are fused into one to cope with fragmentation. If after the fusion the resulting meta-data block is the tail of the linked-list, both the memory on Bigtable and the meta-data block are released. This means that the Bigtable break is pushed back by the size of the block being released and the meta-data block is freed using a default free function.
 
-Free function accepts a pointer to heap memory block to be freed and starts by checking if it points to is a valid Bigtable heap address. If it does, the pointer address is used to retrieve the meta-data block. In order to do this efficiently a hash table was introduced to map the data block address to meta-data block. Every time a heap is extended or a block is split, the hash table is updated with a new key-value (address and meta-data block) pair. This is a more efficient solution than iterating over the linked-list of meta-data blocks. After the meta-data block is retrieved, it is freed. If the any of the neighbouring meta-data blocks are free, the blocks are fused into one (to cope with fragmentation). If after the fusion the resulting meta-block is the tail of the linked-list the memory is released. This part was adjusted to decrease the Bigtable break by the size of the block being released. Consequently, the corresponding pair is deleted from the hash table and the meta-data block is freed using default malloc.
+As mentioned above, the implemented free function needs to retrieve the meta-data block using the given Bigtable address. One way to do this is by iterating the linked list of meta-data blocks and checking if its address to block on Bigtable matches the given address. This is a rather inefficient solution (\(\Theta\)(n), where n is the number of meta-data blocks). In order to do this efficiently a hash table was introduced to map the address of block on Bigtable address to meta-data block address. Every time a heap is extended or a block is split, the hash table is updated with a new key-value (Bigtable block address, meta-data block address) pair. The hash table improves time efficiency (\(\Theta\)(1)) in exchange for some space (\(\Theta\)(n)).
 
-Realloc functions accepts two arguments, pointer to existing heap memory block and the new size for the block. If the pointer address is a valid heap address, the meta-data block is fetched using the hash table mentioned above. The size is changed to be aligned with 32-bit pointers. If the requested size is smaller than the original size, the block is split in two. Otherwise, if the next block is free and provide enough space (combined with the original block), the two blocks are fused into one and split if necessary. If none of the options above are true, a new block is allocated with malloc, the old block contents are copied to the new one and, finally, the old block is freed. The block copying procedure was modified to work with Bigtable. The old block values are copied using a combination of GET and PUT function calls to Bigtable (see Listing \ref{copyblock}). Lastly, if the pointer given as an argument to realloc is null, the behaviour is the same as calling malloc with the given size.
+Realloc function accepts two arguments, pointer to an existing Bigtable heap memory block and the new size for the block. If the pointer address is a valid heap address, the meta-data block is fetched using the hash table mentioned above. The size is changed to be aligned with 32-bit pointers. If the requested size is smaller than the original size, the block is split in two. Otherwise, if the next block is free and provide enough space (combined with the original block), the two blocks are fused into one and split if contains more space than required. If none of the options above are true, a new block is allocated with the custom malloc, the old block contents are copied to the new one and, finally, the old block is freed. The block copying procedure was modified to work with Bigtable. The old block values are copied using a combination of get and put function calls to Bigtable (see Listing \ref{copyblock}). Lastly, if the pointer given as an argument to realloc is null, the behaviour is the same as calling custom malloc.
 
-\begin{lstlisting}[caption=copy\_block implementation, label=copyblock, style=block]
+\begin{listing}
+\begin{minted}[fontsize=\footnotesize]{c++}
 void copy_block(block src, block dst) {
   int *sdata, *ddata;
   unsigned long long value, *a, b;
@@ -483,11 +534,15 @@ void copy_block(block src, block dst) {
     put(b, value);
   }
 }
-\end{lstlisting}
+\end{minted}
+\caption{copy\_block implementation}
+\label{copyblock}
+\end{listing}
 
-Calloc function accepts an integer representing a number of elements to allocate and an integer representing the size of each element. First, the malloc is called with the product of two arguments. The new block is iterated by 32 bit steps and initialised with 0 values. Again, the implementation was modified to work with Bigtable, using PUT function (see Listing \ref{set0}).
+Calloc function accepts an integer representing a number of elements to allocate and an integer representing the size of each element. First, the custom malloc is called with the product of two arguments. The new block is iterated by 32-bit steps and initialised with 0 values. Again, the implementation was modified to work with Bigtable, using put function (see Listing \ref{set0}).
 
-\begin{lstlisting}[caption=new\_block initialisation with zeroes, label=set0, style=block]
+\begin{listing}
+\begin{minted}[fontsize=\footnotesize]{c++}
   s4 = align4(num * size) >> 2;
   for (i = 0; i < s4; i++) {
     // convert int* to 64-bit integer
@@ -495,21 +550,30 @@ Calloc function accepts an integer representing a number of elements to allocate
     unsigned long long b = (unsigned long long) a;
     put(b, 0ULL);
   }
-\end{lstlisting}
+\end{minted}
+\caption{new\_block initialisation with zeroes}
+\label{set0}
+\end{listing}
 
-For comparison purposes, it was decided to also implement a heap allocator with only a malloc function, without any memory releasing strategy. Heap memory address is incremented with an atomic read-modify-write operation provided by Bigtable. This way the calls to malloc don't have to be synchronised explicitly, as the job is done by atomic calls to Bigtable. 
+\subsection{Allocator with no memory reusage}
+
+Another proposed solution is a heap allocator with only a malloc function, without any memory releasing strategy. Heap memory address is incremented with an atomic read-modify-write operation. Calls to free function effectively do nothing, while calls to calloc or realloc imitates the behaviour of malloc. Such memory allocator cannot reuse the previously freed memory, which results in memory leaking. However, in theory, it should work faster than the default and first-fit free-list allocators.
+
+To use the implemented allocators instead of the default one, additional translation operations were added. They change the default malloc call instructions to the implemented malloc call instructions. The heap allocator source code is provided to the tool during the first transition, mentioned in Section \ref{architecture}.
 
 \section{Consistency on multithreaded programs}
+\label{consistency}
+Even though the malloc tutorial helped a lot to implement a first-fit free-list heap allocator, it didn't mention anything about allocator consistency on multithreaded programs. The simplest solution to this problem was implemented using a lock. A single mutex was created and the calls to its functions, \texttt{lock} and \texttt{unlock}, were added to the entry and exit points of malloc, free, realloc and calloc functions. The added synchronisation prohibits other threads from doing allocations and releases while the other thread is modifying the heap. Even though this is a correct solution, it is very inefficient. Threads that frequently allocate and release memory from heap are constantly being blocked or block others threads, essentially making the execution of the program serial.
 
-Even though the malloc tutorial was very helpful in implementing a custom heap allocator, it didn't mention anything about allocator consistency on multithreaded programs. The simplest solution to this problem was implemented using a lock. A single mutex was created and the calls to its functions lock and unlock were added to the entry and exit points of malloc, free, realloc and calloc functions. This synchronises the above functions and lets only one thread to make modifications to the heap. This means that no other threads are permitted to do allocations and releases while the other thread is modifying the heap by either of the above functions. Even though this is a correct solution, it is very inefficient. Threads that frequently allocate and release memory form the heap are constantly being blocked or block others threads, essentially making the execution of the program serial.
+Another way to solve the thread-safety problem is by allocating a large chunk of memory off the heap to each thread and then managing the space within the thread. However, some threads might not be using all of their allocated memory, which results in poor memory usage efficiency. Moreover, some threads might need more memory than given by default, thus there should be ways to increase the per thread heap memory. It can be seen that the increase in performance adds additional complexity to the allocator. Clearly, this is a more involved solution and due to a strict time limits for the project it was not implemented. This is one of the areas where the translation tool could be improved in the future work.
 
-Another way to solve the thread-safety problem is by allocating a large chunk of memory off the heap to each thread and then managing the space within the thread. However, some threads might not be using all of their allocated memory, which results in poor memory usage efficiency. Moreover, some threads might need more memory than given by default, thus there should be ways to increase the per thread heap memory. Thus, it can be seen that the increase in performance adds additional complexity to the allocator. Clearly, this is a more involved solution and due to a strict time limits for the project it was not implemented. This is one of the areas where the translation tool could be improve in the future work.
+On the other hand, the allocator with no memory reusage is thread-safe and requires no additional synchronisation. This is achieved by an atomic add operation provided by C++ standard library.
 
 \section{Results}
 
 \subsection{Virtual memory usage}
 
-Both heap allocators implemented were tested for virtual memory usage. The figure \ref{fig:malloc_run} shows the linux top command output of memory usage by 4 different runs of an instrumented program. The top left screenshot shows a program run without any heap allocations. It is used as a baseline run to better understand how much memory a simple instrumented program uses. Each of the other 3 program runs malloced 1 gigabyte of memory. Clearly, the programs using the implemented heap allocators solve problem of virtual memory usage, as they do not allocate virtual memory but rather assigns some address space on the Bigtable.
+Both heap allocators implemented were tested for virtual memory usage. The figure \ref{fig:malloc_run} shows Linux \texttt{top} command output for memory usage on an instrumented program without heap allocations and with three different heap allocators. The top left screenshot shows a program run without any heap allocations. It is used as a baseline run to better understand how much memory an instrumented program uses. Each of the other 3 processes malloced 1 gigabyte of memory. Clearly, the processes using the proposed heap allocators solve the problem of virtual memory usage, as the allocated gigabyte of memory does not show up on the process memory usage statistics.
 
 \begin{figure}[H]%
     \centering
@@ -535,25 +599,66 @@ Both heap allocators implemented were tested for virtual memory usage. The figur
     	\includegraphics[width=6cm]{images/simple_malloc}
 	\caption{run with custom malloc without free}
     \end{subfigure}
-    \caption{The Linux top command output of memory usage by 4 different runs of an instrumented program}
+    \caption{The Linux top command output for memory usage on 4 different instrumented programs}
     \label{fig:malloc_run}
 \end{figure}
 
 \subsection{Performance}
 
+Several different performance tests were carried out in order to measure allocators efficiency on different scenarios. All tests were rerun 100 times with the produced times averaged. Test A allocates 50 chunks of 1kB data and frees it, while Test B allocates 50 different sized (from 1kB to 50kB) chunks of data. Figure \ref{testa_b} shows the times taken to finish tests A and B with the three allocators. The default allocator seems to work very efficiently with single sized data but performed worst on Test B with different sized data. First-fit free-list allocator similarly with both tests, achieving an average of 46.5 \(\mu s\). Allocator without memory reusage achieved the best times on both tests, averaging 1 \(\mu s\).
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=12cm]{allocator_test_a}
+	\caption{Test A and B clock time (\(\mu s\)) results for three allocators}
+	\label{testa_b}
+\end{figure}
+
+
+Test C allocates a few blocks of 512 bytes of memory, frees them and repeats this loop 10 times. Test D allocates 50 block of 1kB data, releases half of it and then allocates and frees memory in a loop. Each test was run twice: once with single size blocks and once with different size blocks. Figure \ref{testc_d} shows the times taken to finish tests C and D with different allocators. Once more the results show that the default allocator is struggling with different size blocks, while performing very good with single size blocks. First-fit free-list allocator seems to perform badly on Test D with different size blocks. The poor performance can be explained by one little detail in test D: half of the primarily allocated memory is released by freeing every other block. This means that the first-fit free-list allocator cannot fuse the freed blocks and suffers from fragmentation. On the other hand, the allocator without memory reusage is again performing outstandingly, averaging 11.5 \(\mu s\) for each test.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=12cm]{allocator_test_c}
+	\caption{Test C and D clock time (\(\mu s\)) results for three allocators. Single size means that the test was run with single size blocks, while diff size means that the test was run with different size blocks.}
+	\label{testc_d}
+\end{figure}
+
+Finally, the last two tests perform tests A and B in parallel. First test A is run with 2 threads, then with 10 threads. The same is done with test B. Figure \ref{teste_f} shows the performance achieved by different allocators during these tests. The default allocator shows quite good times on tests A and B with 2 threads and test A with 10 threads but performs poorly on test B with 10 threads, which confirms the poor performance on different size memory blocks allocation. As explained in Section \ref{consistency} and proven in the chart, synchronisation using locks severely punishes the performance of first-fit free-list allocator, thus it is no surprise it performs worst. The allocator without memory reusage, however, repeatedly performs best.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=12cm]{allocator_test_e}
+	\caption{Test A and B performance results when run in with 2 and 10 threads.}
+	\label{teste_f}
+\end{figure}
+
+Overall, the results show that the default allocator works faster than the first-fit free-list allocator but the difference in single-threaded different size block allocations is not tremendous. An allocator without memory reusage seems to work best and might be a better solution for short running programs.
+
+
+
+
+
+
+
+
+
+
+
 \chapter{Heap memory translator}
+\label{heap-memory-translator}
 
 \section{Motivation}
 
-It might be preferable to use Bigtable as a storage for only shared data. This way, the concurrency problems with shared memory are handled by the Bigtable, while the rest of the memory is stored locally, thus making the access to it faster. Each thread of the process have its own stack but shares the heap and global variables. As the memory for global variables is already allocated by the frontend of the compiler, it was decided not to translate store and load instructions on these variables. Therefore, a new translator was implemented to instrument only store and load instructions on heap variables. In theory, such translator should work faster than the full memory translator described in Chapter \ref{}, as it translates only a fraction of the existing store and load operations. 
+The translation tool introduced in Chapter \ref{translation-tool} translates all store and load instructions. However, the translated store and load instructions which operate on stack, BSS or data segments do not actually help save main memory space as the memory for the variables on these segments is still being allocated even though the values are stored on and loaded from cloud storage. This means that only heap memory "translation" gives the desired results and other program memory segments need more complex changes. For instance, BSS and data segments, which consist of initialised and uninitialised static variables, could be stored in cloud storage without allocating space on main memory by implementing a custom compiler frontend. Unfortunately, creating a custom compiler frontend did not seem feasible given the timespan of the project. Instead, a new version of translation tool, which translates only load and store instructions operating on heap memory, was created. The programs translated with the heap memory translator run faster, as it translates only a fraction of the existing store and load instructions. For instance, the tool does not translate such costly variables as loop iterators, which generate vast amounts of load and store instructions in programs.
 
 \section{Implementation}
 
-The easiest way to determine if the variable is stored on the heap is to check if its address is inside the heap address space. If the address of the variable is between the start of the heap and the current break of the heap, then we want to store such variable on the Bigtable. Thus, while iterating through instructions we need to check if the address of load or store instruction is inside the heap address space. If it is, we call GET or PUT function on Bigtable and do the similar type casts as in full memory translator. Otherwise, we want to leave the original load or store instruction as is. 
+The easiest way to determine if the variable is stored on the heap is to check if its address is inside the heap address space. If the address of the variable is between the start of the heap and the current break of the heap, then we want to store such variable on the Bigtable. Thus, while iterating through instructions we need to add checks to detect if the address of load or store instruction is inside the heap address space. If it is, we call get or put function on Bigtable and do the similar type casts as in full memory translator. Otherwise, we want to leave the original load or store instruction as is. 
 
-Firstly, the custom heap allocator was extended to have to new functions. The getter functions for heap boundaries. In order to accomplish this, the heap allocator saves the start of the heap on the first call to malloc.
+Firstly, the first-fit free-list heap allocator was extended to have two new functions. The getter functions for heap boundaries. In order to accomplish this, the allocator saves the start of the heap on the first call to malloc.
 
-For both store and load instructions the translation starts with calls to get heap boundaries. The address of the translated instruction is cast from pointer type to 64-bit integer and compared using icmp instructions with both heap boundaries. The comparison results are conjoined bitwise and used as a condition for branch instruction. In a case where the bitwise conjunction is equal to 1, the program continues with the instructions for GET or PUT function. Otherwise, the program jumps to the label with the original load or store instructions. If the translated function is load, then a PHI node is added to take on the value corresponding to the input control block (either call to GET function or load instruction). Phi node is an instruction used to select a value depending on the predecessor of the current block.
+For both store and load instructions the translation starts with calls to get heap boundaries. The address of the instruction, which is being translated, is cast from pointer type to 64-bit integer and compared using \texttt{icmp} instructions with both heap boundaries. The comparison results are conjoined bitwise and used as a condition for branch instruction. In a case where the bitwise conjunction is equal to 1, the program continues with the instructions for get or put function. Otherwise, the program jumps to the label with the original load or store instructions. If the translated function is load, then a PHI node is added to take on the value corresponding to the input control block (either call to get function or load instruction). PHI node is an instruction used to select a value depending on the predecessor of the current block.
 
 \begin{figure}[H]%
     \centering
@@ -568,11 +673,11 @@ For both store and load instructions the translation starts with calls to get he
     	\includegraphics[width=7cm]{images/heap_load_translation}
 	\caption{Load instruction translation}
     \end{subfigure}
-    \caption{Load and store instruction translation on heap memory translator. Instructions coloured in orange and green are added during translation.}
+    \caption{Load and store instruction translation on heap memory translator. Instructions coloured in orange and green are added during the translation.}
     \label{fig:heap_translation}
 \end{figure}
 
-As seen in figure \ref{fig:heap_translation}, heap memory translation adds a lot of additional instructions. The insertion of instructions is done in several phases. On the first phase, the first six instruction are inserted before (coloured in orange) any load or store instruction. Next, the original basic block the load or store instruction belongs to is split in two and two additional basic blocks for branches are created using SplitBlockAndInsertIfThenElse function. After that the first basic block (label1) is populated by adding a call to GET or PUT function and the casting instructions if needed. The second basic block (label2) is populated with a clone of the original load or store instruction, as the original still exists on the next basic block (label3). Finally, the original store instructions are deleted from the last basic block (label3), while the original load instructions are replaced with phi node instructions.
+As seen in figure \ref{fig:heap_translation}, heap memory translation adds a lot of additional instructions. The insertion of instructions is done in several phases. On the first phase, the first six instructions (coloured in orange) are inserted before the original load or store instruction. Next, the original basic block, the load or store instruction belongs to, is split in two. Between them two additional basic blocks are created. All this is done using a \texttt{SplitBlockAndInsertIfThenElse} function. After that, the first basic block (label1) is populated by adding a call to get or put function and the casting instructions if needed. The second basic block (label2) is populated with a clone of the original load or store instruction, as the original still exists on the next basic block (label3). Then, the original store instructions are deleted from the last basic block (label3), while the original load instructions are replaced with PHI node instructions. Finally, heap allocator function translations are performed.
 
 \chapter{Evaluation}
 

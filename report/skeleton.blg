@@ -4,69 +4,63 @@ The top-level auxiliary file: skeleton.aux
 The style file: plainnat.bst
 Database file #1: mybibfile.bib
 Warning--entry type for "numbers_should_know" isn't style-file defined
---line 11 of file mybibfile.bib
+--line 21 of file mybibfile.bib
 Warning--entry type for "run_out_of_mem" isn't style-file defined
---line 19 of file mybibfile.bib
+--line 30 of file mybibfile.bib
 Warning--entry type for "producer-consumer" isn't style-file defined
---line 28 of file mybibfile.bib
+--line 40 of file mybibfile.bib
 Warning--entry type for "grpc_issue" isn't style-file defined
---line 47 of file mybibfile.bib
+--line 59 of file mybibfile.bib
 Warning--entry type for "grpc" isn't style-file defined
---line 56 of file mybibfile.bib
+--line 68 of file mybibfile.bib
 Warning--entry type for "openshmem_fig" isn't style-file defined
---line 65 of file mybibfile.bib
-Warning--entry type for "google-spanner" isn't style-file defined
---line 105 of file mybibfile.bib
-Warning--entry type for "google-datastore" isn't style-file defined
---line 116 of file mybibfile.bib
+--line 77 of file mybibfile.bib
+Warning--entry type for "synchronous-replication" isn't style-file defined
+--line 96 of file mybibfile.bib
 Warning--entry type for "google-bigtable" isn't style-file defined
---line 127 of file mybibfile.bib
-Repeated entry---line 206 of file mybibfile.bib
- : @inproceedings{1327942
- :                       ,
-I'm skipping whatever remains of this entry
+--line 140 of file mybibfile.bib
 Warning--to sort, need author or key in grpc_issue
 Warning--empty institution in Anderson:1998:ENR:893677
 Warning--empty journal in openshmem
-You've used 17 entries,
+You've used 16 entries,
             2773 wiz_defined-function locations,
-            674 strings with 7531 characters,
-and the built_in function-call counts, 7600 in all, are:
-= -- 630
-> -- 534
-< -- 13
-+ -- 188
-- -- 168
-* -- 594
-:= -- 1173
-add.period$ -- 51
-call.type$ -- 17
-change.case$ -- 107
-chr.to.int$ -- 14
-cite$ -- 38
-duplicate$ -- 308
-empty$ -- 579
-format.name$ -- 188
-if$ -- 1576
-int.to.chr$ -- 4
+            675 strings with 7784 characters,
+and the built_in function-call counts, 7315 in all, are:
+= -- 607
+> -- 524
+< -- 12
++ -- 182
+- -- 165
+* -- 579
+:= -- 1133
+add.period$ -- 49
+call.type$ -- 16
+change.case$ -- 103
+chr.to.int$ -- 15
+cite$ -- 36
+duplicate$ -- 293
+empty$ -- 547
+format.name$ -- 184
+if$ -- 1515
+int.to.chr$ -- 2
 int.to.str$ -- 1
 missing$ -- 5
-newline$ -- 93
-num.names$ -- 64
-pop$ -- 260
+newline$ -- 89
+num.names$ -- 60
+pop$ -- 247
 preamble$ -- 1
-purify$ -- 90
+purify$ -- 87
 quote$ -- 0
-skip$ -- 285
+skip$ -- 272
 stack$ -- 0
-substring$ -- 113
-swap$ -- 48
+substring$ -- 111
+swap$ -- 46
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 187
+type$ -- 176
 warning$ -- 3
-while$ -- 53
+while$ -- 50
 width$ -- 0
-write$ -- 213
-(There was 1 error message)
+write$ -- 203
+(There were 11 warnings)

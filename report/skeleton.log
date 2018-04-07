@@ -1,6 +1,6 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.29)  3 APR 2018 23:29
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.29)  7 APR 2018 22:45
 entering extended mode
- restricted \write18 enabled.
+ \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
 **skeleton.tex
@@ -287,27 +287,272 @@ Package: appendix 2009/09/02 v1.2b extra appendix facilities
 \c@@ppsavesec=\count119
 \c@@ppsaveapp=\count120
 )
-(./skeleton.aux)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/tools/verbatim.sty
+Package: verbatim 2014/10/28 v1.5q LaTeX2e package for verbatim enhancements
+\every@verbatim=\toks25
+\verbatim@line=\toks26
+\verbatim@in@stream=\read1
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/minted/minted.sty
+Package: minted 2016/10/31 v2.4.1 Yet another Pygments shim for LaTeX
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
+
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
+Package: kvsetkeys 2016/05/16 v1.17 Key value parser (HO)
+
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/etexcmds.sty
+Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
+
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/ifluatex.sty
+Package: ifluatex 2016/05/16 v1.4 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+)
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+)))
+(/usr/local/texlive/2017/texmf-dist/tex/latex/fvextra/fvextra.sty
+Package: fvextra 2016/09/02 v1.2.1 fvextra - extensions and patches for fancyvr
+b
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+Package: etoolbox 2017/01/02 v2.4 e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count121
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
+Package: fancyvrb 2008/02/07
+
+Style option: `fancyvrb' v2.7a, with DG/SPQR fixes, and firstline=lastline fix 
+<2008/02/07> (tvz)
+\FV@CodeLineNo=\count122
+\FV@InFile=\read2
+\FV@TabBox=\box33
+\c@FancyVerbLine=\count123
+\FV@StepNumber=\count124
+\FV@OutFile=\write3
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/upquote/upquote.sty
+Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verba
+tim
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/textcomp.sty
+Package: textcomp 2017/04/05 v2.0i Standard LaTeX package
+Package textcomp Info: Sub-encoding information:
+(textcomp)               5 = only ISO-Adobe without \textcurrency
+(textcomp)               4 = 5 + \texteuro
+(textcomp)               3 = 4 + \textohm
+(textcomp)               2 = 3 + \textestimated + \textcurrency
+(textcomp)               1 = TS1 - \textcircled - \t
+(textcomp)               0 = TS1 (full)
+(textcomp)             Font families with sub-encoding setting implement
+(textcomp)             only a restricted character set as indicated.
+(textcomp)             Family '?' is the default used for unknown fonts.
+(textcomp)             See the documentation for details.
+Package textcomp Info: Setting ? sub-encoding to TS1/1 on input line 79.
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/ts1enc.def
+File: ts1enc.def 2001/06/05 v3.0e (jk/car/fm) Standard LaTeX file
+)
+LaTeX Info: Redefining \oldstylenums on input line 334.
+Package textcomp Info: Setting cmr sub-encoding to TS1/0 on input line 349.
+Package textcomp Info: Setting cmss sub-encoding to TS1/0 on input line 350.
+Package textcomp Info: Setting cmtt sub-encoding to TS1/0 on input line 351.
+Package textcomp Info: Setting cmvtt sub-encoding to TS1/0 on input line 352.
+Package textcomp Info: Setting cmbr sub-encoding to TS1/0 on input line 353.
+Package textcomp Info: Setting cmtl sub-encoding to TS1/0 on input line 354.
+Package textcomp Info: Setting ccr sub-encoding to TS1/0 on input line 355.
+Package textcomp Info: Setting ptm sub-encoding to TS1/4 on input line 356.
+Package textcomp Info: Setting pcr sub-encoding to TS1/4 on input line 357.
+Package textcomp Info: Setting phv sub-encoding to TS1/4 on input line 358.
+Package textcomp Info: Setting ppl sub-encoding to TS1/3 on input line 359.
+Package textcomp Info: Setting pag sub-encoding to TS1/4 on input line 360.
+Package textcomp Info: Setting pbk sub-encoding to TS1/4 on input line 361.
+Package textcomp Info: Setting pnc sub-encoding to TS1/4 on input line 362.
+Package textcomp Info: Setting pzc sub-encoding to TS1/4 on input line 363.
+Package textcomp Info: Setting bch sub-encoding to TS1/4 on input line 364.
+Package textcomp Info: Setting put sub-encoding to TS1/5 on input line 365.
+Package textcomp Info: Setting uag sub-encoding to TS1/5 on input line 366.
+Package textcomp Info: Setting ugq sub-encoding to TS1/5 on input line 367.
+Package textcomp Info: Setting ul8 sub-encoding to TS1/4 on input line 368.
+Package textcomp Info: Setting ul9 sub-encoding to TS1/4 on input line 369.
+Package textcomp Info: Setting augie sub-encoding to TS1/5 on input line 370.
+Package textcomp Info: Setting dayrom sub-encoding to TS1/3 on input line 371.
+Package textcomp Info: Setting dayroms sub-encoding to TS1/3 on input line 372.
+
+Package textcomp Info: Setting pxr sub-encoding to TS1/0 on input line 373.
+Package textcomp Info: Setting pxss sub-encoding to TS1/0 on input line 374.
+Package textcomp Info: Setting pxtt sub-encoding to TS1/0 on input line 375.
+Package textcomp Info: Setting txr sub-encoding to TS1/0 on input line 376.
+Package textcomp Info: Setting txss sub-encoding to TS1/0 on input line 377.
+Package textcomp Info: Setting txtt sub-encoding to TS1/0 on input line 378.
+Package textcomp Info: Setting lmr sub-encoding to TS1/0 on input line 379.
+Package textcomp Info: Setting lmdh sub-encoding to TS1/0 on input line 380.
+Package textcomp Info: Setting lmss sub-encoding to TS1/0 on input line 381.
+Package textcomp Info: Setting lmssq sub-encoding to TS1/0 on input line 382.
+Package textcomp Info: Setting lmvtt sub-encoding to TS1/0 on input line 383.
+Package textcomp Info: Setting lmtt sub-encoding to TS1/0 on input line 384.
+Package textcomp Info: Setting qhv sub-encoding to TS1/0 on input line 385.
+Package textcomp Info: Setting qag sub-encoding to TS1/0 on input line 386.
+Package textcomp Info: Setting qbk sub-encoding to TS1/0 on input line 387.
+Package textcomp Info: Setting qcr sub-encoding to TS1/0 on input line 388.
+Package textcomp Info: Setting qcs sub-encoding to TS1/0 on input line 389.
+Package textcomp Info: Setting qpl sub-encoding to TS1/0 on input line 390.
+Package textcomp Info: Setting qtm sub-encoding to TS1/0 on input line 391.
+Package textcomp Info: Setting qzc sub-encoding to TS1/0 on input line 392.
+Package textcomp Info: Setting qhvc sub-encoding to TS1/0 on input line 393.
+Package textcomp Info: Setting futs sub-encoding to TS1/4 on input line 394.
+Package textcomp Info: Setting futx sub-encoding to TS1/4 on input line 395.
+Package textcomp Info: Setting futj sub-encoding to TS1/4 on input line 396.
+Package textcomp Info: Setting hlh sub-encoding to TS1/3 on input line 397.
+Package textcomp Info: Setting hls sub-encoding to TS1/3 on input line 398.
+Package textcomp Info: Setting hlst sub-encoding to TS1/3 on input line 399.
+Package textcomp Info: Setting hlct sub-encoding to TS1/5 on input line 400.
+Package textcomp Info: Setting hlx sub-encoding to TS1/5 on input line 401.
+Package textcomp Info: Setting hlce sub-encoding to TS1/5 on input line 402.
+Package textcomp Info: Setting hlcn sub-encoding to TS1/5 on input line 403.
+Package textcomp Info: Setting hlcw sub-encoding to TS1/5 on input line 404.
+Package textcomp Info: Setting hlcf sub-encoding to TS1/5 on input line 405.
+Package textcomp Info: Setting pplx sub-encoding to TS1/3 on input line 406.
+Package textcomp Info: Setting pplj sub-encoding to TS1/3 on input line 407.
+Package textcomp Info: Setting ptmx sub-encoding to TS1/4 on input line 408.
+Package textcomp Info: Setting ptmj sub-encoding to TS1/4 on input line 409.
+))
+(/usr/local/texlive/2017/texmf-dist/tex/latex/lineno/lineno.sty
+Package: lineno 2005/11/02 line numbers on paragraphs v4.41
+\linenopenalty=\count125
+\output=\toks27
+\linenoprevgraf=\count126
+\linenumbersep=\dimen135
+\linenumberwidth=\dimen136
+\c@linenumber=\count127
+\c@pagewiselinenumber=\count128
+\c@LN@truepage=\count129
+\c@internallinenumber=\count130
+\c@internallinenumbers=\count131
+\quotelinenumbersep=\dimen137
+\bframerule=\dimen138
+\bframesep=\dimen139
+\bframebox=\box34
+LaTeX Info: Redefining \\ on input line 3056.
+)
+\c@FV@TrueTabGroupLevel=\count132
+\c@FV@TrueTabCounter=\count133
+\FV@TabBox@Group=\box35
+\FV@TmpLength=\skip48
+\c@FV@HighlightLinesStart=\count134
+\c@FV@HighlightLinesStop=\count135
+\FV@BreakIndent=\dimen140
+\FV@BreakSymbolSepLeft=\dimen141
+\FV@BreakSymbolSepRight=\dimen142
+\FV@BreakSymbolIndentLeft=\dimen143
+\FV@BreakSymbolIndentRight=\dimen144
+\c@FancyVerbLineBreakLast=\count136
+\FV@LineBox=\box36
+\FV@LineIndentBox=\box37
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/tools/calc.sty
+Package: calc 2014/10/28 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count137
+\calc@Bcount=\count138
+\calc@Adimen=\dimen145
+\calc@Bdimen=\dimen146
+\calc@Askip=\skip49
+\calc@Bskip=\skip50
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count139
+\calc@Cskip=\skip51
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/tools/shellesc.sty
+Package: shellesc 2016/06/07 v0.02a unified shell escape interface for LaTeX
+Package shellesc Info: Unrestricted shell escape enabled on input line 67.
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/ifplatform/ifplatform.sty
+Package: ifplatform 2010/10/22 v0.4 Testing for the operating system
+
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
+Package: pdftexcmds 2017/03/19 v0.25 Utility functions of pdfTeX for LuaTeX (HO
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/catchfile.sty
+Package: catchfile 2016/05/16 v1.7 Catch the contents of a file (HO)
+)
+runsystem(uname -s > "skeleton.w18")...executed.
+
+
+(./skeleton.w18)
+runsystem(rm -- "skeleton.w18")...executed.
+
+)
+(/usr/local/texlive/2017/texmf-dist/tex/generic/xstring/xstring.sty
+(/usr/local/texlive/2017/texmf-dist/tex/generic/xstring/xstring.tex
+\@xs@message=\write4
+\integerpart=\count140
+\decimalpart=\count141
+)
+Package: xstring 2013/10/13  v1.7c  String manipulations (C Tellechea)
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/framed/framed.sty
+Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
+\OuterFrameSep=\skip52
+\fb@frw=\dimen147
+\fb@frh=\dimen148
+\FrameRule=\dimen149
+\FrameSep=\dimen150
+)
+\minted@appexistsfile=\read3
+\minted@bgbox=\box38
+\minted@code=\write5
+\c@minted@FancyVerbLineTemp=\count142
+\c@minted@pygmentizecounter=\count143
+\@float@every@listing=\toks28
+\c@listing=\count144
+)
+runsystem(mkdir -p _minted-skeleton)...executed.
+
+runsystem(which pygmentize && touch skeleton.aex)...executed.
+
+runsystem(rm skeleton.aex)...executed.
+
+
+(./skeleton.aux
+
+LaTeX Warning: Label `get' multiply defined.
+
+)
 \openout1 = `skeleton.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for OMS/pzccm/m/n on input line 18.
-LaTeX Font Info:    Try loading font information for OMS+pzccm on input line 18
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for OMS/pzccm/m/n on input line 21.
+LaTeX Font Info:    Try loading font information for OMS+pzccm on input line 21
 .
-
-(/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/omspzccm.fd
+ (/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/omspzccm.fd
 File: omspzccm.fd 2000/01/03 Fontinst v1.801 font definitions for OMS/pzccm.
 )
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 18.
-LaTeX Font Info:    ... okay on input line 18.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 21.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 21.
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/ts1cmr.fd
+File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    ... okay on input line 21.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -345,31 +590,18 @@ LaTeX Font Info:    ... okay on input line 18.
 
 (/usr/local/texlive/2017/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count121
-\scratchdimen=\dimen135
-\scratchbox=\box33
-\nofMPsegments=\count122
-\nofMParguments=\count123
-\everyMPshowfont=\toks25
-\MPscratchCnt=\count124
-\MPscratchDim=\dimen136
-\MPnumerator=\count125
-\makeMPintoPDFobject=\count126
-\everyMPtoPDFconversion=\toks26
-) (/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
-Package: pdftexcmds 2017/03/19 v0.25 Utility functions of pdfTeX for LuaTeX (HO
-)
-
-(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/ifluatex.sty
-Package: ifluatex 2016/05/16 v1.4 Provides the ifluatex switch (HO)
-Package ifluatex Info: LuaTeX not detected.
-)
-Package pdftexcmds Info: LuaTeX not detected.
-Package pdftexcmds Info: \pdf@primitive is available.
-Package pdftexcmds Info: \pdf@ifprimitive is available.
-Package pdftexcmds Info: \pdfdraftmode found.
-)
-(/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+\scratchcounter=\count145
+\scratchdimen=\dimen151
+\scratchbox=\box39
+\nofMPsegments=\count146
+\nofMParguments=\count147
+\everyMPshowfont=\toks29
+\MPscratchCnt=\count148
+\MPscratchDim=\dimen152
+\MPnumerator=\count149
+\makeMPintoPDFobject=\count150
+\everyMPtoPDFconversion=\toks30
+) (/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
 
 (/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/grfext.sty
@@ -378,19 +610,6 @@ Package: grfext 2016/05/16 v1.2 Manage graphics extensions (HO)
 (/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
 Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
 ))
-(/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/kvoptions.sty
-Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
-
-(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
-Package: kvsetkeys 2016/05/16 v1.17 Key value parser (HO)
-
-(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/etexcmds.sty
-Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
-Package etexcmds Info: Could not find \expanded.
-(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
-(etexcmds)             that some package has redefined \expanded.
-(etexcmds)             In the latter case, load this package earlier.
-)))
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 38.
 Package grfext Info: Graphics extension search list:
@@ -407,13 +626,13 @@ Package caption Info: float package is loaded.
 Package caption Info: listings package is loaded.
 Package caption Info: wrapfig package is loaded.
 Package caption Info: End \AtBeginDocument code.
-\c@lstlisting=\count127
+\c@lstlisting=\count151
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <20.74> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 57.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 60.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <20.74> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 57.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 60.
 LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
-(Font)              scaled to size 18.66588pt on input line 57.
+(Font)              scaled to size 18.66588pt on input line 60.
 
 [1
 
@@ -422,29 +641,29 @@ LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
 
 ]
 LaTeX Font Info:    Font shape `OT1/phv/m/n' will be
-(Font)              scaled to size 10.79993pt on input line 57.
+(Font)              scaled to size 10.79993pt on input line 60.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <12> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 57.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 60.
 LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
-(Font)              scaled to size 10.79993pt on input line 57.
+(Font)              scaled to size 10.79993pt on input line 60.
 LaTeX Font Info:    Font shape `OT1/phv/m/it' in size <12> not available
-(Font)              Font shape `OT1/phv/m/sl' tried instead on input line 57.
+(Font)              Font shape `OT1/phv/m/sl' tried instead on input line 60.
 LaTeX Font Info:    Font shape `OT1/phv/m/sl' will be
-(Font)              scaled to size 10.79993pt on input line 57.
+(Font)              scaled to size 10.79993pt on input line 60.
  [3]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <17.28> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 59.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 62.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <17.28> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 59.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 62.
 LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
-(Font)              scaled to size 15.55188pt on input line 59.
+(Font)              scaled to size 15.55188pt on input line 62.
  [4]
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <24.88> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 67.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 70.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <24.88> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 67.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 70.
 LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
-(Font)              scaled to size 22.39185pt on input line 67.
+(Font)              scaled to size 22.39185pt on input line 70.
  (./skeleton.toc
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1.
@@ -473,63 +692,62 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7> not available
  [5
 
 ])
-\tf@toc=\write3
-\openout3 = `skeleton.toc'.
+\tf@toc=\write6
+\openout6 = `skeleton.toc'.
 
- [6]
+ [1]
+[2
+
+]
 Chapter 1.
+[3]
+LaTeX Font Info:    Try loading font information for TS1+ptm on input line 91.
+ (/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/ts1ptm.fd
+File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
+) [4]
+[5] [6]
+Chapter 2.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 155.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7.4> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 155.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 155.
 [7
 
-]
-LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <12> not available
-(Font)              Font shape `OMS/pzccm/m/n' tried instead on input line 86.
- [8] [9] [10
-
-]
-Chapter 2.
-[11]
-Overfull \hbox (12.30247pt too wide) in paragraph at lines 166--167
-\OT1/ptm/m/n/12 Spanner (Google, 2018c) is a hor-i-zon-tally scal-able, glob-al
-ly con-sis-tent re-la-tional database
- []
-
-[12]
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 179.
-LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 179.
-LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
-(Font)              scaled to size 12.9599pt on input line 179.
- <images/load-latency.png, id=47, 602.25pt x 372.39125pt>
+] <images/load-latency.png, id=46, 602.25pt x 372.39125pt>
 File: images/load-latency.png Graphic file (type png)
 
 <use images/load-latency.png>
-Package pdftex.def Info: images/load-latency.png used on input line 185.
-(pdftex.def)             Requested size: 284.52756pt x 175.93874pt.
+Package pdftex.def Info: images/load-latency.png used on input line 183.
+(pdftex.def)             Requested size: 184.9429pt x 114.35478pt.
+LaTeX Font Info:    Font shape `OT1/phv/m/n' will be
+(Font)              scaled to size 9.85492pt on input line 184.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10.95> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 184.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <8> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 184.
 
-<images/load-throughput.png, id=48, 602.25pt x 372.39125pt>
+<images/load-throughput.png, id=47, 602.25pt x 372.39125pt>
 File: images/load-throughput.png Graphic file (type png)
 
 <use images/load-throughput.png>
-Package pdftex.def Info: images/load-throughput.png used on input line 191.
-(pdftex.def)             Requested size: 284.52756pt x 175.93874pt.
-
-<images/write-latency.png, id=49, 599.841pt x 291.0072pt>
+Package pdftex.def Info: images/load-throughput.png used on input line 189.
+(pdftex.def)             Requested size: 184.9429pt x 114.35478pt.
+ [8 <./images/load-latency.png (PNG copy)> <./images/load-throughput.png (PNG c
+opy)>]
+<images/write-latency.png, id=53, 599.841pt x 291.0072pt>
 File: images/write-latency.png Graphic file (type png)
 
 <use images/write-latency.png>
-Package pdftex.def Info: images/write-latency.png used on input line 202.
-(pdftex.def)             Requested size: 199.16928pt x 96.62325pt.
- [13 <./images/load-latency.png (PNG copy)>]
-Underfull \hbox (badness 1048) in paragraph at lines 208--209
-\OT1/ptm/m/n/12 than Span-ner and more than 4 times
- []
+Package pdftex.def Info: images/write-latency.png used on input line 200.
+(pdftex.def)             Requested size: 341.43306pt x 165.64935pt.
 
 <images/read-latency.png, id=55, 618.1494pt x 356.0502pt>
 File: images/read-latency.png Graphic file (type png)
 
 <use images/read-latency.png>
-Package pdftex.def Info: images/read-latency.png used on input line 215.
+Package pdftex.def Info: images/read-latency.png used on input line 209.
 (pdftex.def)             Requested size: 341.43306pt x 196.6703pt.
 
 <images/read-modify-write-latency.png, id=56, 633.36626pt x 372.39125pt>
@@ -537,209 +755,267 @@ File: images/read-modify-write-latency.png Graphic file (type png)
 
 <use images/read-modify-write-latency.png>
 Package pdftex.def Info: images/read-modify-write-latency.png used on input lin
-e 222.
-(pdftex.def)             Requested size: 369.88582pt x 217.48149pt.
-
-<images/throughput.png, id=57, 549.7338pt x 294.8616pt>
-File: images/throughput.png Graphic file (type png)
-
-<use images/throughput.png>
-Package pdftex.def Info: images/throughput.png used on input line 229.
-(pdftex.def)             Requested size: 341.43306pt x 183.13623pt.
- [14 <./images/load-throughput.png (PNG copy)> <./images/write-latency.png> <./
-images/read-latency.png>] [15 <./images/read-modify-write-latency.png (PNG copy
-)> <./images/throughput.png>]
-<images/grpc.png, id=68, 704.6325pt x 447.6725pt>
-File: images/grpc.png Graphic file (type png)
- <use images/grpc.png>
-Package pdftex.def Info: images/grpc.png used on input line 244.
-(pdftex.def)             Requested size: 371.30595pt x 235.89911pt.
-
-(/usr/local/texlive/2017/texmf-dist/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2015/06/04 1.6 listings language file
-)
-(/usr/local/texlive/2017/texmf-dist/tex/latex/listings/lstlang1.sty
-File: lstlang1.sty 2015/06/04 1.6 listings language file
-)
-(/usr/local/texlive/2017/texmf-dist/tex/latex/listings/lstmisc.sty
-File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
-)
-LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
-(Font)              Font shape `OMS/pzccm/m/n' tried instead on input line 273.
-
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <10> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 282.
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <7.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 282.
-LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <6> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 282.
- [16 <./images/grpc.png>]
-LaTeX Font Info:    Try loading font information for OML+ptm on input line 312.
-
- (/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/omlptm.fd
-File: omlptm.fd 
-)
-LaTeX Font Info:    Font shape `OML/ptm/m/n' in size <10> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 312.
-
-Underfull \vbox (badness 4048) has occurred while \output is active []
-
- [17]
-[18]
-Chapter 3.
-[19
-
-] <images/openshmem_memory_model.png, id=83, 634.37pt x 358.84062pt>
-File: images/openshmem_memory_model.png Graphic file (type png)
-
-<use images/openshmem_memory_model.png>
-Package pdftex.def Info: images/openshmem_memory_model.png used on input line 3
-48.
-(pdftex.def)             Requested size: 371.30595pt x 210.03864pt.
- [20 <./images/openshmem_memory_model.png>] <images/llvm.pdf, id=88, 592.81981p
-t x 295.3936pt>
-File: images/llvm.pdf Graphic file (type pdf)
- <use images/llvm.pdf>
-Package pdftex.def Info: images/llvm.pdf used on input line 371.
-(pdftex.def)             Requested size: 412.56497pt x 205.57515pt.
-
-<images/architecture.pdf, id=89, 528.86113pt x 233.76685pt>
-File: images/architecture.pdf Graphic file (type pdf)
-
-<use images/architecture.pdf>
-Package pdftex.def Info: images/architecture.pdf used on input line 384.
-(pdftex.def)             Requested size: 412.56497pt x 182.36594pt.
+e 216.
+(pdftex.def)             Requested size: 341.43306pt x 200.75302pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [21 <./images/llvm.pdf>] <images/barrier.pdf, id=110, 298.00345pt x 275.49405p
+ [9 <./images/write-latency.png> <./images/read-latency.png>]
+<images/throughput.png, id=62, 549.7338pt x 294.8616pt>
+File: images/throughput.png Graphic file (type png)
+
+<use images/throughput.png>
+Package pdftex.def Info: images/throughput.png used on input line 225.
+(pdftex.def)             Requested size: 341.43306pt x 183.13623pt.
+ [10 <./images/read-modify-write-latency.png (PNG copy)> <./images/throughput.p
+ng>]
+<images/grpc1.pdf, id=67, 335.79823pt x 227.9718pt>
+File: images/grpc1.pdf Graphic file (type pdf)
+ <use images/grpc1.pdf>
+Package pdftex.def Info: images/grpc1.pdf used on input line 248.
+(pdftex.def)             Requested size: 226.91199pt x 154.04823pt.
+
+[11]
+\openout3 = `skeleton.pyg'.
+
+ (./_minted-skeleton/default-pyg-prefix.pygstyle)
+(./_minted-skeleton/default.pygstyle)
+(./_minted-skeleton/C425ACE0718D77491E2EA95C1AC12632B9E30FD2442D3F61CC8F6A91D61
+474B4.pygtex
+LaTeX Font Info:    Font shape `OT1/pcr/bx/n' in size <10> not available
+(Font)              Font shape `OT1/pcr/b/n' tried instead on input line 2.
+LaTeX Font Info:    Font shape `OT1/pcr/m/it' in size <10> not available
+(Font)              Font shape `OT1/pcr/m/sl' tried instead on input line 3.
+) [12 <./images/grpc1.pdf>]
+\openout3 = `skeleton.pyg'.
+
+
+(./_minted-skeleton/E8963F8FCFA4D4880940931AF32487F3B9E30FD2442D3F61CC8F6A91D61
+474B4.pygtex)
+\openout3 = `skeleton.pyg'.
+
+
+(./_minted-skeleton/B8000448EB1224C53F857BFC6F5C47C3B9E30FD2442D3F61CC8F6A91D61
+474B4.pygtex)
+Underfull \vbox (badness 6016) has occurred while \output is active []
+
+ [13]
+[14]
+Chapter 3.
+[15
+
+] <images/llvm.pdf, id=104, 592.81981pt x 295.3936pt>
+File: images/llvm.pdf Graphic file (type pdf)
+ <use images/llvm.pdf>
+Package pdftex.def Info: images/llvm.pdf used on input line 394.
+(pdftex.def)             Requested size: 412.56497pt x 205.57515pt.
+
+<images/architecture.pdf, id=105, 528.86113pt x 233.76685pt>
+File: images/architecture.pdf Graphic file (type pdf)
+
+<use images/architecture.pdf>
+Package pdftex.def Info: images/architecture.pdf used on input line 408.
+(pdftex.def)             Requested size: 412.56497pt x 182.36594pt.
+
+Underfull \vbox (badness 3503) has occurred while \output is active []
+
+ [16 <./images/llvm.pdf>] <images/barrier.pdf, id=126, 298.00345pt x 275.49405p
 t>
 File: images/barrier.pdf Graphic file (type pdf)
 
 <use images/barrier.pdf>
-Package pdftex.def Info: images/barrier.pdf used on input line 393.
+Package pdftex.def Info: images/barrier.pdf used on input line 417.
 (pdftex.def)             Requested size: 206.28249pt x 190.70062pt.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 1831) has occurred while \output is active []
 
- [22 <./images/architecture.pdf> <./images/barrier.pdf>]
-<images/store_translation.pdf, id=148, 554.15633pt x 259.83534pt>
+ [17 <./images/architecture.pdf> <./images/barrier.pdf>]
+\openout5 = `skeleton.pyg'.
+
+
+(./_minted-skeleton/20380D658CCEC45F5C98AACE317B8FA10BEDC83759DB457F6E6B597D4A2
+13525.pygtex
+LaTeX Font Info:    Font shape `OT1/pcr/bx/n' in size <12> not available
+(Font)              Font shape `OT1/pcr/b/n' tried instead on input line 2.
+)
+\openout5 = `skeleton.pyg'.
+
+
+(./_minted-skeleton/720174E943F10E0CA4E487CB0D8452FB0BEDC83759DB457F6E6B597D4A2
+13525.pygtex)
+\openout5 = `skeleton.pyg'.
+
+
+(./_minted-skeleton/56DC26AFA0434717B866276F0820D3960BEDC83759DB457F6E6B597D4A2
+13525.pygtex)
+<images/store_translation.pdf, id=165, 554.15633pt x 259.83534pt>
 File: images/store_translation.pdf Graphic file (type pdf)
 
 <use images/store_translation.pdf>
-Package pdftex.def Info: images/store_translation.pdf used on input line 410.
+Package pdftex.def Info: images/store_translation.pdf used on input line 435.
 (pdftex.def)             Requested size: 330.05322pt x 154.76451pt.
- [23 <./images/store_translation.pdf>]
-<images/load_translation.pdf, id=170, 564.43233pt x 264.96672pt>
+ [18 <./images/store_translation.pdf>]
+<images/load_translation.pdf, id=186, 564.43233pt x 264.96672pt>
 File: images/load_translation.pdf Graphic file (type pdf)
 
 <use images/load_translation.pdf>
-Package pdftex.def Info: images/load_translation.pdf used on input line 419.
+Package pdftex.def Info: images/load_translation.pdf used on input line 446.
 (pdftex.def)             Requested size: 330.05322pt x 154.94627pt.
- [24 <./images/load_translation.pdf>]
-Chapter 4.
-[25
+ [19 <./images/load_translation.pdf>] [20
 
-] <images/heap_organisation.pdf, id=195, 697.69159pt x 274.19159pt>
+]
+Chapter 4.
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 475.
+LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <14.4> not available
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 475.
+LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
+(Font)              scaled to size 12.9599pt on input line 475.
+[21] <images/heap_organisation.pdf, id=214, 697.69159pt x 274.19159pt>
 File: images/heap_organisation.pdf Graphic file (type pdf)
 
 <use images/heap_organisation.pdf>
-Package pdftex.def Info: images/heap_organisation.pdf used on input line 458.
+Package pdftex.def Info: images/heap_organisation.pdf used on input line 483.
 (pdftex.def)             Requested size: 412.56497pt x 162.13562pt.
- [26 <./images/heap_organisation.pdf>]
-[27] [28] <images/no_malloc.png, id=222, 350.30875pt x 64.24pt>
+\openout3 = `skeleton.pyg'.
+
+
+(./_minted-skeleton/A7194275223E32E565D7EBDDD548D17FB9E30FD2442D3F61CC8F6A91D61
+474B4.pygtex) [22 <./images/heap_organisation.pdf>]
+\openout3 = `skeleton.pyg'.
+
+
+(./_minted-skeleton/6A12162ACAB73BF76C3BABBAC6FC6AF8B9E30FD2442D3F61CC8F6A91D61
+474B4.pygtex)
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[23]
+\openout3 = `skeleton.pyg'.
+
+
+(./_minted-skeleton/FD4D9CB797A166A7AD9B974899532293B9E30FD2442D3F61CC8F6A91D61
+474B4.pygtex) [24] <images/no_malloc.png, id=242, 350.30875pt x 64.24pt>
 File: images/no_malloc.png Graphic file (type png)
 
 <use images/no_malloc.png>
-Package pdftex.def Info: images/no_malloc.png used on input line 518.
+Package pdftex.def Info: images/no_malloc.png used on input line 582.
 (pdftex.def)             Requested size: 170.71652pt x 31.30632pt.
 
-Overfull \hbox (5.69305pt too wide) in paragraph at lines 518--519
+Overfull \hbox (5.69305pt too wide) in paragraph at lines 582--583
  [][] 
  []
 
-LaTeX Font Info:    Font shape `OT1/phv/m/n' will be
-(Font)              scaled to size 9.85492pt on input line 519.
-<images/default_malloc.png, id=223, 324.21124pt x 62.2325pt>
+<images/default_malloc.png, id=243, 324.21124pt x 62.2325pt>
 File: images/default_malloc.png Graphic file (type png)
 
 <use images/default_malloc.png>
-Package pdftex.def Info: images/default_malloc.png used on input line 524.
+Package pdftex.def Info: images/default_malloc.png used on input line 588.
 (pdftex.def)             Requested size: 170.71652pt x 32.76941pt.
 
-Overfull \hbox (5.69305pt too wide) in paragraph at lines 524--525
+Overfull \hbox (5.69305pt too wide) in paragraph at lines 588--589
  [][] 
  []
 
-<images/custom_malloc.png, id=224, 328.22626pt x 64.24pt>
+<images/custom_malloc.png, id=244, 328.22626pt x 64.24pt>
 File: images/custom_malloc.png Graphic file (type png)
 
 <use images/custom_malloc.png>
-Package pdftex.def Info: images/custom_malloc.png used on input line 529.
+Package pdftex.def Info: images/custom_malloc.png used on input line 593.
 (pdftex.def)             Requested size: 170.71652pt x 33.41283pt.
 
-Overfull \hbox (5.69305pt too wide) in paragraph at lines 529--530
+Overfull \hbox (5.69305pt too wide) in paragraph at lines 593--594
  [][] 
  []
 
-<images/simple_malloc.png, id=225, 326.21875pt x 63.23625pt>
+<images/simple_malloc.png, id=245, 326.21875pt x 63.23625pt>
 File: images/simple_malloc.png Graphic file (type png)
 
 <use images/simple_malloc.png>
-Package pdftex.def Info: images/simple_malloc.png used on input line 535.
+Package pdftex.def Info: images/simple_malloc.png used on input line 599.
 (pdftex.def)             Requested size: 170.71652pt x 33.09337pt.
 
-Overfull \hbox (5.69305pt too wide) in paragraph at lines 535--536
+Overfull \hbox (5.69305pt too wide) in paragraph at lines 599--600
  [][] 
  []
 
-[29 <./images/no_malloc.png> <./images/default_malloc.png> <./images/custom_mal
-loc.png> <./images/simple_malloc.png>] [30
 
-]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [25]
+<images/allocator_test_a.png, id=249, 602.25pt x 372.39125pt>
+File: images/allocator_test_a.png Graphic file (type png)
+
+<use images/allocator_test_a.png>
+Package pdftex.def Info: images/allocator_test_a.png used on input line 612.
+(pdftex.def)             Requested size: 341.43306pt x 211.12877pt.
+ [26 <./images/no_malloc.png> <./images/default_malloc.png> <./images/custom_ma
+lloc.png> <./images/simple_malloc.png> <./images/allocator_test_a.png (PNG copy
+)>]
+<images/allocator_test_c.png, id=258, 602.25pt x 372.39125pt>
+File: images/allocator_test_c.png Graphic file (type png)
+
+<use images/allocator_test_c.png>
+Package pdftex.def Info: images/allocator_test_c.png used on input line 622.
+(pdftex.def)             Requested size: 341.43306pt x 211.12877pt.
+
+<images/allocator_test_e.png, id=259, 602.25pt x 372.39125pt>
+File: images/allocator_test_e.png Graphic file (type png)
+
+<use images/allocator_test_e.png>
+Package pdftex.def Info: images/allocator_test_e.png used on input line 631.
+(pdftex.def)             Requested size: 341.43306pt x 211.12877pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [27 <./images/allocator_test_c.png (PNG copy)>] [28 <./images/allocator_test_e
+.png (PNG copy)>]
 Chapter 5.
+[29
 
-LaTeX Warning: Reference `' on page 31 undefined on input line 548.
-
-[31] <images/heap_store_translation.pdf, id=240, 509.8211pt x 506.34198pt>
+] <images/heap_store_translation.pdf, id=269, 509.8211pt x 506.34198pt>
 File: images/heap_store_translation.pdf Graphic file (type pdf)
 
 <use images/heap_store_translation.pdf>
-Package pdftex.def Info: images/heap_store_translation.pdf used on input line 5
-62.
+Package pdftex.def Info: images/heap_store_translation.pdf used on input line 6
+67.
 (pdftex.def)             Requested size: 199.16928pt x 197.81253pt.
 
-Overfull \hbox (13.51631pt too wide) in paragraph at lines 562--563
+Overfull \hbox (13.51631pt too wide) in paragraph at lines 667--668
  [][] 
  []
 
-<images/heap_load_translation.pdf, id=241, 550.72437pt x 545.09004pt>
+<images/heap_load_translation.pdf, id=270, 550.72437pt x 545.09004pt>
 File: images/heap_load_translation.pdf Graphic file (type pdf)
 
 <use images/heap_load_translation.pdf>
-Package pdftex.def Info: images/heap_load_translation.pdf used on input line 56
-8.
+Package pdftex.def Info: images/heap_load_translation.pdf used on input line 67
+3.
 (pdftex.def)             Requested size: 199.16928pt x 197.13054pt.
 
-Overfull \hbox (13.51631pt too wide) in paragraph at lines 568--569
+Overfull \hbox (13.51631pt too wide) in paragraph at lines 673--674
  [][] 
  []
 
-[32 <./images/heap_store_translation.pdf> <./images/heap_load_translation.pdf>]
+[30 <./images/heap_store_translation.pdf> <./images/heap_load_translation.pdf>]
 Chapter 6.
-[33
+[31
 
-] [34] <images/instruction_count.png, id=285, 602.25pt x 491.8375pt>
+] [32] <images/instruction_count.png, id=316, 602.25pt x 491.8375pt>
 File: images/instruction_count.png Graphic file (type png)
 
 <use images/instruction_count.png>
-Package pdftex.def Info: images/instruction_count.png used on input line 614.
+Package pdftex.def Info: images/instruction_count.png used on input line 719.
 (pdftex.def)             Requested size: 412.56497pt x 336.94417pt.
- [35 <./images/instruction_count.png (PNG copy)>] [36
+ [33 <./images/instruction_count.png (PNG copy)>] [34
 
 ]
 Chapter 7.
-[37] (./skeleton.bbl [38]
+[35]
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <12> not available
+(Font)              Font shape `OMS/pzccm/m/n' tried instead on input line 749.
+
+ (./skeleton.bbl [36]
 Underfull \hbox (badness 7667) in paragraph at lines 19--23
 []\OT1/ptm/m/n/12 Greg An-drews.  Foun-da-tions of mul-ti-threaded, par-al-lel,
  and dis-tributed
@@ -756,45 +1032,105 @@ Underfull \hbox (badness 5939) in paragraph at lines 52--55
  URL
  []
 
-[39
+
+Underfull \hbox (badness 3536) in paragraph at lines 78--84
+[]\OT1/ptm/m/n/12 Cory O'Connor.  An-nounc-ing google cloud bigtable: The same 
+database
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 78--84
+\OT1/ptm/m/n/12 that pow-ers google search, gmail and an-a-lyt-ics is now avail
+-able on
+ []
+
+
+Underfull \hbox (badness 1565) in paragraph at lines 78--84
+\OT1/ptm/m/n/12 google cloud plat-form.  \OT1/ptm/m/it/12 Google Cloud Plat-for
+m Blog\OT1/ptm/m/n/12 , May 2015.  URL
+ []
+
+
+Overfull \hbox (110.39336pt too wide) in paragraph at lines 78--84
+\OT1/pcr/m/n/12 https://cloudplatform.googleblog.com/2015/05/introducing-Google
+-Cloud-Bigtable.html\OT1/ptm/m/n/12 . 
+ []
+
+[37
 
 ]
-Overfull \hbox (16.79369pt too wide) in paragraph at lines 104--112
+Underfull \hbox (badness 10000) in paragraph at lines 94--98
+[]\OT1/ptm/m/n/12 Margaret Rouse.  Syn-chronous repli-ca-tion, 2016.  URL
+ []
+
+
+Overfull \hbox (92.03342pt too wide) in paragraph at lines 94--98
+\OT1/pcr/m/n/12 https://searchdisasterrecovery.techtarget.com/definition/synchr
+onous-replication\OT1/ptm/m/n/12 . 
+ []
+
+
+Overfull \hbox (16.79369pt too wide) in paragraph at lines 103--111
 \OT1/pcr/m/n/12 http://openshmem.org/site/sites/default/site[]files/OpenSHMEM-1
 .3.pdf\OT1/ptm/m/n/12 . 
  []
 
-) [40]
+) [38]
 Appendix A.
-[41
+(/usr/local/texlive/2017/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2015/06/04 1.6 listings language file
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2015/06/04 1.6 listings language file
+)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
+)
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <10> not available
+(Font)              Font shape `OMS/pzccm/m/n' tried instead on input line 766.
 
-] [42] (./skeleton.aux)
+LaTeX Font Info:    Try loading font information for OML+ptm on input line 767.
 
-LaTeX Warning: There were undefined references.
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/omlptm.fd
+File: omlptm.fd 
+)
+LaTeX Font Info:    Font shape `OML/ptm/m/n' in size <10> not available
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 767.
+ [39
+
+] [40]
+(./skeleton.aux)
+
+LaTeX Warning: There were multiply-defined labels.
+
+runsystem(rm skeleton.pyg)...executed.
 
  ) 
 Here is how much of TeX's memory you used:
- 7199 strings out of 492995
- 105698 string characters out of 6132703
- 219941 words of memory out of 5000000
- 10590 multiletter control sequences out of 15000+600000
- 51416 words of font info for 95 fonts, out of 8000000 for 9000
+ 10438 strings out of 492995
+ 171058 string characters out of 6132703
+ 325840 words of memory out of 5000000
+ 13712 multiletter control sequences out of 15000+600000
+ 61687 words of font info for 121 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 43i,8n,67p,1729b,1702s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 43i,8n,67p,1729b,1682s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2017/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/te
 xlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/tex
-live/2017/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/201
-7/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2017/texmf
--dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2017/texmf-dist/f
-onts/type1/urw/helvetic/uhvro8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/t
-ype1/urw/times/utmb8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/t
-imes/utmr8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmri
-8a.pfb>
-Output written on skeleton.pdf (42 pages, 673008 bytes).
+live/2017/texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></usr/local/texlive/201
+7/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2017/texmf-
+dist/fonts/type1/urw/courier/ucrro8a.pfb></usr/local/texlive/2017/texmf-dist/fo
+nts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/typ
+e1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/
+helvetic/uhvro8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/symbol
+/usyr.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmb8a.pfb>
+</usr/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/loca
+l/texlive/2017/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on skeleton.pdf (45 pages, 641064 bytes).
 PDF statistics:
- 346 PDF objects out of 1000 (max. 8388607)
- 236 compressed objects within 3 object streams
+ 385 PDF objects out of 1000 (max. 8388607)
+ 266 compressed objects within 3 object streams
  0 named destinations out of 1000 (max. 500000)
- 106 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 116 words of extra memory for PDF output out of 10000 (max. 10000000)
 

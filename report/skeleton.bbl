@@ -1,4 +1,4 @@
-\begin{thebibliography}{17}
+\begin{thebibliography}{16}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -58,19 +58,9 @@ Google.
 \newblock Bigtable, 2018{\natexlab{a}}.
 \newblock URL \url{https://cloud.google.com/bigtable/}.
 
-\bibitem[Google(2018{\natexlab{b}})]{google-datastore}
+\bibitem[Google(2018{\natexlab{b}})]{grpc}
 Google.
-\newblock Datastore, 2018{\natexlab{b}}.
-\newblock URL \url{https://cloud.google.com/datastore/}.
-
-\bibitem[Google(2018{\natexlab{c}})]{google-spanner}
-Google.
-\newblock Spanner, 2018{\natexlab{c}}.
-\newblock URL \url{https://cloud.google.com/spanner/}.
-
-\bibitem[Google(2018{\natexlab{d}})]{grpc}
-Google.
-\newblock {gRPC}, 2018{\natexlab{d}}.
+\newblock {gRPC}, 2018{\natexlab{b}}.
 \newblock URL \url{https://grpc.io/docs/guides}.
 
 \bibitem[Grolinger et~al.(2013)Grolinger, Higashino, Tiwari, and
@@ -84,6 +74,14 @@ Katarina Grolinger, Wilson~A Higashino, Abhinav Tiwari, and Miriam~AM Capretz.
 Doug Lea and Wolfram Gloger.
 \newblock A memory allocator, 1996.
 
+\bibitem[O'Connor(2015)]{bigtable-introduction}
+Cory O'Connor.
+\newblock Announcing google cloud bigtable: The same database that powers
+  google search, gmail and analytics is now available on google cloud platform.
+\newblock \emph{Google Cloud Platform Blog}, May 2015.
+\newblock URL
+  \url{https://cloudplatform.googleblog.com/2015/05/introducing-Google-Cloud-Bigtable.html}.
+
 \bibitem[Oleszkiewicz et~al.(2004)Oleszkiewicz, Xiao, and Liu]{1327942}
 J.~Oleszkiewicz, Li~Xiao, and Yunhao Liu.
 \newblock Parallel network ram: effectively utilizing global cluster memory for
@@ -94,8 +92,9 @@ J.~Oleszkiewicz, Li~Xiao, and Yunhao Liu.
 
 \bibitem[Rouse(2016)]{synchronous-replication}
 Margaret Rouse.
-\newblock Synchronous replication.
-\newblock \emph{WhatIs.com}, 2016.
+\newblock Synchronous replication, 2016.
+\newblock URL
+  \url{https://searchdisasterrecovery.techtarget.com/definition/synchronous-replication}.
 
 \bibitem[ten Bruggencate et~al.(2016)ten Bruggencate, Chapman, Curtis,
   D'Azevedo, Dinan, Feind, Venkata, Hammond, Hernandez, Knaak, Koenig, Kuehn,

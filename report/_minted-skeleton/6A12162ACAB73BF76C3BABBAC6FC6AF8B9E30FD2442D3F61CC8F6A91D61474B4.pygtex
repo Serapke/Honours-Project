@@ -1,0 +1,18 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{void} \PYG{n+nf}{copy\PYGZus{}block}\PYG{p}{(}\PYG{n}{block} \PYG{n}{src}\PYG{p}{,} \PYG{n}{block} \PYG{n}{dst}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+  \PYG{k+kt}{int} \PYG{o}{*}\PYG{n}{sdata}\PYG{p}{,} \PYG{o}{*}\PYG{n}{ddata}\PYG{p}{;}
+  \PYG{k+kt}{unsigned} \PYG{k+kt}{long} \PYG{k+kt}{long} \PYG{n}{value}\PYG{p}{,} \PYG{o}{*}\PYG{n}{a}\PYG{p}{,} \PYG{n}{b}\PYG{p}{;}
+  \PYG{n}{sdata} \PYG{o}{=} \PYG{p}{(}\PYG{k+kt}{int}\PYG{o}{*}\PYG{p}{)} \PYG{n}{src}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{addr}\PYG{p}{;}
+  \PYG{n}{ddata} \PYG{o}{=} \PYG{p}{(}\PYG{k+kt}{int}\PYG{o}{*}\PYG{p}{)} \PYG{n}{dst}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{addr}\PYG{p}{;}
+  \PYG{k}{for} \PYG{p}{(}\PYG{k+kt}{size\PYGZus{}t} \PYG{n}{i} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;} \PYG{n}{i}\PYG{o}{*}\PYG{l+m+mi}{4} \PYG{o}{\PYGZlt{}} \PYG{n}{src}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{size} \PYG{o}{\PYGZam{}\PYGZam{}} \PYG{n}{i}\PYG{o}{*}\PYG{l+m+mi}{4} \PYG{o}{\PYGZlt{}} \PYG{n}{dst}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{size}\PYG{p}{;} \PYG{n}{i}\PYG{o}{++}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{c+c1}{// convert int* to 64\PYGZhy{}bit integer}
+    \PYG{n}{a} \PYG{o}{=} \PYG{p}{(}\PYG{k+kt}{unsigned} \PYG{k+kt}{long} \PYG{k+kt}{long}\PYG{o}{*}\PYG{p}{)} \PYG{o}{\PYGZam{}}\PYG{n}{sdata}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+    \PYG{n}{b} \PYG{o}{=} \PYG{p}{(}\PYG{k+kt}{unsigned} \PYG{k+kt}{long} \PYG{k+kt}{long}\PYG{p}{)} \PYG{n}{a}\PYG{p}{;}
+    \PYG{n}{value} \PYG{o}{=} \PYG{n}{get}\PYG{p}{(}\PYG{n}{b}\PYG{p}{);}
+    \PYG{c+c1}{// convert int* to 64\PYGZhy{}bit integer}
+    \PYG{n}{a} \PYG{o}{=} \PYG{p}{(}\PYG{k+kt}{unsigned} \PYG{k+kt}{long} \PYG{k+kt}{long}\PYG{o}{*}\PYG{p}{)} \PYG{o}{\PYGZam{}}\PYG{n}{ddata}\PYG{p}{[}\PYG{n}{i}\PYG{p}{];}
+    \PYG{n}{b} \PYG{o}{=} \PYG{p}{(}\PYG{k+kt}{unsigned} \PYG{k+kt}{long} \PYG{k+kt}{long}\PYG{p}{)} \PYG{n}{a}\PYG{p}{;}
+    \PYG{n}{put}\PYG{p}{(}\PYG{n}{b}\PYG{p}{,} \PYG{n}{value}\PYG{p}{);}
+  \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

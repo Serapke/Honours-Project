@@ -1,0 +1,26 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{long} \PYG{k+kt}{long} \PYG{n+nf}{get}\PYG{p}{(}\PYG{k+kt}{unsigned} \PYG{k+kt}{long} \PYG{k+kt}{long} \PYG{n}{addr}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+  \PYG{c+c1}{// convert argument to string type}
+  \PYG{n}{string} \PYG{n}{address} \PYG{o}{=} \PYG{n}{to\PYGZus{}string}\PYG{p}{(}\PYG{n}{addr}\PYG{p}{);}
+  \PYG{c+c1}{// setup the request}
+  \PYG{n}{ReadRowsRequest} \PYG{n}{req}\PYG{p}{;}
+  \PYG{n}{req}\PYG{p}{.}\PYG{n}{set\PYGZus{}table\PYGZus{}name}\PYG{p}{(}\PYG{n}{tableName}\PYG{p}{);}
+  \PYG{n}{req}\PYG{p}{.}\PYG{n}{mutable\PYGZus{}rows}\PYG{p}{()}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{add\PYGZus{}row\PYGZus{}keys}\PYG{p}{(}\PYG{n}{address}\PYG{p}{);}
+  \PYG{n}{string} \PYG{n}{valueStr}\PYG{p}{;}
+  \PYG{c+c1}{// invoke row reading on Bigtable}
+  \PYG{k}{auto} \PYG{n}{stream} \PYG{o}{=} \PYG{n}{bigtableStub}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{ReadRows}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{n}{clientContext}\PYG{p}{,} \PYG{n}{req}\PYG{p}{);}
+    \PYG{k}{while} \PYG{p}{(}\PYG{n}{stream}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{Read}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{n}{resp}\PYG{p}{))} \PYG{p}{\PYGZob{}}
+      \PYG{k}{for} \PYG{p}{(}\PYG{k}{auto}\PYG{o}{\PYGZam{}} \PYG{n+nl}{cellChunk} \PYG{p}{:} \PYG{o}{*}\PYG{n}{resp}\PYG{p}{.}\PYG{n}{mutable\PYGZus{}chunks}\PYG{p}{())} \PYG{p}{\PYGZob{}}
+        \PYG{k}{if} \PYG{p}{(}\PYG{n}{cellChunk}\PYG{p}{.}\PYG{n}{value\PYGZus{}size}\PYG{p}{()} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{0}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+          \PYG{n}{valueStr}\PYG{p}{.}\PYG{n}{reserve}\PYG{p}{(}\PYG{n}{cellChunk}\PYG{p}{.}\PYG{n}{value\PYGZus{}size}\PYG{p}{());}
+        \PYG{p}{\PYGZcb{}}
+        \PYG{n}{valueStr}\PYG{p}{.}\PYG{n}{append}\PYG{p}{(}\PYG{n}{cellChunk}\PYG{p}{.}\PYG{n}{value}\PYG{p}{());}
+      \PYG{p}{\PYGZcb{}}
+    \PYG{p}{\PYGZcb{}}
+    \PYG{c+c1}{// convert value to 64\PYGZhy{}bit integer}
+    \PYG{k+kt}{long} \PYG{k+kt}{long} \PYG{n}{value} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;}
+    \PYG{k}{if} \PYG{p}{(}\PYG{o}{!}\PYG{n}{valueStr}\PYG{p}{.}\PYG{n}{empty}\PYG{p}{())}
+      \PYG{n}{value} \PYG{o}{=} \PYG{n}{stoll}\PYG{p}{(}\PYG{n}{valueStr}\PYG{p}{);}
+    \PYG{k}{return} \PYG{n}{value}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}
