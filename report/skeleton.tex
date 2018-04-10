@@ -50,11 +50,7 @@
 \date{\today}
 
 \abstract{
-Computer programs these days require a lot of hardware resources. Sometimes we come across programs, which cannot fit into main memory. The only solution to solve this problem is by physically adding more random access memory (RAM) to the computer.
-
-This project proposes a software solution aimed to run a user program using key-value cloud storage service as the main memory source. An implemented translation tool transforms all (or part, depending on the version) store and load instructions to put and get operations on Google Bigtable storage using LLVM transformation pass with its opt tool. 
-
-As expected, the benchmark results on the translation tool proved the programs instrumented by translation tool to run orders of magnitude slower than their original counterparts. However, with some further improvements the tool could be used not only as a solution for memory intensive programs, but also used as a way to provide Bigtable (or any other cloud-based key-value storage) as distributed shared memory for multiple programs running on machines from different parts of the world.
+Computer programs these days require a lot of hardware resources. Sometimes we come across programs, which cannot fit into main memory. This project proposes a software solution aimed to run a user program using key-value cloud storage service as the main memory source. The implemented translation tool changes all store and load instructions to put and get operations on Google Bigtable storage using LLVM transformation pass with its \texttt{opt} tool. After noticing that virtual memory was still being allocated on heap allocation function calls, two custom heap allocators were implemented: first-fit free-list and the one without freed memory reusage. The implementation of a custom heap allocator was also advantageous as it made it possible to create a heap memory translator, which only translates store and load instructions which operate on heap memory. The programs instrumented by heap translation tool work faster, but have an huge overhead on the instruction count. Overall, the translated programs work orders of magnitude times slower but there are ways how could this problem be alleviated. 
 }
 
 \maketitle
@@ -76,29 +72,31 @@ Finally, to my family and friends for their support and encouragement.
 
 \section{Motivation}
 
-Many computing applications demand a large amount of memory space. All this memory has to be provided by the primary memory, also called random access memory (RAM). In some operating systems (i.e. Linux or Mac OS), when the primary memory does not have enough memory for a requesting process, it moves inactive pages in memory to swap space. Swap space is usually a limited amount of memory located on the secondary storage, thus it provides orders of magnitude slower access times than RAM. Problems begin when even swap space is not enough to satisfy memory requirements of a program. Some systems have hard limits on the amount of memory a process can operate on and thus denies any excessive amounts of memory allocations. Other systems behave more wildly, allows to allocate more memory than the system has and eventually starts killing processes by some predefined heuristic \citep{run_out_of_mem}. Neither of them solve the problem of main memory shortage and the only possible solution seems to be physically adding more RAM to the system. This project proposes a software solution aimed to run a user program using key-value cloud storage as the main memory source.
+Many computing applications demand a large amount of memory space. All this memory has to be provided by the primary memory, also called random access memory (RAM). On some operating systems (i.e. Linux or Mac OS), when the primary memory fills up and more memory is needed for a process, the operating system moves inactive pages in memory to a swap space. Swap space is usually a limited amount of memory located on the secondary storage, thus it provides orders of magnitude slower access times than RAM. The problem arises when even using swap space, the amount of memory is not enough to satisfy memory requirements of a program. Some systems have hard limits on the amount of memory a process can operate on and thus denies any excessive amounts of memory allocations. Other systems behave more wildly, allows to allocate more memory than the system has and eventually starts killing processes by some predefined heuristic \citep{run_out_of_mem}. Neither of the strategies solve the problem of main memory shortage and the only possible solution seems to be physically adding more RAM to the system. This project proposes a software solution aimed to run a user program using key-value cloud storage as the main memory source.
 
-The decision to use key-value cloud storage was based on the progress cloud services made during the last decade. We are particularly interested in NoSQL data stores \citep{nosql-data-stores}. NoSQL can be completely schema-free, with most popular data models being key-value stores, document stores, column-family stores, and graph databases. It is able to scale horizontally over many commodity servers, thus providing huge amounts of memory storage. Some cloud storage services (i.e. Google Bigtable) even provide in-memory tables, which greatly decreases read and write times in such systems.  On top of that, some cloud data management systems provide strong consistency model, which means that after an update operation all nodes agree on the new value before making it available to the user. All these properties let cloud storages to be used as the main memory source.
+The decision to use key-value cloud storage was based on the progress cloud services made during the last decade. We are particularly interested in NoSQL data stores \citep{nosql-data-stores}. NoSQL can be completely schema-free, with most popular data models being key-value stores, document stores, column-family stores, and graph databases. It is able to scale horizontally over many commodity servers, thus providing huge amounts of memory storage. Some cloud storage services (i.e. Google Bigtable) even provide in-memory tables, which greatly decreases read and write times in such systems.  On top of that, some cloud data management systems provide strong consistency model, which means that after an update operation all nodes agree on the new value before making it available to the user. All these properties let cloud storages be used as the main memory source.
 
-The proposed solution in this project is somewhat similar to the idea of network RAM. When using network RAM, the system pages to idle memory over the network rather than to disk. This seems like a valid solution from the performance perspective, as the latency of some networks is much lower than the latency of disk seek \citep{numbers_should_know}. Although the main purposes of using such systems are described to be performance improvement \citep{Anderson:1998:ENR:893677} and better resource utilisation in distributed systems \citep{1327942}, it can also benefit as an external memory provider. For our project, the cloud storage stands as an abstraction of parallel network RAM. However, as the idea about network RAM was discovered in one of the final stages of project development, the proposed solution uses the network RAM (or the cloud storage) as substitution not only for disk but also for main memory accesses. This, of course, makes the instrumented programs very inefficient and is identified as one of the key improvements for future work.
+The proposed solution in this project is somewhat similar to the idea of network RAM. When using network RAM, the system pages to idle memory over the network rather than to disk. This seems like a valid solution from the performance perspective, as the latency of some networks is much lower than the latency of disk seek \citep{numbers_should_know}. Although the main purposes of using such systems are described to be performance improvement \citep{Anderson:1998:ENR:893677} and better resource utilisation in distributed systems \citep{1327942}, it can also benefit as an external memory provider. For our project, the cloud storage stands as an abstraction of parallel network RAM. However, as the concept of a network RAM was discovered in one of the final stages of project development, the proposed solution uses the network RAM (or the cloud storage) as substitution not only for disk but also for main memory accesses. This, of course, makes the instrumented programs very inefficient and is identified as one of the key improvements for future work.
 
 
-% ------------------------------- UPDATE
-Four different solutions, their advantages and disadvantages were identified:
+The solutions on how to expose cloud storage as the main memory source, their advantages and disadvantages were identified:
 
 \begin{itemize}
 \item
-\textbf{Explicit management by user.} This solution requires the user to explicitly move data back and forth from either disk or cloud storage. It requires a lot of code modification, thus might not be well accepted by users.
+\textbf{Explicit management by user.} This solution requires the user to explicitly move data back and forth from either disk or cloud storage using an API to store and retrieve values from cloud storage. It requires a lot of code modification, thus might not be well accepted by users.
 \item
-\textbf{Compiler level}. This solution compiles the user code and transforms it during the optimisation phase. This method doesn't require any code modification from the user and is more portable than other solutions.
+\textbf{Compiler}. This solution compiles the user code with an implemented compiler. The compiler would use cloud storage API to get and put values instead of using store and load instructions. The solution doesn't require any code modification from. However, this solution is not portable with different languages and seems like too excessive and unrealistic given the timespan of the project.
 \item
-\textbf{Device driver}. This solution replaces paging and swap devices for the operating system with a device which sends the pages through the network. This solution does not require any modification to the user code. However, as this driver intercepts all pages, some of them (i.e. OS pages) should always be stored locally for the security reasons. This adds additional complexity to the solution. Moreover, this solution is less portable than the compiler-level implementation and adds an additional overhead due to context switching.
+\textbf{Program transformation (LLVM)}. This solution involves compiling the user source code to LLVM IR and passing it through an implemented transformation pass, which translates all store and load instructions to get and put operations on the chosen cloud storage. This solution is more portable as it works will all languages, which have LLVM frontend, and all architectures supported by LLVM.
 \item
-\textbf{Modified kernel}. This solution should achieve highest performance (no context switching) without any modifications to the source code. On the other hand, this solution is only possible on open-source operating systems, it is not portable between the architectures and is unattainable during the timespan of the project.
+\textbf{Binary translation}. This solution involves translating machine code from one instruction set architecture to another and is best used when source code is not available. Binary translation is further split into:
+\subitem
+\textbf{Static}. Static binary translation transforms the machine code to work on the target architecture without having to run the code. This approach is more efficient than dynamic binary translation. However, it is not a complete solution, due to problems such as dynamic linking and self-modifying code.
+\subitem
+\textbf{Dynamic}. Dynamic binary translation transforms the code on the fly by looking at the upcoming instructions, translating and caching them any further reference. The translation during runtime incurs a significant overhead but can be amortised when translated instructions are executed multiple times.
 \end{itemize}
 
-After careful examination it was decided to do a compiler level solution, as it seemed the most straight-forward and portable way to solve the problem without any modifications to the user source code. The implementation involves translating load and store instructions to get and put calls for key-value store. The translation part is done using LLVM tools and compiler. Two different versions of the translation tool were developed in order to offer the user more control on what type of data to store on the cloud storage.
-% ------------------------------- UPDATE
+After careful examination it was decided to do a program transformation solution using LLVM tools and compiler, as this is one of the most portable solutions, incurs only a minimal overhead during program's runtime (due to increased instruction count) and does not require any modification to the source code, as the transformation is done during the compilation. Moreover, it is assumed that the source code of the program exists, thus eliminating the need of binary translation.
 
 \section{Scope}
 
@@ -120,11 +118,11 @@ Implemented a variant of the translation tool which instruments only the load an
 
 \section{Synopsis}
 
-Chapter 2 presents the main requirements for the data stores to be used as the main memory source. The chapter continues with the background information on the selected Google Cloud data stores, namely Bigtable, Datastore and Spanner, and discusses the results of the benchmark ran on these data stores. Finally, the methods which invocate read and write operations on Bigtable are presented.
+Chapter 2 presents the main requirements for the data stores to be used as the main memory source. The chapter continues with the discussion about the results of the benchmark ran on three Google cloud data-serving systems, namely Bigtable, Datastore and Spanner, followed by a more in-depth look at the chosen system, Bigtable. Finally, the chapter introduces the three functions implemented to read and write the contents of Bigtable.
 
-Chapter 3 starts with the brief description of alternative solutions considered for memory extension through cloud storage problem. Then, the chapter introduces LLVM project and the architecture of the translation tool implemented. The chapter finishes with a more in-depth look at the implementation of the tool.
+Chapter 3 introduces LLVM project, gives a higher level picture of the translation tool followed by a more in-depth look at the implementation of the tool.
 
-Chapter 4 presents the virtual memory waste problem, introduced by storing heap variables on Bigtable, and describes the solution - the implementation of custom heap memory allocator. Moreover, the chapter briefly introduces another version of the custom heap allocator which does not reuse the freed memory. Finally, the chapter discusses the consistency of the proposed allocators on multithreaded applications and finishes with virtual memory usage and performance analysis.
+Chapter 4 presents the virtual memory waste problem, introduced by storing heap variables on Bigtable, and describes the solution - custom heap memory allocator. Two heap allocators are introduced: first-fit free-list and the allocator without freed memory reusage. Finally, the chapter discusses the consistency of the proposed allocators on multithreaded applications and finishes with virtual memory usage and performance analysis.
 
 Chapter 5 introduces the implemented heap memory translation tool, which only translates load and store instructions operating on heap memory space.
 
@@ -153,18 +151,6 @@ preferably provide key-value database model.
 \end{itemize}
 
 After a brief research three Google cloud storages were selected for further examination: Bigtable, Datastore and Spanner. Even though neither of the three candidates have key-value store as their primary database model, they are one of the few that provide a C++ API for data store operations. This is achieved by using a combination of gRPC and protobuf libraries and Google APIs. Furthermore, all of the three storages have an option to be located on the same data centre as the machine running the instrumented program. All of the three data stores provide strong consistency models, with Spanner providing even stronger model, namely external consistency\footnote{External consistency guarantees that for any two transactions, T\textsubscript{1} and T\textsubscript{2}: if T\textsubscript{2} starts to commit after T\textsubscript{1} finishes committing, then the timestamp for T\textsubscript{2} is greater than the timestamp for T\textsubscript{1}.}. Finally, the three selected Google data-serving systems were further analysed by performing a benchmark for their throughput and latency results.
-
-%\section{Datastore}
-
-%Datastore \citep{google-datastore} is highly-scalable NoSQL, document store model database developed by Google. Unlike Bigtable, it provides a SQL-like query language (GQL) and ACID (Atomicity, Consistency, Isolation, Durability) properties for atomic transactions. Moreover, it supports a variety of data types, including integers, floating-point numbers and many more, although such functionality is not needed for purpose of the project as the tool stores binary data directly. Datastore uses synchronous replication, meaning that data is written to primary storage and the replica simultaneously.
-
-%Similarly to Bigtable, Datastore provides strong consistency for entity (row) lookups by key. It also provides strong consistency for ancestor queries but they are not relevant to the project.
-
-%\section{Spanner}
-
-%Spanner \citep{google-spanner} is a horizontally scalable, globally consistent relational database service. Unlike the previously discussed storages, Spanner has an key-value store as additional database model, data scheme and uses SQL. Similarly to the Datastore, it provides ACID transaction properties.
-
-%Spanner provides even stronger consistency property than strong consistency, namely external consistency. 
 
 \section{Benchmarking results}
 
@@ -681,19 +667,17 @@ As seen in figure \ref{fig:heap_translation}, heap memory translation adds a lot
 
 \chapter{Evaluation}
 
-Even though the translation tool introduced in this paper does not aim to compete on performance with existing technologies, it is still interesting to compare the original  programs with the ones instrumented with the translation tool. Of course, the efficiency of the system which stores and loads all its memory on another machine, however fast the connection between two machines, is not going to compete with the system storing and loading memory situated on the same machine. Nonetheless, performance and other results can be of great value, as they reveal the areas where system could be improved.
+Even though the translation tool introduced in this paper does not aim to compete on performance with existing technologies, it is still interesting to compare the original  programs with the ones instrumented with the translation tool. Of course, the efficiency of the system which stores and loads all its memory on another machine, however fast the connection between two machines, is not going to compete with the system storing and loading memory situated on the same machine. Nonetheless, the performance and other results can be of great value, as they reveal the areas where the tool could be improved.
 
-% TODO: describe the environment: Google Compute engine VM on the same cluster as Bigtable, etc...
-
-During the testing and evaluation process, it was decided to measure the performance of individual functions rather than the execution of the whole program itself. This decision was taken in order to exclude the time it takes to load the program into memory and prepare it for execution. These measurements are highly depended on the architecture of the machine and the operating system.
+During the testing and evaluation process, it was decided to measure the performance of individual functions rather than the execution of the whole program itself. This decision was taken in order to exclude the time it takes to load the program into memory and prepare it for execution. These measurements are not affected by the translation tool and are highly depended on the architecture of the machine and the operating system. For the best performance results, the instrumentation tool was tested on Google Compute Engine virtual machine situated on the same data centre as Bigtable instance. 
 
 \section{Performance}
 
 For the performance benchmarking, wall clock time was used instead of CPU time, as it takes into account the time taken for I/O operations (i.e. calls to Bigtable). All tests are run 100 times and averaged, as the execution time of a single test run fluctuates due to external factors (i.e. OS scheduling, memory usage, etc).
 
-The benchmarking was done using three test functions (source code can be find in Appendix \ref{section:test}), namely stack allocation, heap allocation and parallel producer-consumer problem adapted from Greg Andrews' textbook website \citep{producer-consumer}. The stack allocation test initialises a stack-based 10x10 character matrix with new values. All load and store operations are done on the stack. Similarly, the heap allocation test writes values to heap-allocated 10x10 character matrix. Approximately one of ten load and store instructions are for heap-based accesses. Other, stack-based, memory operations are used for iterating through the matrix. The producer-consumer test uses C's Posix threads (Pthreads) library for thread creation, synchronisation and similar purposes. Also, for this task the time elapsed includes thread creation and join operations. Two threads were used (one for producer and one for consumer operations). The buffer size was set to 1, while, in total, 50 integers were produced/consumed by the algorithm. A simple adjustment was made to allocate buffer on the heap in order to have at least one GET or PUT function call on the function translated with heap translator.
+The benchmarking was done using three test functions (see Appendix \ref{section:test}), namely stack allocation, heap allocation and parallel producer-consumer problem adapted from Greg Andrews' textbook website \citep{producer-consumer}. The stack allocation test initialises a stack-based 10x10 character matrix with new values. All load and store instructions operate on stack memory. Similarly, the heap allocation test writes values to heap-allocated 10x10 character matrix. Approximately one of ten load and store instructions are for heap-based accesses. Other, stack-based, memory operations are used for iterating through the matrix. The producer-consumer test uses C's POSIX threads (Pthreads) library for thread creation and synchronisation. For this task, the time elapsed includes thread creation and join operations. Two threads were used: one for producer and one for consumer operations. The buffer size was set to 1, while, in total, 50 integers were produced/consumed by the algorithm. The buffer is allocated on the heap in order to have at least one get or put function call when translated with heap translator.
 
-As expected the original program with load and store operations on memory situated on the same machine worked efficiently. The producer-consumer took more than a thousand times longer than the other two tests, as the execution time was capped by thread creation and synchronisation time. The stack allocation and heap allocation tests translated with full memory translator took six orders of magnitude longer to execute. This immense increase in time is due to the introduced communication costs to access memory on Bigtable. The producer-consumer problem took half as long to execute, yet the increment from the original code execution time was enormous. Unsurprisingly, the program translated with heap translator showed a huge improvement over the fully translated program in stack allocation test. The improvement is quite clear as none of the load or store instructions are translated, as only heap memory instructions are translated with heap translator. The slow down compared to the original program can be explained by the increase in instruction count of the program (more detailed analysis on this measure provided in the next section). The heap allocation test on the program transformed by heap translator performs 10 times better than to corresponding test instrumented by full memory translator. Heap allocation test skips all stack-based GET and PUT calls on Bigtable and instead stores these variables locally. The test is capped by the time taken to execute 100 put operations on Bigtable. Producer-consumer test again saves some time on load and store instructions on stack variables. The actual results gathered from benchmarking are shown in table \ref{table:performance}.
+As expected the original program with load and store instructions operating on the main memory of the machine worked efficiently. The producer-consumer took more than a thousand times longer than the other two tests, as the execution time was capped by thread creation and synchronisation time. The stack allocation and heap allocation tests translated with full memory translator took six orders of magnitude longer to execute. This immense increase in time is due to the introduced communication costs to access memory on Bigtable. The producer-consumer problem took half as long to execute, yet the increment from the original code execution time was enormous. Unsurprisingly, the program translated with heap translator showed a huge improvement over the fully translated program in stack allocation test. The improvement is quite clear as none of the load or store instructions are translated, as only heap memory instructions are translated with heap translator. The slow down compared to the original program can be explained by the increase in instruction count of the program (more detailed analysis on this measure provided in the next section). The heap allocation test on the program transformed by heap translator performs 10 times better than the corresponding test instrumented by full memory translator. The test is capped by the time taken to execute 100 put operations with heap memory values on Bigtable. Producer-consumer test again saves some time on load and store instructions on stack variables. The results gathered from benchmarking are shown in table \ref{table:performance}.
 
 \begin{table}[h]
 \centering
@@ -708,11 +692,11 @@ Producer-Consumer & 963.717 & 1,272,932 & 295,448
 \label{table:performance}
 \end{table}
 
-Overall, it can be seen that the heap translation tool is an improvement over full memory translator but it is still makes the functions run hundreds (producer-consumer test) and even hundreds of thousands (heap allocation test) times slower.
+Overall, it can be seen that the heap translation tool is an improvement over full memory translator but it is still makes the functions run hundreds (producer-consumer test) and even hundreds of thousands (heap allocation test) times slower than their original counterparts.
 
 \section{Instruction count}
 
-Instruction count was done using an implemented instruction count pass on test program (see Appendix \ref{section:test}), which includes the performance tests mentioned in the section above. The pass iterates over the functions of the program and prints the count of instructions per function and the total number of instructions in the program. To clarify, this is a static count of the instructions and does not account for how many times any particular instruction can be executed on the runtime. Moreover, the instruction count does not include the instructions from shared libraries and their functions.
+To count the instructions of a program an instruction count pass was implemented. The pass iterates over the functions of the program and prints the count of instructions per function and the total number of instructions in the program. To clarify, this is a static count of the instructions and does not account for how many times any particular instruction can be executed on the runtime. Moreover, the instruction count does not include the instructions from shared library functions. The instruction count pass was run on the test program (see Appendix \ref{section:test}).
 
 \begin{figure}[H]
 \centering
@@ -721,37 +705,35 @@ Instruction count was done using an implemented instruction count pass on test p
 \label{fig:instruction_count}
 \end{figure}
 
-The original program shows the smallest instruction count on every function and works as a baseline for the programs instrumented with the implemented translation tools. The total instruction count for a program translated with full memory translator increased from 571, achieved by the original program, to 761, which shows a 33 percent growth. On average, each function, on average, increased by 27 instructions. The inflation is a result of translating one load/store instruction with a call to get/put function plus 1-3 casting instructions. A much more substantial growth can be seen in functions translated by heap memory translator. The total amount of instructions is 209 percent higher than in the original program, increasing from 571 to 1768 instructions. Each function, on average, increased by 171 instructions. This can be explained by the additional control flow added to distinguish between memory access to heap and stack variables. The translation adds 9 to 14 instructions per store/load instruction.
+The original program shows the smallest instruction count on every function and works as a baseline for the programs instrumented with the implemented translation tools. The total instruction count for a program translated with full memory translator increased from 571, achieved by the original program, to 761, which shows a 33 percent growth. On average, each function increased by 27 instructions. The inflation is a result of translating one load/store instruction with a call to get/put function instruction plus the additional 1-3 casting instructions. A much more substantial growth can be seen in functions translated by heap memory translator. The total amount of instructions is 209 percent higher than in the original program, increasing from 571 to 1768 instructions. Each function, on average, increased by 171 instructions. This can be explained by the additional control flow added to distinguish between memory access to heap and stack variables. The translation adds 9 to 14 instructions per translated store/load instruction.
 
-Overall, the translation adds a lot of additional instructions. This does not necessarily convert to lower performance of the program (as can be seen by heap translation example with stack allocation test in the previous chapter) and is a much smaller problem then the huge increases in execution time, yet it is definitely a measure which could be improved.
+Overall, the translation adds a lot of additional instructions. This does not necessarily convert to lower performance of the program (as can be seen by heap translation example with stack allocation test in the previous chapter) and is a much smaller problem then the huge increases in execution time, yet it is definitely a measure which could be improved by additional heuristics.
 
 \chapter{Conclusions}
 
 \section{Overview}
 
-This report has introduced a translation tool (with two of its variations), which provides a way to run programs requiring amount of memory that cannot be served by user machine. The translation tool instruments the program by changing all load and store operations to get and put calls on Bigtable, respectively. Additionally, a heap memory translation tool was implemented to translate memory which is shared among threads. This tool can be seen as a step towards an instrument which could expose Bigtable as distributed shared memory to multiple machines (more on that in the next section). The report has also showed that the performance of the instrumented programs are orders of magnitude worse than the original programs. This is mainly caused by the communication costs introduced by calls to Bigtable. Overall, even though the translation tools implemented make the programs run extremely slow, they can be successfully used to overcome lack-of-memory problems.
+This report has introduced a translation tool (with two of its variations), which provides a way to run programs requiring amount of memory that cannot be served by user machine. The translation tool instruments the program by changing all load and store instructions to get and put calls on Bigtable, respectively. Additionally, another variation of the translation tool was implemented, which translates only those store and load instructions which operate on heap memory. The programs instrumented by heap translation tool run faster than the ones instrumented with full memory translator, as it translates only a fraction of the existing store and load instructions. On other hand, heap translator significantly increases the amount of instructions used in the program. Overall, the report showed that the performance of the instrumented programs are orders of magnitude worse than the original programs, thus there are still lots of things that could be improved.
 
 \section{Future work}
 
-There are many opportunities for extending the work done and improving the tools for load and store instruction translation. Some of these directions are presented in this section.
+One major area of future work might be to implement a separate front-end compiler. The compiler could make use of the implemented get and put functions when initialising global (static) variables, which in other case would be allocated space on main memory. Somewhat similar (although more complex) strategy could be implemented to prevent stack variables from being allocated space on main memory.
 
-One major area of future work might be to implement a separate front-end compiler. The important feature of the compiler would be to prevent global variables from being allocated space on main memory. Instead they would be stored on Bigtable. This could also be done with stack variables.
+A major performance improvement could be achieved by having the program use main memory and start using Bigtable only when main memory is not enough to serve the requests. One way to achieve this could be incorporating dynamic translation, which would determine when to start use Bigtable based on some system interrupts indicating lack of memory problem. 
 
-Another major improvement would be to introduce synchronisation through Bigtable between multiple instrumented programs running on different machines. The synchronisation could be achieved by using locks, barriers and other primitives. Bigtable provides an atomic fetch-and-add operation, which can be used as a generalised test-and-set operation, thus it is possible to implement the synchronisation primitives.
+There might also be a way to slightly improve the performance of the translated programs by introducing caches. They would store frequently accessed data on main memory, thus amortising the communication to Bigtable costs on most frequent values.
 
-There might also be a way to slightly improve the performance of the translated programs by introducing caches. They would store small amount of memory in them and be updated on put operations to Bigtable. Combined with the synchronisation primitives and an appropriate cache coherence protocol the updates would let expose Bigtable as distributed shared memory.
-
-Other possible improvements on the tool:
+Other possible improvements or extensions on the tool:
 \begin{itemize}
 \item
-Implement all memory functions provided by C/C++ standard libraries. This task was already started by implementing a memcpy function, which is used to make copies of struct type variables. The original C/C++ standard library functions use load and store instructions. These must be change to get and put operations on Bigtable. This is quite important as users might need to use these functions in their programs.
-\item
-better support for getting and putting structured data to Bigtable. For instance, C++ standard library class Tuple is represented as a literal struct type (\{i32, *i32\}). Load and store instructions provided by LLVM cope with these type of structures, yet the control flow created by the translation tries to cast the type into 64-bit integer and loses parts of data (32 most significant bits) on the cast back. 
+Better support for getting and putting structured data to Bigtable. For instance, C++ standard library class Tuple is represented as a literal struct type (\texttt{\{i32, *i32\}}). Load and store instructions provided by LLVM cope with these type of structures, yet the control flow created by the translation tries to cast the type into 64-bit integer and loses parts of data (32 most significant bits) on the cast back. 
 \item
 A get and put function overloads should be provided for ConstantFP (floating point) type in order to correctly store floating point values on Bigtable.
+\item
+Introduce synchronisation through Bigtable between multiple instrumented programs running on different machines. The synchronisation could be achieved by using locks, barriers and other primitives. Bigtable provides an atomic fetch-and-add operation, which can be used as a generalised test-and-set operation, thus making it possible to implement the synchronisation primitives stored there. Combined with cache implementation and an appropriate cache coherence protocol the updates would let expose Bigtable as distributed shared memory, thus introducing a new usage of the tool.
 \end{itemize}
 
-These extensions could make the translation tools more practical and attractive to potential users.
+Combined with all these improvements, the translation tool implemented on this project could be a way to solve lack of memory problem or even expose cloud storage as distributed shared memory.
 
 % use the following and \citep{} as above if you use BibTeX
 % otherwise generate bibtem entries
@@ -762,7 +744,14 @@ These extensions could make the translation tools more practical and attractive 
 \chapter{Test program}
 \label{section:test}
 
-\begin{lstlisting}[style=block]
+\begin{minted}[linenos]{c++}
+const int M_X = 10;
+const int M_Y = 10;
+const int N = 50;
+volatile int target;
+int* data;
+char *heap_matrix;
+
 void test_stack_allocation(char matrix[][M_Y]) {
   for (int i = 0; i < M_X; i++) {
     for (int j = 0; j < M_Y; j++) {
@@ -831,6 +820,6 @@ void *test_multithreaded_correctness(void *arg) {
   }
   return NULL;
 }
-\end{lstlisting}
+\end{minted}
 
 \end{document}

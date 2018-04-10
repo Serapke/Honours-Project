@@ -1,4 +1,4 @@
-\begin{thebibliography}{16}
+\begin{thebibliography}{14}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -25,13 +25,6 @@ Greg Andrews.
 Marwan Burelle.
 \newblock \emph{A Malloc Tutorial}.
 \newblock Laboratoire Systeme et Securite de l'EPITA (LSE), February 2009.
-
-\bibitem[Chapman et~al.(2010)Chapman, Curtis, Pophale, Poole, Kuehn, Koelbel,
-  and Smith]{openshmem}
-Barbara Chapman, Tony Curtis, Swaroop Pophale, Stephen Poole, Jeff Kuehn, Chuck
-  Koelbel, and Lauren Smith.
-\newblock Introducing openshmem: Shmem for the pgas community.
-\newblock 10 2010.
 
 \bibitem[Cooper et~al.(2010)Cooper, Silberstein, Tam, Ramakrishnan, and
   Sears]{ycsb}
@@ -79,8 +72,7 @@ Cory O'Connor.
 \newblock Announcing google cloud bigtable: The same database that powers
   google search, gmail and analytics is now available on google cloud platform.
 \newblock \emph{Google Cloud Platform Blog}, May 2015.
-\newblock URL
-  \url{https://cloudplatform.googleblog.com/2015/05/introducing-Google-Cloud-Bigtable.html}.
+\newblock URL \url{http://bit.ly/introducing-google-cloud-bigtable}.
 
 \bibitem[Oleszkiewicz et~al.(2004)Oleszkiewicz, Xiao, and Liu]{1327942}
 J.~Oleszkiewicz, Li~Xiao, and Yunhao Liu.
@@ -93,20 +85,6 @@ J.~Oleszkiewicz, Li~Xiao, and Yunhao Liu.
 \bibitem[Rouse(2016)]{synchronous-replication}
 Margaret Rouse.
 \newblock Synchronous replication, 2016.
-\newblock URL
-  \url{https://searchdisasterrecovery.techtarget.com/definition/synchronous-replication}.
-
-\bibitem[ten Bruggencate et~al.(2016)ten Bruggencate, Chapman, Curtis,
-  D'Azevedo, Dinan, Feind, Venkata, Hammond, Hernandez, Knaak, Koenig, Kuehn,
-  Lopez, Manser, Mintz, Park, Poole, Poole, Pophale, Raymond, Shamis, Shende,
-  Smith, and Welch]{openshmem_fig}
-Monika ten Bruggencate, Barbara Chapman, Tony Curtis, Eduardo D'Azevedo, James
-  Dinan, Karl Feind, Manjunath~Gorentla Venkata, Jeff Hammond, Oscar Hernandez,
-  David Knaak, Gregory Koenig, Jeff Kuehn, Graham Lopez, Jens Manser,
-  Tiffany~M. Mintz, Nicholas Park, Steve Poole, Wendy Poole, Swaroop Pophale,
-  Michael Raymond, Pavel Shamis, Sameer Shende, Lauren Smith, and Aaron Welch.
-\newblock {OpenSHMEM: Application Programming Interface}, February 2016.
-\newblock URL
-  \url{http://openshmem.org/site/sites/default/site\_files/OpenSHMEM-1.3.pdf}.
+\newblock URL \url{http://bit.ly/synchronous-replication}.
 
 \end{thebibliography}

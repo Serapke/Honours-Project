@@ -13,54 +13,51 @@ Warning--entry type for "grpc_issue" isn't style-file defined
 --line 59 of file mybibfile.bib
 Warning--entry type for "grpc" isn't style-file defined
 --line 68 of file mybibfile.bib
-Warning--entry type for "openshmem_fig" isn't style-file defined
---line 77 of file mybibfile.bib
 Warning--entry type for "synchronous-replication" isn't style-file defined
 --line 96 of file mybibfile.bib
 Warning--entry type for "google-bigtable" isn't style-file defined
 --line 140 of file mybibfile.bib
 Warning--to sort, need author or key in grpc_issue
 Warning--empty institution in Anderson:1998:ENR:893677
-Warning--empty journal in openshmem
-You've used 16 entries,
+You've used 14 entries,
             2773 wiz_defined-function locations,
-            675 strings with 7784 characters,
-and the built_in function-call counts, 7315 in all, are:
-= -- 607
-> -- 524
+            666 strings with 6945 characters,
+and the built_in function-call counts, 5237 in all, are:
+= -- 465
+> -- 239
 < -- 12
-+ -- 182
-- -- 165
-* -- 579
-:= -- 1133
-add.period$ -- 49
-call.type$ -- 16
-change.case$ -- 103
-chr.to.int$ -- 15
-cite$ -- 36
-duplicate$ -- 293
-empty$ -- 547
-format.name$ -- 184
-if$ -- 1515
++ -- 87
+- -- 72
+* -- 357
+:= -- 779
+add.period$ -- 43
+call.type$ -- 14
+change.case$ -- 66
+chr.to.int$ -- 13
+cite$ -- 31
+duplicate$ -- 257
+empty$ -- 483
+format.name$ -- 89
+if$ -- 1121
 int.to.chr$ -- 2
 int.to.str$ -- 1
-missing$ -- 5
-newline$ -- 89
-num.names$ -- 60
-pop$ -- 247
+missing$ -- 4
+newline$ -- 79
+num.names$ -- 52
+pop$ -- 168
 preamble$ -- 1
-purify$ -- 87
+purify$ -- 52
 quote$ -- 0
-skip$ -- 272
+skip$ -- 218
 stack$ -- 0
-substring$ -- 111
-swap$ -- 46
+substring$ -- 107
+swap$ -- 43
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 176
-warning$ -- 3
-while$ -- 50
+type$ -- 154
+warning$ -- 2
+while$ -- 44
 width$ -- 0
-write$ -- 203
-(There were 11 warnings)
+write$ -- 180
+(There were 9 warnings)
