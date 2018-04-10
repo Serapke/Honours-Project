@@ -9,10 +9,7 @@
 #include "llvm/IR/IntrinsicInst.h"
 #include "llvm/IR/Constants.h"
 #include "llvm/Transforms/Utils/BasicBlockUtils.h"
-#include "llvm/Support/raw_ostream.h"
 #include "llvm/IR/CallSite.h"
-#include <set>
-#include <iostream>
 using namespace llvm;
 using namespace std;
 
@@ -20,15 +17,10 @@ namespace {
 
   struct HeapTranslation : public ModulePass {
 
-    const int POINTER_TYPE_ID = 15;
-
     const string GET = "_Z3gety";
     const string PUT = "_Z3putyx";
     const string HEAP_BEGIN = "_Z12getHeapBeginv";
     const string HEAP_END = "_Z10getHeapEndv";
-    const string MEMCPY = "_Z6memcpyPvPKvm";
-    const string MEMSET = "_Z6memsetPvim";
-    const string MEMSET_CHAR = "_Z6memsetPvcm";
     const string MALLOC = "_Z9my_mallocm";
     const string FREE = "_Z7my_freePv";
     const string REALLOC = "_Z10my_reallocPvm";
@@ -40,10 +32,6 @@ namespace {
     Function *hookPut;
     Function *hookGetHeapBegin;
     Function *hookGetHeapEnd;
-
-    Function *hookMemCpy;
-    Function *hookMemSet;
-    Function *hookMemSetChar;
     Function *hookMalloc;
     Function *hookFree;
     Function *hookRealloc;
@@ -60,8 +48,6 @@ namespace {
 
     vector<Value*> loadConds;
     vector<Value*> storeConds;
-    vector<Instruction*> splitsBeforeLoad;
-    vector<Instruction*> splitsBeforeStore;
 
     vector<TerminatorInst*> thenTermsForLoads;
     vector<TerminatorInst*> elseTermsForLoads;
@@ -103,12 +89,6 @@ namespace {
     void prepareForTranslation(Instruction* newInst, Instruction* oldInst) {
       addList.push_back(newInst);
       deleteList.push_back(oldInst);
-    }
-
-    void prepareForTranslation(Function* hook, ArrayRef<Value*> args, Instruction* instructionToChange) {
-      Instruction* functionCallInst = CallInst::Create(hook, args, "");
-      addList.push_back(functionCallInst);
-      deleteList.push_back(instructionToChange);
     }
 
     /*
@@ -153,42 +133,20 @@ namespace {
       }
     }
 
-    void changeMemCpy(Instruction* instruction) {
-      MemCpyInst* mc = cast<MemCpyInst>(instruction);
-      Value* dest = mc->getOperand(0);
-      Value* src = mc->getOperand(1);
-      Value* size = mc->getOperand(2);
-      Value* memcpy_arguments[] = { dest, src, size };
-      prepareForTranslation(hookMemCpy, memcpy_arguments, instruction);
-    }
-
-    void changeMemSet(Instruction* instruction) {
-      MemSetInst* ms = cast<MemSetInst>(instruction);
-      Value* ptr = ms->getOperand(0);
-      Value* value = ms->getOperand(1);
-      Value* size = ms->getOperand(2);
-      Value* memset_arguments[] = { ptr, value, size };
-      if (IntegerType* IT = cast<IntegerType>(value->getType())) {
-        if (IT->getBitWidth() == 8) {
-          prepareForTranslation(hookMemSetChar, memset_arguments, instruction);
-        } else if (IT->getBitWidth() == 32) {
-          prepareForTranslation(hookMemSet, memset_arguments, instruction);
-        }
-      }
-    }
-
     void changeMalloc(Instruction* instruction) {
       CallInst* ci = cast<CallInst>(instruction);
       Value* size = ci->getArgOperand(0);
       Value* malloc_arguments[] = { size };
-      prepareForTranslation(hookMalloc, malloc_arguments, instruction);
+      Instruction* mallocCallInst = CallInst::Create(hookMalloc, malloc_arguments, "");
+      prepareForTranslation(mallocCallInst, instruction);
     }
 
     void changeFree(Instruction* instruction) {
       CallInst* ci = cast<CallInst>(instruction);
       Value* ptr = ci->getArgOperand(0);
       Value* free_arguments[] = { ptr };
-      prepareForTranslation(hookFree, free_arguments, instruction);
+      Instruction* freeCallInst = CallInst::Create(hookFree, free_arguments, "");
+      prepareForTranslation(freeCallInst, instruction);
     }
 
     void changeRealloc(Instruction* instruction) {
@@ -196,7 +154,8 @@ namespace {
       Value* ptr = ci->getArgOperand(0);
       Value* size = ci->getArgOperand(1);
       Value* realloc_arguments[] = { ptr, size };
-      prepareForTranslation(hookRealloc, realloc_arguments, instruction);
+      Instruction* reallocCallInst = CallInst::Create(hookRealloc, realloc_arguments, "");
+      prepareForTranslation(reallocCallInst, instruction);
     }
 
     void changeCalloc(Instruction* instruction) {
@@ -204,7 +163,8 @@ namespace {
       Value* num = ci->getArgOperand(0);
       Value* size = ci->getArgOperand(1);
       Value* calloc_arguments[] = { num, size };
-      prepareForTranslation(hookCalloc, calloc_arguments, instruction);
+      Instruction* callocCallInst = CallInst::Create(hookCalloc, calloc_arguments, "");
+      prepareForTranslation(callocCallInst, instruction);
     }
 
     void prepareTypes(Module &M) {
@@ -219,10 +179,6 @@ namespace {
       hookGetHeapBegin = cast<Function>(M.getOrInsertFunction(HEAP_BEGIN, INT64TY));
       hookGetHeapEnd = cast<Function>(M.getOrInsertFunction(HEAP_END, INT64TY));
 
-      hookMemCpy = cast<Function>(M.getOrInsertFunction(MEMCPY, INT8PTRTY, INT8PTRTY, INT8PTRTY, INT64TY));
-      hookMemSet = cast<Function>(M.getOrInsertFunction(MEMSET, INT8PTRTY, INT8PTRTY, Type::getInt32Ty(M.getContext()), INT64TY));
-      hookMemSetChar = cast<Function>(M.getOrInsertFunction(MEMSET_CHAR, INT8PTRTY, INT8PTRTY, Type::getInt8Ty(M.getContext()), INT64TY));
-
       hookMalloc = cast<Function>(M.getOrInsertFunction(MALLOC, INT8PTRTY, INT64TY));
       hookFree = cast<Function>(M.getOrInsertFunction(FREE, VOIDTY, INT8PTRTY));
       hookRealloc = cast<Function>(M.getOrInsertFunction(REALLOC, INT8PTRTY, INT8PTRTY, INT64TY));
@@ -230,7 +186,7 @@ namespace {
     }
 
     void createIfThenPatternForStores() {
-      if (storeConds.size() != splitsBeforeStore.size()) {
+      if (storeConds.size() != oldStores.size()) {
         errs() << "Error!\n";
         return;
       }
@@ -238,7 +194,7 @@ namespace {
         TerminatorInst *thenTerm = nullptr;
         TerminatorInst *elseTerm = nullptr;
         Value* cond = storeConds[i];
-        Instruction* splitBefore = splitsBeforeStore[i];
+        Instruction* splitBefore = oldStores[i];
         SplitBlockAndInsertIfThenElse(cond, splitBefore, &thenTerm, &elseTerm);
         thenTermsForStores.push_back(thenTerm);
         elseTermsForStores.push_back(elseTerm);
@@ -246,7 +202,7 @@ namespace {
     }
 
     void createIfThenPatternForLoads() {
-      if (loadConds.size() != splitsBeforeLoad.size()) {
+      if (loadConds.size() != oldLoads.size()) {
         errs() << "Error!\n";
         return;
       }
@@ -254,7 +210,7 @@ namespace {
         TerminatorInst *thenTerm = nullptr;
         TerminatorInst *elseTerm = nullptr;
         Value* cond = loadConds[i];
-        Instruction* splitBefore = splitsBeforeLoad[i];
+        Instruction* splitBefore = oldLoads[i];
         SplitBlockAndInsertIfThenElse(cond, splitBefore, &thenTerm, &elseTerm);
         thenTermsForLoads.push_back(thenTerm);
         elseTermsForLoads.push_back(elseTerm);
@@ -371,6 +327,23 @@ namespace {
       parent->getInstList().insert(BI, loads[i]);
     }
 
+    void preparePHINode(int i) {
+      TerminatorInst *thenTerm = thenTermsForLoads[i];
+      Instruction* get = thenTerm->getPrevNode();
+      BasicBlock *thenBB = thenTerm->getParent();
+
+      TerminatorInst *elseTerm = elseTermsForLoads[i];
+      Instruction* load = elseTerm->getPrevNode();
+      BasicBlock *elseBB = elseTerm->getParent();
+
+      Instruction* inst = oldLoads[i];
+
+      PHINode* phi = PHINode::Create(inst->getType(), 2);
+      phi->addIncoming(get, thenBB);
+      phi->addIncoming(load, elseBB);
+      ReplaceInstWithInst(inst, phi);
+    }
+
     void printFunctions(Module &M) {
       for(Module::iterator F = M.begin(), E = M.end(); F!= E; ++F) {
         if (functionNameContains(&*F, "functions.cpp")) {
@@ -411,11 +384,11 @@ namespace {
           for (BasicBlock::iterator BI = BB->begin(), BE = BB->end(); BI != BE; ++BI) {
             if (isa<StoreInst>(&*BI) && !includesGlobalVariable(BI, 1)) {
               storeConds.push_back(&*BI->getPrevNode());
-              splitsBeforeStore.push_back(&*BI);
+              oldStores.push_back(&*BI);
               stores.push_back(&*BI->clone());
             } else if (isa<LoadInst>(&*BI) && !includesGlobalVariable(BI, 0)) {
               loadConds.push_back(&*BI->getPrevNode());
-              splitsBeforeLoad.push_back(&*BI);
+              oldLoads.push_back(&*BI);
               loads.push_back(&*BI->clone());
             }
           }
@@ -425,51 +398,21 @@ namespace {
       createIfThenPatternForStores();
       createIfThenPatternForLoads();
 
-      for(Module::iterator F = M.begin(), E = M.end(); F!= E; ++F) {
-        if (functionNameContains(&*F, "functions.cpp")) {
-          break;
-        }
-        else if (hasLinkage(&*F) || functionNameContains(&*F, "main")) {
-          continue;
-        }
-        for(Function::iterator BB = F->begin(), E = F->end(); BB != E; ++BB) {
-          for (BasicBlock::iterator BI = BB->begin(), BE = BB->end(); BI != BE; ++BI) {
-            if (isa<StoreInst>(&*BI) && !includesGlobalVariable(BI, 1)) {
-              oldStores.push_back(&*BI);
-            } else if (isa<LoadInst>(&*BI) && !includesGlobalVariable(BI, 0)) {
-              oldLoads.push_back(&*BI);
-            }
-          }
-        }
-      }
       for (int i = 0; i < storeConds.size(); i++) {
         preparePutBranch(i);
         prepareStoreBranch(i);
       }
-      for (int i = 0; i < oldStores.size(); i++) {
-        oldStores[i]->eraseFromParent();
-      }
       for (int i = 0; i < loadConds.size(); i++) {
         prepareGetBranch(i, M);
         prepareLoadBranch(i);
-        TerminatorInst *thenTerm = thenTermsForLoads[i];
-        Instruction* get = thenTerm->getPrevNode();
-        BasicBlock *thenBB = thenTerm->getParent();
-        TerminatorInst *elseTerm = elseTermsForLoads[i];
-        Instruction* load = elseTerm->getPrevNode();
-        BasicBlock *elseBB = elseTerm->getParent();
-        Instruction* inst = oldLoads[i];
-
-        PHINode* phi = PHINode::Create(inst->getType(), 2);
-        phi->addIncoming(get, thenBB);
-        phi->addIncoming(load, elseBB);
-        ReplaceInstWithInst(inst, phi);
+        preparePHINode(i);
+      }
+      for (int i = 0; i < oldStores.size(); i++) {
+        oldStores[i]->eraseFromParent();
       }
 
       replaceInstructions(deleteList, addList);
-
-      printFunctions(M);
-
+//      printFunctions(M);
       return true;
     }
     virtual bool runOnBasicBlock(Function::iterator &FI, Module &M) {
@@ -480,11 +423,6 @@ namespace {
         } else if (isa<StoreInst>(&*BI) && !includesGlobalVariable(BI, 1)) {
           prepareForBranching(BB, BI, 1);
         }
-//        else if (isa<MemCpyInst>(&*BI)) {
-//          changeMemCpy(&*BI);
-//        } else if (isa<MemSetInst>(&*BI)) {
-//          changeMemSet(&*BI);
-//        }
         else if (CallInst *CI = dyn_cast<CallInst>(&*BI)) {
           Function* callee = CI->getCalledFunction();
           if (callee == NULL) continue;
@@ -506,6 +444,7 @@ namespace {
 char HeapTranslation::ID = 0;
 static RegisterPass<HeapTranslation>
     X("heap-translation", "Load and store on heap translation"); // NOLINT
+
 
 
 

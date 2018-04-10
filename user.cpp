@@ -2,6 +2,7 @@
 #include <string.h>
 #include <thread>
 #include <chrono>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -10,6 +11,16 @@ struct new_type {
   int goodbye;
 };
 
+const int global_constant = 400;
+int global_value = 500;
+int *global_pointer = &global_value;
+
+
+void test_globals() {
+  int initial = global_value;
+  global_value++;
+  cout << initial+1 << " is equal to " << global_value << endl;
+}
 
 void test_struct() {
   new_type a;
@@ -28,7 +39,6 @@ void test_single_threaded_heap() {
 
   ptr = (int*) malloc(sizeof(int));
   ptr[0] = 3001;
-//  ptr = &var;
   pptr = &ptr;
   printf("\nValue of var = %d\n", var);
   printf("\nValue of heap variable = %d\n", ptr[0]);
@@ -38,20 +48,6 @@ void test_single_threaded_heap() {
   printf("\nValue available at **ptr  = %d\n", **pptr);
   free(ptr);
 }
-
-//void thread_function1(int id) {
-//  cout << id << endl;
-////  int i = 0;
-////  while (i < 10) {
-////    std::cout<< id <<" :: "<<i++<<std::endl;
-////    std::this_thread::sleep_for(std::chrono::milliseconds(200));
-////  }
-////  int* heap_ptr = (int*) malloc(2*sizeof(int));
-////  heap_ptr[0] = id;
-////  std::this_thread::sleep_for(std::chrono::milliseconds(200));
-////  cout << id << " " << (heap_ptr[0] == id) << endl;
-////  free(heap_ptr);
-//}
 
 void print_args(int id, int id2) {
   cout << (id == 0 && id2 == 4) << endl;
@@ -104,17 +100,10 @@ void test_mem_ops() {
 
 int main() {
 
+//  test_globals();
 //  test_struct();
 //  test_single_threaded_heap();
 //  test_multi_threaded_heap();
 
-  // TODO: not tested
-// test_mem_ops();
-
   return 0;
 }
-
-
-
-
-

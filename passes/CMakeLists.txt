@@ -1,6 +1,7 @@
 add_library(TranslationPass MODULE
         HeapTranslation.cpp
         FullTranslation.cpp
+	InstructionCounter.cpp
 )
 
 # Use C++11 to compile our pass (i.e., supply -std=c++11).
