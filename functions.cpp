@@ -116,11 +116,11 @@ long long bytesToInt(const char* bytes) {
 }
 
 long long atomic_increment(unsigned long long address, unsigned long long increment) {
-  string address = to_string(address);
+  string addr = to_string(address);
 
   ReadModifyWriteRowRequest req;
   req.set_table_name(TABLE_NAME);
-  req.set_row_key(address);
+  req.set_row_key(addr);
   ReadModifyWriteRule rule;
   rule.set_family_name(FAMILY_NAME);
   rule.set_column_qualifier(COLUMN_QUALIFIER);
@@ -143,4 +143,5 @@ long long atomic_increment(unsigned long long address, unsigned long long increm
   }
   return value;
 }
+
 
