@@ -1,0 +1,19 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{void} \PYG{n+nf}{put}\PYG{p}{(}\PYG{k+kt}{unsigned} \PYG{k+kt}{long} \PYG{k+kt}{long} \PYG{n}{addr}\PYG{p}{,} \PYG{k+kt}{long} \PYG{k+kt}{long} \PYG{n}{val}\PYG{p}{)}  \PYG{p}{\PYGZob{}}
+  \PYG{c+c1}{// cast arguments to string type}
+  \PYG{n}{string} \PYG{n}{address} \PYG{o}{=} \PYG{n}{std}\PYG{o}{::}\PYG{n}{to\PYGZus{}string}\PYG{p}{(}\PYG{n}{addr}\PYG{p}{);}
+  \PYG{n}{string} \PYG{n}{value} \PYG{o}{=} \PYG{n}{std}\PYG{o}{::}\PYG{n}{to\PYGZus{}string}\PYG{p}{(}\PYG{n}{val}\PYG{p}{);}
+  \PYG{c+c1}{// setup the request}
+  \PYG{n}{MutateRowRequest} \PYG{n}{req}\PYG{p}{;}
+  \PYG{n}{req}\PYG{p}{.}\PYG{n}{set\PYGZus{}table\PYGZus{}name}\PYG{p}{(}\PYG{n}{tableName}\PYG{p}{);}
+  \PYG{n}{req}\PYG{p}{.}\PYG{n}{set\PYGZus{}row\PYGZus{}key}\PYG{p}{(}\PYG{n}{address}\PYG{p}{);}
+  \PYG{k}{auto} \PYG{n}{setCell} \PYG{o}{=} \PYG{n}{req}\PYG{p}{.}\PYG{n}{add\PYGZus{}mutations}\PYG{p}{()}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{mutable\PYGZus{}set\PYGZus{}cell}\PYG{p}{();}
+  \PYG{n}{setCell}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{set\PYGZus{}family\PYGZus{}name}\PYG{p}{(}\PYG{n}{familyName}\PYG{p}{);}
+  \PYG{n}{setCell}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{set\PYGZus{}column\PYGZus{}qualifier}\PYG{p}{(}\PYG{n}{columnQualifier}\PYG{p}{);}
+  \PYG{n}{setCell}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{set\PYGZus{}value}\PYG{p}{(}\PYG{n}{value}\PYG{p}{);}
+  \PYG{c+c1}{// invoke row mutation on Bigtable}
+  \PYG{n}{MutateRowResponse} \PYG{n}{resp}\PYG{p}{;}
+  \PYG{n}{grpc}\PYG{o}{::}\PYG{n}{ClientContext} \PYG{n}{clientContext}\PYG{p}{;}
+  \PYG{k}{auto} \PYG{n}{status} \PYG{o}{=} \PYG{n}{bigtableStub}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{MutateRow}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{n}{clientContext}\PYG{p}{,} \PYG{n}{req}\PYG{p}{,} \PYG{o}{\PYGZam{}}\PYG{n}{resp}\PYG{p}{);}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

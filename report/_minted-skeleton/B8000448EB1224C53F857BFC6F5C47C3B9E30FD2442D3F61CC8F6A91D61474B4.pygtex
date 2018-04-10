@@ -1,0 +1,23 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{long} \PYG{k+kt}{long} \PYG{n+nf}{atomic\PYGZus{}increment}\PYG{p}{(}\PYG{k+kt}{unsigned} \PYG{k+kt}{long} \PYG{k+kt}{long} \PYG{n}{address}\PYG{p}{,} \PYG{k+kt}{unsigned} \PYG{k+kt}{long} \PYG{k+kt}{long} \PYG{n}{increment}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+  \PYG{c+c1}{// convert address to string}
+  \PYG{n}{string} \PYG{n}{address} \PYG{o}{=} \PYG{n}{to\PYGZus{}string}\PYG{p}{(}\PYG{n}{address}\PYG{p}{);}
+  \PYG{c+c1}{// setup the request}
+  \PYG{n}{ReadModifyWriteRowRequest} \PYG{n}{req}\PYG{p}{;}
+  \PYG{n}{req}\PYG{p}{.}\PYG{n}{set\PYGZus{}table\PYGZus{}name}\PYG{p}{(}\PYG{n}{TABLE\PYGZus{}NAME}\PYG{p}{);}
+  \PYG{n}{req}\PYG{p}{.}\PYG{n}{set\PYGZus{}row\PYGZus{}key}\PYG{p}{(}\PYG{n}{address}\PYG{p}{);}
+  \PYG{n}{ReadModifyWriteRule} \PYG{n}{rule}\PYG{p}{;}
+  \PYG{n}{rule}\PYG{p}{.}\PYG{n}{set\PYGZus{}family\PYGZus{}name}\PYG{p}{(}\PYG{n}{FAMILY\PYGZus{}NAME}\PYG{p}{);}
+  \PYG{n}{rule}\PYG{p}{.}\PYG{n}{set\PYGZus{}column\PYGZus{}qualifier}\PYG{p}{(}\PYG{n}{COLUMN\PYGZus{}QUALIFIER}\PYG{p}{);}
+  \PYG{n}{rule}\PYG{p}{.}\PYG{n}{set\PYGZus{}increment\PYGZus{}amount}\PYG{p}{(}\PYG{n}{increment}\PYG{p}{);}
+  \PYG{o}{*}\PYG{n}{req}\PYG{p}{.}\PYG{n}{add\PYGZus{}rules}\PYG{p}{()} \PYG{o}{=} \PYG{n}{std}\PYG{o}{::}\PYG{n}{move}\PYG{p}{(}\PYG{n}{rule}\PYG{p}{);}
+  \PYG{c+c1}{// invoke read\PYGZhy{}modify\PYGZhy{}write operation on Bigtable}
+  \PYG{n}{ReadModifyWriteRowResponse} \PYG{n}{resp}\PYG{p}{;}
+  \PYG{n}{grpc}\PYG{o}{::}\PYG{n}{ClientContext} \PYG{n}{clientContext}\PYG{p}{;}
+  \PYG{k}{auto} \PYG{n}{status} \PYG{o}{=} \PYG{n}{bigtableStub}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{ReadModifyWriteRow}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{n}{clientContext}\PYG{p}{,} \PYG{n}{req}\PYG{p}{,} \PYG{o}{\PYGZam{}}\PYG{n}{resp}\PYG{p}{);}
+  \PYG{k}{const} \PYG{k+kt}{char}\PYG{o}{*} \PYG{n}{bytes} \PYG{o}{=} \PYG{n}{resp}\PYG{p}{.}\PYG{n}{mutable\PYGZus{}row}\PYG{p}{()}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{mutable\PYGZus{}families}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{)}\PYG{o}{\PYGZhy{}\PYGZgt{}}
+  			\PYG{n}{mutable\PYGZus{}columns}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{)}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{mutable\PYGZus{}cells}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{)}\PYG{o}{\PYGZhy{}\PYGZgt{}}\PYG{n}{value}\PYG{p}{().}\PYG{n}{c\PYGZus{}str}\PYG{p}{();}
+  \PYG{k+kt}{long} \PYG{k+kt}{long} \PYG{n}{value} \PYG{o}{=} \PYG{n}{bytesToInt}\PYG{p}{(}\PYG{n}{bytes}\PYG{p}{);}
+  \PYG{k}{return} \PYG{n}{value}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

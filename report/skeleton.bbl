@@ -6,28 +6,25 @@
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
 
 \bibitem[grp(2017)]{grpc_issue}
-grpc c++ fails to compile (zlib), December 2017.
+Github. {gRPC} reporsitory. {Issues}. grpc c++ fails to compile (zlib),
+  December 2017.
 \newblock URL \url{https://github.com/grpc/grpc/issues/13640}.
 
-\bibitem[Berger et~al.(2002)Berger, Zorn, and McKinley]{reaps}
-Emery~D. Berger, Benjamin~G. Zorn, and Kathryn~S. McKinley.
-\newblock Reconsidering custom memory allocation.
-\newblock \emph{SIGPLAN Not.}, 37\penalty0 (11):\penalty0 1--12, November 2002.
-\newblock ISSN 0362-1340.
-\newblock \doi{10.1145/583854.582421}.
-\newblock URL \url{http://doi.acm.org/10.1145/583854.582421}.
+\bibitem[Anderson and Neefe(1998)]{Anderson:1998:ENR:893677}
+Eric~A. Anderson and Jeanna~M. Neefe.
+\newblock An exploration of network ram.
+\newblock Technical report, Berkeley, CA, USA, 1998.
+
+\bibitem[Andrews(2000)]{producer-consumer}
+Greg Andrews.
+\newblock Foundations of multithreaded, parallel, and distributed programming.
+  {Source} code for programs, January 2000.
+\newblock URL \url{http://www2.cs.arizona.edu/people/greg/mpdbook/programs/}.
 
 \bibitem[Burelle(2009)]{malloc_tutorial}
 Marwan Burelle.
 \newblock \emph{A Malloc Tutorial}.
 \newblock Laboratoire Systeme et Securite de l'EPITA (LSE), February 2009.
-
-\bibitem[Chapman et~al.(2010)Chapman, Curtis, Pophale, Poole, Kuehn, Koelbel,
-  and Smith]{openshmem}
-Barbara Chapman, Tony Curtis, Swaroop Pophale, Stephen Poole, Jeff Kuehn, Chuck
-  Koelbel, and Lauren Smith.
-\newblock Introducing openshmem: Shmem for the pgas community.
-\newblock 10 2010.
 
 \bibitem[Cooper et~al.(2010)Cooper, Silberstein, Tam, Ramakrishnan, and
   Sears]{ycsb}
@@ -35,24 +32,28 @@ Brian~F. Cooper, Adam Silberstein, Erwin Tam, Raghu Ramakrishnan, and Russell
   Sears.
 \newblock Benchmarking cloud serving systems with ycsb.
 \newblock In \emph{Proceedings of the 1st ACM Symposium on Cloud Computing},
-  SoCC '10, pages 143--154, New York, NY, USA, 2010. ACM.
-\newblock URL
-  \url{https://www2.cs.duke.edu/courses/fall13/cps296.4/838-CloudPapers/ycsb.pdf}.
+  pages 143--154, 2010.
+\newblock URL \url{http://bit.ly/benchmarking-cloud-serving-systems-with-ycsb}.
+
+\bibitem[Dean(2009)]{numbers_should_know}
+Jeff Dean.
+\newblock Designs, lessons and advice from building large distributed systems,
+  2009.
+\newblock URL \url{http://bit.ly/numbers-everyone-should-know}.
+
+\bibitem[goldilocks(2016)]{run_out_of_mem}
+goldilocks.
+\newblock Can linux ``run out of {RAM}''?, September 2016.
+\newblock URL \url{https://unix.stackexchange.com/a/92544}.
 
 \bibitem[Google(2018{\natexlab{a}})]{google-bigtable}
-Google, 2018{\natexlab{a}}.
+Google.
+\newblock Bigtable, 2018{\natexlab{a}}.
 \newblock URL \url{https://cloud.google.com/bigtable/}.
 
-\bibitem[Google(2018{\natexlab{b}})]{google-datastore}
-Google, 2018{\natexlab{b}}.
-\newblock URL \url{https://cloud.google.com/datastore/}.
-
-\bibitem[Google(2018{\natexlab{c}})]{google-spanner}
-Google, 2018{\natexlab{c}}.
-\newblock URL \url{https://cloud.google.com/spanner/}.
-
-\bibitem[Google(2018{\natexlab{d}})]{grpc}
-Google, 2018{\natexlab{d}}.
+\bibitem[Google(2018{\natexlab{b}})]{grpc}
+Google.
+\newblock {gRPC}, 2018{\natexlab{b}}.
 \newblock URL \url{https://grpc.io/docs/guides}.
 
 \bibitem[Grolinger et~al.(2013)Grolinger, Higashino, Tiwari, and
@@ -62,25 +63,28 @@ Katarina Grolinger, Wilson~A Higashino, Abhinav Tiwari, and Miriam~AM Capretz.
 \newblock \emph{Journal of Cloud Computing: Advances, Systems and
   Applications}, December 2013.
 
-\bibitem[Lea()]{leadlmalloc}
-D~Lea.
-\newblock Dlmalloc, 2010.
-\newblock \emph{URL http://g. oswego. edu/dl/html/malloc. html}.
+\bibitem[Lea and Gloger(1996)]{leadlmalloc}
+Doug Lea and Wolfram Gloger.
+\newblock A memory allocator, 1996.
 
-\bibitem[OpenSHMEM-1.3.pdf(2016)]{openshmem_fig}
-OpenSHMEM-1.3.pdf.
-\newblock Openshmem: Application programming interface, February 2016.
+\bibitem[O'Connor(2015)]{bigtable-introduction}
+Cory O'Connor.
+\newblock Announcing google cloud bigtable: The same database that powers
+  google search, gmail and analytics is now available on google cloud platform.
+\newblock \emph{Google Cloud Platform Blog}, May 2015.
+\newblock URL \url{http://bit.ly/introducing-google-cloud-bigtable}.
+
+\bibitem[Oleszkiewicz et~al.(2004)Oleszkiewicz, Xiao, and Liu]{1327942}
+J.~Oleszkiewicz, Li~Xiao, and Yunhao Liu.
+\newblock Parallel network ram: effectively utilizing global cluster memory for
+  large data-intensive parallel programs.
+\newblock In \emph{International Conference on Parallel Processing, 2004. ICPP
+  2004.}, pages 353--360 vol.1, Aug 2004.
+\newblock \doi{10.1109/ICPP.2004.1327942}.
 
 \bibitem[Rouse(2016)]{synchronous-replication}
 Margaret Rouse.
-\newblock Synchronous replication.
-\newblock \emph{WhatIs.com}, 2016.
-
-\bibitem[Z.Huang et~al.(2006)Z.Huang, W.Chen, M.Purvis, and W.Zheng]{vodca}
-Z.Huang, W.Chen, M.Purvis, and W.Zheng.
-\newblock Vodca: View-oriented, distributed, cluster-based approach to parallel
-  computing.
-\newblock In \emph{Cluster Computing and the Grid, 2006. CCGRID 06. Sixth IEEE
-  International Symposium on}, volume~2, pages 15--15, May 2006.
+\newblock Synchronous replication, 2016.
+\newblock URL \url{http://bit.ly/synchronous-replication}.
 
 \end{thebibliography}

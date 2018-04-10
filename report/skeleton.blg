@@ -3,59 +3,61 @@ Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
 The top-level auxiliary file: skeleton.aux
 The style file: plainnat.bst
 Database file #1: mybibfile.bib
+Warning--entry type for "numbers_should_know" isn't style-file defined
+--line 21 of file mybibfile.bib
+Warning--entry type for "run_out_of_mem" isn't style-file defined
+--line 30 of file mybibfile.bib
+Warning--entry type for "producer-consumer" isn't style-file defined
+--line 40 of file mybibfile.bib
 Warning--entry type for "grpc_issue" isn't style-file defined
---line 20 of file mybibfile.bib
+--line 59 of file mybibfile.bib
 Warning--entry type for "grpc" isn't style-file defined
---line 28 of file mybibfile.bib
-Warning--entry type for "google-spanner" isn't style-file defined
---line 77 of file mybibfile.bib
-Warning--entry type for "google-datastore" isn't style-file defined
---line 87 of file mybibfile.bib
+--line 68 of file mybibfile.bib
+Warning--entry type for "synchronous-replication" isn't style-file defined
+--line 96 of file mybibfile.bib
 Warning--entry type for "google-bigtable" isn't style-file defined
---line 97 of file mybibfile.bib
+--line 140 of file mybibfile.bib
 Warning--to sort, need author or key in grpc_issue
-Warning--empty journal in openshmem
-Warning--empty year in leadlmalloc
-Warning--empty year in leadlmalloc
+Warning--empty institution in Anderson:1998:ENR:893677
 You've used 14 entries,
             2773 wiz_defined-function locations,
-            660 strings with 6588 characters,
-and the built_in function-call counts, 5580 in all, are:
-= -- 478
-> -- 302
-< -- 11
-+ -- 110
-- -- 93
-* -- 424
-:= -- 840
-add.period$ -- 41
+            666 strings with 6945 characters,
+and the built_in function-call counts, 5237 in all, are:
+= -- 465
+> -- 239
+< -- 12
++ -- 87
+- -- 72
+* -- 357
+:= -- 779
+add.period$ -- 43
 call.type$ -- 14
-change.case$ -- 68
-chr.to.int$ -- 11
-cite$ -- 33
-duplicate$ -- 270
-empty$ -- 484
-format.name$ -- 106
-if$ -- 1173
-int.to.chr$ -- 4
+change.case$ -- 66
+chr.to.int$ -- 13
+cite$ -- 31
+duplicate$ -- 257
+empty$ -- 483
+format.name$ -- 89
+if$ -- 1121
+int.to.chr$ -- 2
 int.to.str$ -- 1
-missing$ -- 7
-newline$ -- 76
+missing$ -- 4
+newline$ -- 79
 num.names$ -- 52
-pop$ -- 178
+pop$ -- 168
 preamble$ -- 1
-purify$ -- 59
+purify$ -- 52
 quote$ -- 0
-skip$ -- 221
+skip$ -- 218
 stack$ -- 0
-substring$ -- 97
+substring$ -- 107
 swap$ -- 43
-text.length$ -- 3
+text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 154
-warning$ -- 4
-while$ -- 46
+warning$ -- 2
+while$ -- 44
 width$ -- 0
-write$ -- 176
+write$ -- 180
 (There were 9 warnings)

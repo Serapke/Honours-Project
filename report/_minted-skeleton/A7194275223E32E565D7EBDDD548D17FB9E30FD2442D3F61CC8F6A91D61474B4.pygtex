@@ -1,0 +1,12 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{void}\PYG{o}{*} \PYG{n+nf}{set\PYGZus{}bt\PYGZus{}brk}\PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{incr}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+  \PYG{c+c1}{// if uninitialised, set to sbrk(0)}
+  \PYG{k}{if} \PYG{p}{(}\PYG{n}{current\PYGZus{}bt\PYGZus{}break} \PYG{o}{==} \PYG{l+m+mi}{0}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{n}{current\PYGZus{}bt\PYGZus{}break} \PYG{o}{=} \PYG{p}{(}\PYG{k+kt}{uintptr\PYGZus{}t}\PYG{p}{)} \PYG{n}{sbrk}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{);}
+    \PYG{n}{initial\PYGZus{}bt\PYGZus{}break} \PYG{o}{=} \PYG{n}{current\PYGZus{}bt\PYGZus{}break}\PYG{p}{;}
+  \PYG{p}{\PYGZcb{}}
+  \PYG{k+kt}{uintptr\PYGZus{}t} \PYG{n}{old\PYGZus{}break} \PYG{o}{=} \PYG{n}{current\PYGZus{}bt\PYGZus{}break}\PYG{p}{;}
+  \PYG{n}{current\PYGZus{}bt\PYGZus{}break} \PYG{o}{+=} \PYG{n}{incr}\PYG{p}{;}
+  \PYG{k}{return} \PYG{p}{(}\PYG{k+kt}{void}\PYG{o}{*}\PYG{p}{)} \PYG{n}{old\PYGZus{}break}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}
