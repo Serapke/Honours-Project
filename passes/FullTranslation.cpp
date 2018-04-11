@@ -35,6 +35,7 @@ namespace {
     Function *hookPut;
 
     Type* INT64TY;
+    Type* INT32TY;
     Type* VOIDTY;
     Type* INT8PTRTY;
 
@@ -50,6 +51,7 @@ namespace {
       return true;
     }
 
+    // filter
     bool hasLinkage(Function* func) {
       if (func->hasLinkOnceODRLinkage()) {
         return true;
@@ -99,7 +101,8 @@ namespace {
     }
 
     void addGetCall(Value* address_of_load, Module &M, Instruction** ptrToIntInst,
-                    Instruction** callGet, Instruction** truncInst, Instruction** intToPtrInst) {
+                    Instruction** callGet, Instruction** truncInst, Instruction** intToPtrInst, BasicBlock* pb, BasicBlock::iterator &BI) {
+      *callGet = nullptr;
       // get (underlying element, if pointer) type and keep count of number of levels of indirection
       Type* value_type;
       int ind_count = 0;
@@ -110,6 +113,40 @@ namespace {
       int bw = -1;
       if (IntegerType *it = dyn_cast<IntegerType>(value_type)) {
         bw = it->getBitWidth();
+      } else if (StructType* st = dyn_cast<StructType>(value_type)) {
+        if (st->isLiteral()) {
+          int i = 0;
+          Value* structValue = UndefValue::get(st);
+          for (Type *elementType : st->elements()) {
+            Value *indexList[2] = {ConstantInt::get(INT32TY, 0), ConstantInt::get(INT32TY, i)};
+            Value* address = GetElementPtrInst::Create(nullptr, address_of_load, indexList, "idx");
+            Instruction *instructions[4];
+            addGetCall(address, M, &instructions[0], &instructions[1],  &instructions[2],  &instructions[3], pb, BI);
+            pb->getInstList().insert(BI, cast<Instruction>(address));
+            pb->getInstList().insert(BI, instructions[0]);
+            pb->getInstList().insert(BI, instructions[1]);
+            Value* val = instructions[1];
+            if (instructions[2]) {
+              pb->getInstList().insert(BI, instructions[2]);
+              val = instructions[2];
+            }
+            if (instructions[3]) {
+              pb->getInstList().insert(BI, instructions[3]);
+              val = instructions[3];
+            }
+            unsigned int idxList[1] = {(unsigned int) i};
+            InsertValueInst* insertValueInst = InsertValueInst::Create(structValue, val, idxList, "insert_value");
+            structValue = insertValueInst;
+
+            if (i == st->getNumElements()-1) {
+              continue;
+            }
+            pb->getInstList().insert(BI, cast<Instruction>(insertValueInst));
+            i++;
+          }
+          prepareForTranslation(cast<Instruction>(structValue), &*BI);
+          return;
+        }
       }
 
       *ptrToIntInst = cast<Instruction>(new PtrToIntInst(address_of_load, INT64TY, ""));
@@ -145,8 +182,9 @@ namespace {
       Value* address_of_load = &*BI->getOperand(0);
 
       Instruction *instructions[4];
-      addGetCall(address_of_load, M, &instructions[0], &instructions[1],  &instructions[2],  &instructions[3]);
+      addGetCall(address_of_load, M, &instructions[0], &instructions[1],  &instructions[2],  &instructions[3], pb, BI);
 
+      if (!instructions[1]) return;
       pb->getInstList().insert(BI, instructions[0]);
       if (instructions[3]) {
         prepareForTranslation(instructions[3], &*BI);
@@ -229,6 +267,7 @@ namespace {
       prepareForTranslation(callocCallInst, instruction);
     }
 
+    // store thread function arguments to main memory before thread creation process
     void handleThreadCreation(BasicBlock* BB, BasicBlock::iterator BI, InvokeInst* II, Module &M) {
       CallSite CS(II);
       for (CallSite::arg_iterator A = CS->op_begin()+2, AE = CS->op_end()-3; A != AE; ++A) {
@@ -236,7 +275,8 @@ namespace {
           Value* address_of_load = A->get();
 
           Instruction *instructions[4];
-          addGetCall(address_of_load, M, &instructions[0], &instructions[1],  &instructions[2],  &instructions[3]);
+          addGetCall(address_of_load, M, &instructions[0], &instructions[1],  &instructions[2],  &instructions[3], BB, BI);
+          if (!instructions[1]) return;
 
           BB->getInstList().insert(BI, instructions[0]);
           BB->getInstList().insert(BI, instructions[1]);
@@ -258,6 +298,7 @@ namespace {
       INT64TY = Type::getInt64Ty(M.getContext());
       VOIDTY = Type::getVoidTy(M.getContext());
       INT8PTRTY = Type::getInt8PtrTy(M.getContext());
+      INT32TY = Type::getInt32Ty(M.getContext());
     }
 
     void prepareFunctionHooks(Module &M) {
@@ -285,7 +326,6 @@ namespace {
     virtual bool runOnModule(Module &M) {
       prepareTypes(M);
       prepareFunctionHooks(M);
-
       for(Module::iterator F = M.begin(), E = M.end(); F!= E; ++F) {
         // if reached gRPC code, translation is ended
         if (functionNameContains(&*F, "functions.cpp")) {
@@ -300,7 +340,7 @@ namespace {
       }
 
       replaceInstructions(deleteList, addList);
-//      printFunctions(M);
+      printFunctions(M);
       return true;
     }
     virtual bool runOnBasicBlock(Function::iterator &FI, Module &M) {
@@ -339,6 +379,7 @@ namespace {
 char FullTranslation::ID = 0;
 static RegisterPass<FullTranslation>
     X("full-translation", "Full load and store translation"); // NOLINT
+
 
 
 
