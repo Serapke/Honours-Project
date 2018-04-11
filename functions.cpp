@@ -37,7 +37,7 @@ auto channel = grpc::CreateChannel(BIGTABLE_API, creds);
 unique_ptr<Bigtable::Stub> bigtableStub(Bigtable::NewStub(channel));
 
 void put(unsigned long long addr, long long val) {
-  mtx.lock();
+//  mtx.lock();
   if (DEBUG)
     cout << "\tPut with key '" << std::hex << addr << "': " << std::dec << val << endl;
   string address = to_string(addr);
@@ -64,11 +64,11 @@ void put(unsigned long long addr, long long val) {
   } else if (DEBUG) {
     cout << "\tStored successfully!" << endl;
   }
-  mtx.unlock();
+//  mtx.unlock();
 }
 
 long long get(unsigned long long addr) {
-  mtx.lock();
+//  mtx.lock();
 
   if (DEBUG)
       cout << "\tGet with key '" << std::hex << addr << endl;
@@ -104,7 +104,7 @@ long long get(unsigned long long addr) {
       cout << "\tLoaded successfully! Value " << dec << value << endl;
   }
 
-  mtx.unlock();
+//  mtx.unlock();
   return value;
 }
 
