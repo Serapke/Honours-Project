@@ -2,7 +2,7 @@
 \PYG{k}{const} \PYG{k+kt}{int} \PYG{n}{M\PYGZus{}X} \PYG{o}{=} \PYG{l+m+mi}{10}\PYG{p}{;}
 \PYG{k}{const} \PYG{k+kt}{int} \PYG{n}{M\PYGZus{}Y} \PYG{o}{=} \PYG{l+m+mi}{10}\PYG{p}{;}
 \PYG{k}{const} \PYG{k+kt}{int} \PYG{n}{N} \PYG{o}{=} \PYG{l+m+mi}{50}\PYG{p}{;}
-\PYG{k}{volatile} \PYG{k+kt}{int} \PYG{n}{target}\PYG{p}{;}
+\PYG{k+kt}{int}\PYG{o}{*} \PYG{n}{target}\PYG{p}{;}
 \PYG{k+kt}{int}\PYG{o}{*} \PYG{n}{data}\PYG{p}{;}
 \PYG{k+kt}{char} \PYG{o}{*}\PYG{n}{heap\PYGZus{}matrix}\PYG{p}{;}
 
@@ -69,7 +69,7 @@
 \PYG{k+kt}{void} \PYG{o}{*}\PYG{n+nf}{test\PYGZus{}multithreaded\PYGZus{}correctness}\PYG{p}{(}\PYG{k+kt}{void} \PYG{o}{*}\PYG{n}{arg}\PYG{p}{)} \PYG{p}{\PYGZob{}}
   \PYG{k}{for} \PYG{p}{(}\PYG{k+kt}{int} \PYG{n}{i} \PYG{o}{=} \PYG{l+m+mi}{0}\PYG{p}{;} \PYG{n}{i} \PYG{o}{\PYGZlt{}} \PYG{n}{N}\PYG{p}{;} \PYG{n}{i}\PYG{o}{++}\PYG{p}{)} \PYG{p}{\PYGZob{}}
     \PYG{n}{sem\PYGZus{}wait}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{n}{lock}\PYG{p}{);}
-    \PYG{n}{target}\PYG{o}{++}\PYG{p}{;}
+    \PYG{p}{(}\PYG{o}{*}\PYG{n}{target}\PYG{p}{)}\PYG{o}{++}\PYG{p}{;}
     \PYG{n}{sem\PYGZus{}post}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{n}{lock}\PYG{p}{);}
   \PYG{p}{\PYGZcb{}}
   \PYG{k}{return} \PYG{n+nb}{NULL}\PYG{p}{;}

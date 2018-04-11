@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.29)  10 APR 2018 14:04
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.10.29)  11 APR 2018 12:34
 entering extended mode
  \write18 enabled.
  file:line:error style messages enabled.
@@ -826,9 +826,6 @@ File: images/barrier.pdf Graphic file (type pdf)
 <use images/barrier.pdf>
 Package pdftex.def Info: images/barrier.pdf used on input line 402.
 (pdftex.def)             Requested size: 206.28249pt x 190.70062pt.
-
-Underfull \vbox (badness 1831) has occurred while \output is active []
-
  [17 <./images/architecture.pdf> <./images/barrier.pdf>]
 \openout5 = `skeleton.pyg'.
 
@@ -852,30 +849,37 @@ LaTeX Font Info:    Font shape `OT1/pcr/bx/n' in size <12> not available
 File: images/store_translation.pdf Graphic file (type pdf)
 
 <use images/store_translation.pdf>
-Package pdftex.def Info: images/store_translation.pdf used on input line 420.
+Package pdftex.def Info: images/store_translation.pdf used on input line 418.
 (pdftex.def)             Requested size: 330.05322pt x 154.76451pt.
  [18 <./images/store_translation.pdf>]
 <images/load_translation.pdf, id=186, 564.43233pt x 264.96672pt>
 File: images/load_translation.pdf Graphic file (type pdf)
 
 <use images/load_translation.pdf>
-Package pdftex.def Info: images/load_translation.pdf used on input line 431.
+Package pdftex.def Info: images/load_translation.pdf used on input line 429.
 (pdftex.def)             Requested size: 330.05322pt x 154.94627pt.
- [19 <./images/load_translation.pdf>] [20
+ [19 <./images/load_translation.pdf>]
+<images/struct_type.pdf, id=207, 550.1053pt x 229.58714pt>
+File: images/struct_type.pdf Graphic file (type pdf)
 
-]
+<use images/struct_type.pdf>
+Package pdftex.def Info: images/struct_type.pdf used on input line 441.
+(pdftex.def)             Requested size: 330.05322pt x 137.74983pt.
+ [20 <./images/struct_type.pdf>]
 Chapter 4.
 LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 460.
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 458.
 LaTeX Font Info:    Font shape `OT1/phv/bx/n' in size <14.4> not available
-(Font)              Font shape `OT1/phv/b/n' tried instead on input line 460.
+(Font)              Font shape `OT1/phv/b/n' tried instead on input line 458.
 LaTeX Font Info:    Font shape `OT1/phv/b/n' will be
-(Font)              scaled to size 12.9599pt on input line 460.
-[21] <images/heap_organisation.pdf, id=214, 697.69159pt x 274.19159pt>
+(Font)              scaled to size 12.9599pt on input line 458.
+[21
+
+] <images/heap_organisation.pdf, id=232, 697.69159pt x 274.19159pt>
 File: images/heap_organisation.pdf Graphic file (type pdf)
 
 <use images/heap_organisation.pdf>
-Package pdftex.def Info: images/heap_organisation.pdf used on input line 468.
+Package pdftex.def Info: images/heap_organisation.pdf used on input line 466.
 (pdftex.def)             Requested size: 412.56497pt x 162.13562pt.
 \openout3 = `skeleton.pyg'.
 
@@ -895,47 +899,47 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 
 (./_minted-skeleton/FD4D9CB797A166A7AD9B974899532293B9E30FD2442D3F61CC8F6A91D61
-474B4.pygtex) [24] <images/no_malloc.png, id=242, 350.30875pt x 64.24pt>
+474B4.pygtex) [24] <images/no_malloc.png, id=260, 350.30875pt x 64.24pt>
 File: images/no_malloc.png Graphic file (type png)
 
 <use images/no_malloc.png>
-Package pdftex.def Info: images/no_malloc.png used on input line 567.
+Package pdftex.def Info: images/no_malloc.png used on input line 565.
 (pdftex.def)             Requested size: 170.71652pt x 31.30632pt.
 
-Overfull \hbox (5.69305pt too wide) in paragraph at lines 567--568
+Overfull \hbox (5.69305pt too wide) in paragraph at lines 565--566
  [][] 
  []
 
-<images/default_malloc.png, id=243, 324.21124pt x 62.2325pt>
+<images/default_malloc.png, id=261, 324.21124pt x 62.2325pt>
 File: images/default_malloc.png Graphic file (type png)
 
 <use images/default_malloc.png>
-Package pdftex.def Info: images/default_malloc.png used on input line 573.
+Package pdftex.def Info: images/default_malloc.png used on input line 571.
 (pdftex.def)             Requested size: 170.71652pt x 32.76941pt.
 
-Overfull \hbox (5.69305pt too wide) in paragraph at lines 573--574
+Overfull \hbox (5.69305pt too wide) in paragraph at lines 571--572
  [][] 
  []
 
-<images/custom_malloc.png, id=244, 328.22626pt x 64.24pt>
+<images/custom_malloc.png, id=262, 328.22626pt x 64.24pt>
 File: images/custom_malloc.png Graphic file (type png)
 
 <use images/custom_malloc.png>
-Package pdftex.def Info: images/custom_malloc.png used on input line 578.
+Package pdftex.def Info: images/custom_malloc.png used on input line 576.
 (pdftex.def)             Requested size: 170.71652pt x 33.41283pt.
 
-Overfull \hbox (5.69305pt too wide) in paragraph at lines 578--579
+Overfull \hbox (5.69305pt too wide) in paragraph at lines 576--577
  [][] 
  []
 
-<images/simple_malloc.png, id=245, 326.21875pt x 63.23625pt>
+<images/simple_malloc.png, id=263, 326.21875pt x 63.23625pt>
 File: images/simple_malloc.png Graphic file (type png)
 
 <use images/simple_malloc.png>
-Package pdftex.def Info: images/simple_malloc.png used on input line 584.
+Package pdftex.def Info: images/simple_malloc.png used on input line 582.
 (pdftex.def)             Requested size: 170.71652pt x 33.09337pt.
 
-Overfull \hbox (5.69305pt too wide) in paragraph at lines 584--585
+Overfull \hbox (5.69305pt too wide) in paragraph at lines 582--583
  [][] 
  []
 
@@ -943,27 +947,27 @@ Overfull \hbox (5.69305pt too wide) in paragraph at lines 584--585
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [25]
-<images/allocator_test_a.png, id=249, 602.25pt x 372.39125pt>
+<images/allocator_test_a.png, id=267, 602.25pt x 372.39125pt>
 File: images/allocator_test_a.png Graphic file (type png)
 
 <use images/allocator_test_a.png>
-Package pdftex.def Info: images/allocator_test_a.png used on input line 597.
+Package pdftex.def Info: images/allocator_test_a.png used on input line 595.
 (pdftex.def)             Requested size: 341.43306pt x 211.12877pt.
  [26 <./images/no_malloc.png> <./images/default_malloc.png> <./images/custom_ma
 lloc.png> <./images/simple_malloc.png> <./images/allocator_test_a.png (PNG copy
 )>]
-<images/allocator_test_c.png, id=258, 602.25pt x 372.39125pt>
+<images/allocator_test_c.png, id=276, 602.25pt x 372.39125pt>
 File: images/allocator_test_c.png Graphic file (type png)
 
 <use images/allocator_test_c.png>
-Package pdftex.def Info: images/allocator_test_c.png used on input line 607.
+Package pdftex.def Info: images/allocator_test_c.png used on input line 605.
 (pdftex.def)             Requested size: 341.43306pt x 211.12877pt.
 
-<images/allocator_test_e.png, id=259, 602.25pt x 372.39125pt>
+<images/allocator_test_e.png, id=277, 602.25pt x 372.39125pt>
 File: images/allocator_test_e.png Graphic file (type png)
 
 <use images/allocator_test_e.png>
-Package pdftex.def Info: images/allocator_test_e.png used on input line 616.
+Package pdftex.def Info: images/allocator_test_e.png used on input line 614.
 (pdftex.def)             Requested size: 341.43306pt x 211.12877pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -973,27 +977,27 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Chapter 5.
 [29
 
-] <images/heap_store_translation.pdf, id=269, 509.8211pt x 506.34198pt>
+] <images/heap_store_translation.pdf, id=287, 509.8211pt x 506.34198pt>
 File: images/heap_store_translation.pdf Graphic file (type pdf)
 
 <use images/heap_store_translation.pdf>
 Package pdftex.def Info: images/heap_store_translation.pdf used on input line 6
-52.
+50.
 (pdftex.def)             Requested size: 199.16928pt x 197.81253pt.
 
-Overfull \hbox (13.51631pt too wide) in paragraph at lines 652--653
+Overfull \hbox (13.51631pt too wide) in paragraph at lines 650--651
  [][] 
  []
 
-<images/heap_load_translation.pdf, id=270, 550.72437pt x 545.09004pt>
+<images/heap_load_translation.pdf, id=288, 550.72437pt x 545.09004pt>
 File: images/heap_load_translation.pdf Graphic file (type pdf)
 
 <use images/heap_load_translation.pdf>
 Package pdftex.def Info: images/heap_load_translation.pdf used on input line 65
-8.
+6.
 (pdftex.def)             Requested size: 199.16928pt x 197.13054pt.
 
-Overfull \hbox (13.51631pt too wide) in paragraph at lines 658--659
+Overfull \hbox (13.51631pt too wide) in paragraph at lines 656--657
  [][] 
  []
 
@@ -1001,26 +1005,18 @@ Overfull \hbox (13.51631pt too wide) in paragraph at lines 658--659
 Chapter 6.
 [31
 
-] [32] <images/instruction_count.png, id=316, 602.25pt x 491.8375pt>
+] [32] <images/instruction_count.png, id=334, 602.25pt x 491.8375pt>
 File: images/instruction_count.png Graphic file (type png)
 
 <use images/instruction_count.png>
-Package pdftex.def Info: images/instruction_count.png used on input line 702.
+Package pdftex.def Info: images/instruction_count.png used on input line 700.
 (pdftex.def)             Requested size: 412.56497pt x 336.94417pt.
  [33 <./images/instruction_count.png (PNG copy)>] [34]
 Chapter 7.
 [35
 
 ]
-LaTeX Font Info:    Try loading font information for OMS+pcr on input line 728.
-
- (/usr/local/texlive/2017/texmf-dist/tex/latex/psnfss/omspcr.fd
-File: omspcr.fd 
-)
-LaTeX Font Info:    Font shape `OMS/pcr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 728.
-
-Overfull \hbox (1.28645pt too wide) in paragraph at lines 735--736
+Overfull \hbox (1.28645pt too wide) in paragraph at lines 733--734
 []\OT1/ptm/m/n/12 Combined with all these im-prove-ments, the trans-la-tion too
 l im-ple-mented on this project
  []
@@ -1072,7 +1068,7 @@ Appendix A.
 \openout3 = `skeleton.pyg'.
 
 
-(./_minted-skeleton/66A457FDF7D9380F932665963FD3F99BB9E30FD2442D3F61CC8F6A91D61
+(./_minted-skeleton/0FCC8CB31E937CB1FE1EB89EABC4CCBBB9E30FD2442D3F61CC8F6A91D61
 474B4.pygtex [39
 
 ]) [40] (./skeleton.aux)
@@ -1083,29 +1079,28 @@ runsystem(rm skeleton.pyg)...executed.
 
  ) 
 Here is how much of TeX's memory you used:
- 10196 strings out of 492995
- 168012 string characters out of 6132703
- 282527 words of memory out of 5000000
- 13477 multiletter control sequences out of 15000+600000
- 61246 words of font info for 120 fonts, out of 8000000 for 9000
+ 10184 strings out of 492995
+ 167835 string characters out of 6132703
+ 282549 words of memory out of 5000000
+ 13467 multiletter control sequences out of 15000+600000
+ 60989 words of font info for 119 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  43i,8n,40p,1637b,529s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2017/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/local/t
 exlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/te
-xlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/tex
-live/2017/texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></usr/local/texlive/201
-7/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2017/texmf-
-dist/fonts/type1/urw/courier/ucrro8a.pfb></usr/local/texlive/2017/texmf-dist/fo
-nts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/typ
-e1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/
-helvetic/uhvro8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/symbol
-/usyr.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmb8a.pfb>
-</usr/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/loca
-l/texlive/2017/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on skeleton.pdf (45 pages, 638337 bytes).
+xlive/2017/texmf-dist/fonts/type1/urw/courier/ucrb8a.pfb></usr/local/texlive/20
+17/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/local/texlive/2017/texmf
+-dist/fonts/type1/urw/courier/ucrro8a.pfb></usr/local/texlive/2017/texmf-dist/f
+onts/type1/urw/helvetic/uhvb8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/ty
+pe1/urw/helvetic/uhvr8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw
+/helvetic/uhvro8a.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/symbo
+l/usyr.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmb8a.pfb
+></usr/local/texlive/2017/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/loc
+al/texlive/2017/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on skeleton.pdf (45 pages, 658895 bytes).
 PDF statistics:
- 385 PDF objects out of 1000 (max. 8388607)
- 266 compressed objects within 3 object streams
+ 399 PDF objects out of 1000 (max. 8388607)
+ 277 compressed objects within 3 object streams
  0 named destinations out of 1000 (max. 500000)
- 116 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 121 words of extra memory for PDF output out of 10000 (max. 10000000)
 
